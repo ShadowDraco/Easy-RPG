@@ -24,17 +24,7 @@ _Version_: 1.0.0
 - Darran Holmes
 - Ethan Storm
 
-
-
-
-
-
-
-
-
-
-
-### Logistical
+### Communication
 
 What hours will you be available to communicate?
 
@@ -52,6 +42,18 @@ What is your plan if you start to fall behind?
 
 - We'll decide to take a little extra time and plan out what needs to be done. Before or after class with a fresh mind
 
+How will you communicate after hours and on the weekend?
+
+- we will you slack to communicate or meet in remo
+
+What is your strategy for ensuring everyone’s voice is heard?
+
+- ask questions to anyone who is not communicating as much to make sure their voice is heard.
+
+How will you ensure that you are creating a safe environment where everyone feels comfortable speaking up?
+
+- we have already broken the ice with each other by finding common interest and talking with each other.
+
 ### Cooperative
 
 Make a list of each parson’s strengths.
@@ -62,25 +64,32 @@ Make a list of each parson’s strengths.
 
 - Ethan
 
-  - Bug fixing and backend
+  - Bug fixing and backend Master
 
-- Sheldon
+- Kawika
 
-  - Front end Magistrate
+  - React/React-Bootstrap UI/UX Warrior
 
-How can you best utilize these strengths in the development of your application?
+
+How can you best utilize these strengths in the execution of your project?
 
 - We will help each other through the process regardless of specific skills, weaknesses, and strengths
 
-In what areas do you each want to develop greater strength?
+In which professional competencies do you each want to develop greater strength?
 
-- Backend integration for apps.
+Darran - Confidence
+Kawika - Quality and Craft
+Ethan - Craft, Colaboration, Organizational
 
 Knowing that every person in your team needs to understand the code, how do you plan to approach the day-to-day development?
 
 - navigating and driving will help us keep in sync. Though we will review our code to cement understanding. We'll make good and frequent comments
 
 ## Conflict Resolution
+
+What will be your group’s process to resolve conflict, when it arises?
+
+- we will write out our conflicts and get a third party involved to give advice on how to move forward. We will also talk out our issue first before the become a problem.
 
 What will your team do if one person is pulling all the weight while the other person is not contributing?
 
@@ -93,3 +102,11 @@ What will your team do if one person is taking over the project and not letting 
 How will you approach each other and the challenge of building an application knowing that it is impossible for two people to be at the exact same place in understanding and skill level?
 
 - Be patient and talk things out. Make sure to bring the team with you by walking through the code and answering questions.
+
+How will you raise concerns to members who are not adequately contributing?
+
+- we will have a meeting and talk to that person about how we can make sure they can contributing more.
+
+How and when will you escalate the conflict if your resolution attempts are unsuccessful?
+
+- We will get an instructor involved.
