@@ -1,0 +1,27 @@
+{
+	"name": "301-final-agreement",
+	"description": "_Authors_: Kawika Miller, Darran Holmes, Ethan Storm\r _Version_: 1.0.0",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ShadowDraco/Easy-RPG.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ShadowDraco/Easy-RPG/issues"
+	},
+	"homepage": "https://github.com/ShadowDraco/Easy-RPG#readme",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"mongoose": "^7.0.1",
+		"socket.io": "^4.6.1"
+	}
+}
