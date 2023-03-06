@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Container from 'react-bootstrap/Container'
-import AuthenticateButtons from '../auth0/AuthenticateButtons'
+import LoginButton from '../auth0/LoginButton'
 
 import { withAuth0 } from '@auth0/auth0-react'
 
@@ -15,7 +15,7 @@ class Welcome extends React.Component {
 		return (
 			<Container className='my-3'>
 				<h1>Welcome</h1>
-				<AuthenticateButtons />
+				{!this.props.auth0.isAuthenticated && <LoginButton />}
 			</Container>
 		)
 	}
