@@ -1,7 +1,14 @@
 import React from 'react'
-import reactLogo from './assets/react.svg'
+import { withAuth0 } from '@auth0/auth0-react'
 import './App.css'
-import Enemy from './game/Enemy'
+
+import Welcome from './components/pages/Welcome'
+import Game from './components/pages/Game'
+
+import ConstantHeader from './components/pages/ConstantHeader'
+import ConstantFooter from './components/pages/ConstantFooter'
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 class App extends React.Component {
 	constructor(props) {
@@ -10,36 +17,20 @@ class App extends React.Component {
 	}
 	render() {
 		return (
-			<div className='App'>
-				<div>
-					<a href='https://vitejs.dev' target='_blank'>
-						<img src='/vite.svg' className='logo' alt='Vite logo' />
-					</a>
-					<a href='https://reactjs.org' target='_blank'>
-						<img src={reactLogo} className='logo react' alt='React logo' />
-					</a>
-				</div>
-				<h1>Vite + React</h1>
-				<div className='card'>
-					<button
-						onClick={() => {
-							this.setState({ count: (this.state.count += 1) })
-							console.log(import.meta.env.VITE_TEST)
-							console.log(new Enemy('James'))
-						}}
-					>
-						count is {this.state.count}
-					</button>
-					<p>
-						Edit <code>src/App.jsx</code> and save to test HMR
-					</p>
-				</div>
-				<p className='read-the-docs'>
-					Click on the Vite and React logos to learn more
-				</p>
-			</div>
+			<>
+				<Router>
+					<ConstantHeader />
+
+					<Routes>
+						<Route exact path='/' element={<Welcome />}></Route>
+						<Route exact path='/game' element={<Game />}></Route>
+					</Routes>
+
+					<ConstantFooter />
+				</Router>
+			</>
 		)
 	}
 }
 
-export default App
+export default withAuth0(App)

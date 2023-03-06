@@ -70,7 +70,6 @@ Make a list of each parson’s strengths.
 
   - React/React-Bootstrap UI/UX Warrior
 
-
 How can you best utilize these strengths in the execution of your project?
 
 - We will help each other through the process regardless of specific skills, weaknesses, and strengths
@@ -79,7 +78,7 @@ In which professional competencies do you each want to develop greater strength?
 
 Darran - Confidence
 Kawika - Quality and Craft
-Ethan - Craft, Colaboration, Organizational
+Ethan - Craft, Collaboration, Organizational
 
 Knowing that every person in your team needs to understand the code, how do you plan to approach the day-to-day development?
 
@@ -118,6 +117,7 @@ How and when will you escalate the conflict if your resolution attempts are unsu
 - As a casual gamer I want a game that scratches my gaming itch while keeping the overall experience low-stress so that I can enjoy something in my spare time without dedicating a lot of time to the game.
 
 - Feature Tasks
+
   - User can start the game easily
   - User doesn’t lose his character progression on exit
   - User can easily defeat first few enemies
@@ -127,12 +127,12 @@ How and when will you escalate the conflict if your resolution attempts are unsu
   - Player character is constantly saved to database
   - Enemies aren’t too challenging when starting
 
-
 ### Retro Randy
 
 - As a retro gamer, I want to play something that reminds me of the old-school era of text-based games while injecting something new into the game, so that I can experience a sense of nostalgia while not feeling like I am just replaying the same old style of game.
 
 - Feature Tasks
+
   - User experiences text-based elements + visual elements
   - User can use retro themes to lend to the sense of nostalgia
 
@@ -140,43 +140,41 @@ How and when will you escalate the conflict if your resolution attempts are unsu
   - Able to see history of console.logs that describe what’s happening
   - Can choose ‘retro’ theme (black background, white / green text, pixel-y text)
 
-
-
 ### Working Wendy
-  - As someone who works long hours, I want a game that I can enjoy in short bursts of time so that I can play during my breaks and pick up where I left off whenever time allows
 
-  - Feature Tasks
-    - User can quit whenever they want to and when they come back they are in the same position (even mid-battle)
-    - Battles / encounters are relatively short
+- As someone who works long hours, I want a game that I can enjoy in short bursts of time so that I can play during my breaks and pick up where I left off whenever time allows
 
+- Feature Tasks
 
-  - Acceptance Tests
-    - Able to exit the app whenever you want and the player data + the encounter state will be saved to the server
-    - Keep ‘bullet sponge’ type enemies to a minimum
+  - User can quit whenever they want to and when they come back they are in the same position (even mid-battle)
+  - Battles / encounters are relatively short
 
+- Acceptance Tests
+  - Able to exit the app whenever you want and the player data + the encounter state will be saved to the server
+  - Keep ‘bullet sponge’ type enemies to a minimum
 
 ### Dungeon Dave
-  - As someone who enjoys Dungeons & Dragons, I want a video game that still requires some level of imagination yet also feels like a dungeon crawler so that I can experience something analogous to D&D when my group isn’t around to play.
 
+- As someone who enjoys Dungeons & Dragons, I want a video game that still requires some level of imagination yet also feels like a dungeon crawler so that I can experience something analogous to D&D when my group isn’t around to play.
 
-  - Feature Tasks
-    - Minimize visual elements and with descriptive console.logs of what’s going on
-    - Use classic fantasy creatures / monsters so that the themes are familiar
+- Feature Tasks
 
+  - Minimize visual elements and with descriptive console.logs of what’s going on
+  - Use classic fantasy creatures / monsters so that the themes are familiar
 
-  - Acceptance Tests
-    - Implement an extensive series of console.logs and use visual elements sparingly
-    - Monsters and creatures keep to a strict fantasy theme (goblins, ogres, necromancers, skeletons, slimes)
-
+- Acceptance Tests
+  - Implement an extensive series of console.logs and use visual elements sparingly
+  - Monsters and creatures keep to a strict fantasy theme (goblins, ogres, necromancers, skeletons, slimes)
 
 ### Learning Leslie
-  - As someone who doesn’t play a lot of video games but wants to, I want something that’s simple to learn and easy to play so that I can start to learn the basics of gaming and eventually dip my toes into something more difficult.
 
-  - Feature Tasks
-    - UI/UX should be straightforward and simple to understand
-    - Avoid overly complex battle mechanics
+- As someone who doesn’t play a lot of video games but wants to, I want something that’s simple to learn and easy to play so that I can start to learn the basics of gaming and eventually dip my toes into something more difficult.
 
+- Feature Tasks
 
-  - Acceptance Tests
-    - Minimize the amount of screens, buttons, etc
-    - No “Action Points”, hidden effects, bonus multipliers, etc.
+  - UI/UX should be straightforward and simple to understand
+  - Avoid overly complex battle mechanics
+
+- Acceptance Tests
+  - Minimize the amount of screens, buttons, etc
+  - No “Action Points”, hidden effects, bonus multipliers, etc.
