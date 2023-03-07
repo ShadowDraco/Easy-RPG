@@ -41,7 +41,33 @@ class Game extends React.Component {
 		}
 	}
 
-	// Socket Stuff
+getNewMap = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'get',
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/new-map',
+		}
+
+		axios(config).then(response => {
+			console.log(response)
+		})
+	}
+
+	handleAttackEnemy = () => {
+		console.log(document.getElementById())
+	}
+
+	handleShowInventory = () => {
+		this.setState({
+			showInventory: !this.state.showInventory,
+		})
+	}
+
+		// Socket Stuff
 
 	createOrStartAParty = partyName => {
 		this.setState({ inAParty: true, partyName: partyName })
@@ -62,23 +88,7 @@ class Game extends React.Component {
 		this.setState({ inAParty: false, partyName: '' })
 	}
 
-	getNewMap = () => {
-		axios.get('http://localhost:3001/player/new-map').then(response => {
-			console.log(response)
-		})
-	}
-
 	// end socket
-
-	handleAttackEnemy = () => {
-		console.log(document.getElementById())
-	}
-
-	handleShowInventory = () => {
-		this.setState({
-			showInventory: !this.state.showInventory,
-		})
-	}
 
 	render() {
 		return (

@@ -1,13 +1,14 @@
 const randomFromTo = require('./lib/helperFunctions/RandomFromTo')
 
+const enemyTypes = ['Skeleton', 'Zombie', 'Goblin']
 class Enemy {
-	enemyTypes = ['Skeleton', 'Zombie', 'Goblin']
+	
 	constructor() {
 		this.generateEnemy()
 	}
 
 	generateEnemy = () => {
-		this.name = this.enemyTypes[randomFromTo(0, this.enemyTypes.length)]
+		this.name = enemyTypes[randomFromTo(0, enemyTypes.length)]
 		this.health = 100
 	}
 }
