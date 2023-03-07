@@ -27,8 +27,8 @@ div.player, div.enemy {
 }
 
 div.player.card {
-  width: 30%;
-  height: 200px;
+  /* width: 30%; */
+  /* height: 200px; */
 }
 
 .card-body {
@@ -100,17 +100,21 @@ div.player.card {
 #player_context_menu {
   display: flex;
   width: 70%;
+  padding: 0 !important;
+  margin: 0 1rem !important;
 }
 
 #player_info_menu {
   width: 35%;
   margin: 0 !important;
+  padding: 0 !important;
 }
 
 #player_action_menu {
   display: flex;
   flex-direction: column;
   margin: 0 !important;
+  padding: 0 2rem !important;
 }
 
 #player_action_menu > * {

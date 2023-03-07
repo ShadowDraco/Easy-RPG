@@ -16,9 +16,13 @@ router.get('/get', async (request, response, next) => {
 	try {
 		const player = await PlayerModel.findOne({ email: user.email })
 
-		player
-			? response.status(200).send(player)
-			: createNewPlayer(user.email, user.name)
+		if (player !== null) {
+			response.status(200).send(player);
+		} else {
+			createNewPlayer(user.email, user.name);
+			response.status(200).send(player);
+		}
+
 		/*{
             email,
             username,
