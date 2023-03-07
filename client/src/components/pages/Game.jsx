@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
 
@@ -10,11 +11,15 @@ import axios from 'axios'
 import StartAParty from '../gameElements/partyStuff/StartAParty'
 import PartyHud from '../gameElements/partyStuff/PartyHud'
 import socket from './socket'
+import Button from 'react-bootstrap/esm/Button'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { inAParty: false }
+		this.state = { 
+			inAParty: false,
+			showInventory: false, 
+		}
 	}
 
 	// get the user
@@ -57,7 +62,23 @@ class Game extends React.Component {
 		this.setState({ inAParty: false, partyName: '' })
 	}
 
+	getNewMap = () => {
+		axios.get('http://localhost:3001/player/new-map').then(response => {
+			console.log(response)
+		})
+	}
+
 	// end socket
+
+	handleAttackEnemy = () => {
+		console.log(document.getElementById())
+	}
+
+	handleShowInventory = () => {
+		this.setState({
+			showInventory: !this.state.showInventory,
+		})
+	}
 
 	render() {
 		return (
@@ -81,7 +102,12 @@ class Game extends React.Component {
 						{this.state.authorizedPlayer ? (
 							<section id='player_screen'>
 								<div id='party_members'>
-									<PlayerCard authorizedPlayer={this.state.authorizedPlayer} />
+									<PlayerCard 
+										authorizedPlayer={this.state.authorizedPlayer} 
+										key='my_player' 
+										showInventory={this.state.showInventory} 
+										handleShowInventory={this.handleShowInventory} 
+									/>
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
 									{this.state.inAParty ? (
@@ -93,12 +119,14 @@ class Game extends React.Component {
 										''
 									)}
 								</div>
-								<PlayerMenu />
+								<PlayerMenu handleShowInventory={this.handleShowInventory} />
 							</section>
 						) : (
 							'Player is coming out of the dungeon!'
 						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
+
+						<Button onClick={this.getNewMap}>get new map</Button>
 					</Container>
 				) : (
 					<NotAuthenticated />

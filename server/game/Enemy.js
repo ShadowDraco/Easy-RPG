@@ -1,7 +1,15 @@
+const randomFromTo = require('./lib/helperFunctions/RandomFromTo')
+
 class Enemy {
-	constructor(name) {
-		this.name = name
+	enemyTypes = ['Skeleton', 'Zombie', 'Goblin']
+	constructor() {
+		this.generateEnemy()
+	}
+
+	generateEnemy = () => {
+		this.name = this.enemyTypes[randomFromTo(0, this.enemyTypes.length)]
+		this.health = 100
 	}
 }
 
-export default Enemy
+module.exports = Enemy

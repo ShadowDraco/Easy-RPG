@@ -3,6 +3,8 @@ const router = express.Router()
 
 const mongoose = require('mongoose')
 
+const Map = require('../game/Map')
+
 const PlayerModel = require('../Models/player')
 
 router.get('/', (request, response) => {
@@ -16,9 +18,14 @@ router.get('/get', async (request, response, next) => {
 	try {
 		const player = await PlayerModel.findOne({ email: user.email })
 
-		player
-			? response.status(200).send(player)
-			: createNewPlayer(user.email, user.name)
+		if (player !== null) {
+
+			response.status(200).send(player)
+		} else {
+			createNewPlayer(user.email, user.name)
+			response.status(200).send(player)
+		}
+
 		/*{
             email,
             username,
@@ -29,6 +36,26 @@ router.get('/get', async (request, response, next) => {
 		next()
 	}
 })
+
+router.get('/new-map', async (request, response) => {
+	console.log('creating a new map')
+	try {
+		let updatedPlayer = await PlayerModel.findOneAndUpdate(
+			{ email: request.user.email },
+			{ map: createNewMap() },
+			{ new: true }
+		)
+
+		response.status(200).send(updatedPlayer)
+	} catch (error) {
+		console.log('error adding map to player')
+		next()
+	}
+})
+
+createNewMap = () => {
+	return new Map()
+}
 
 createNewPlayer = async (email, username) => {
 	const Player = await PlayerModel.create({
