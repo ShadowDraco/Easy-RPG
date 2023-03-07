@@ -113,3 +113,7 @@ router.post('/new', async (request, response) => {
 
 
 module.exports = router
+
+router.post('/update-map', async(request, response) => {
+	
+})

@@ -14,7 +14,7 @@ class PlayerMenu extends React.Component {
   render() {
     return(
       <Container id='player_menu'>
-        <PlayerContextMenu handleShowInventory={this.props.handleShowInventory}/>
+        <PlayerContextMenu handleShowInventory={this.props.handleShowInventory} handleAttackEnemy={this.props.handleAttackEnemy} />
         <TextLog />
       </Container>
     )

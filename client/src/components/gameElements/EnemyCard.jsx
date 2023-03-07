@@ -5,27 +5,36 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 class EnemyCard extends React.Component{
   constructor(props){
     super(props);
-
+    this.enemy0 = React.createRef();
     this.state = {
       maxHP: 20,
       currentHP: 15,
       name: 'Goblin',
       class: ['Fighter', 'Necromancer', 'Assassin'],
-      itemsDropped: ['health potion', 'mana potion', '3gold']
+      itemsDropped: ['health potion', 'mana potion', '3gold'],
+      variant: ''
     }
   }
 
-  takeDamage = (damage) => {
-    this.setState({
-      currentHP: this.state.currentHP - damage
-    })
+  takeDamage = () => {
+    if (this.state.currentHP - this.props.handleAttackEnemy() < 0) {
+      this.setState({
+        variant: 'danger',
+        currentHP: 0
+      })
+    } else {
+      this.setState({
+      currentHP: this.state.currentHP - this.props.handleAttackEnemy()
+      })
+    }
+
   }
 
 
   render(){
     return(
       <>
-      <Card className="enemy" key='enemy_0' id='enemy_0'>
+      <Card className="enemy" key='enemy_0' id='enemy_0' onClick={() => this.takeDamage()} style={{cursor: 'pointer'}} bg={this.state.variant.toLowerCase()}>
         <Card.Header>
           {this.state.name}
         </Card.Header>
@@ -36,7 +45,6 @@ class EnemyCard extends React.Component{
             max={this.state.maxHP} 
             now={this.state.currentHP} 
             variant='danger'
-            onClick={() => this.takeDamage(5)}
             />
         </Card.Body>
       </Card>
