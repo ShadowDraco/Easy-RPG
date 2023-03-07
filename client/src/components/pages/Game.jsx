@@ -45,52 +45,23 @@ class Game extends React.Component {
 		}
 	}
 
-	// Socket Stuff
+getNewMap = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
 
-	createOrStartAParty = partyName => {
-		this.setState({ inAParty: true, partyName: partyName })
-		// join a room
-		socket.connect()
-	}
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'get',
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/new-map',
+		}
 
-	sendChatMessage = () => {
-		//
-	}
-
-	updateParty = () => {
-		// get new data to display
-	}
-
-	leaveParty = () => {
-		socket.disconnect('left party')
-		this.setState({ inAParty: false, partyName: '' })
-	}
-
-	getNewMap = () => {
-		axios.get('http://localhost:3001/player/new-map').then(response => {
+		axios(config).then(response => {
 			console.log(response)
 		})
 	}
-
-	// end socket
-
-	handleAttackEnemy = () => {
-		return 8;
-	}
-
-	handleShowEnemies = () => {
-		this.setState({
-			showEnemies: !this.state.showEnemies
-		})
-	}
-
-	handleShowInventory = () => {
-		this.setState({
-			showInventory: !this.state.showInventory,
-		})
-	}
-
-	getUpdatedMapInfo = async () => {
+  
+  getUpdatedMapInfo = async () => {
 		const res = await this.props.auth0.getIdTokenClaims()
 		const jwt = res.__raw
 		const config = {
@@ -117,6 +88,45 @@ class Game extends React.Component {
 		axios(config)
 			.then(response => console.log(response))
 	}
+
+	handleAttackEnemy = () => {
+		return 8;
+	}
+
+	handleShowEnemies = () => {
+		this.setState({
+			showEnemies: !this.state.showEnemies
+		})
+	}
+
+	handleShowInventory = () => {
+		this.setState({
+			showInventory: !this.state.showInventory,
+		})
+	}
+  
+		// Socket Stuff
+
+	createOrStartAParty = partyName => {
+		this.setState({ inAParty: true, partyName: partyName })
+		// join a room
+		socket.connect()
+	}
+
+	sendChatMessage = () => {
+		//
+	}
+
+	updateParty = () => {
+		// get new data to display
+	}
+
+	leaveParty = () => {
+		socket.disconnect('left party')
+		this.setState({ inAParty: false, partyName: '' })
+	}
+
+	// end socket
 
 	render() {
 		return (
