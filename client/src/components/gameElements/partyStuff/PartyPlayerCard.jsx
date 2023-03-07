@@ -9,8 +9,6 @@ class PartyPlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
 
-		// don't hard code this later
-		this.props.authorizedPlayer.maxHealth = 150
 		this.state = {
 			showInventory: false,
 		}
@@ -32,14 +30,7 @@ class PartyPlayerCard extends React.Component {
 					<Card.Body>
 						<p>Class: this.props.authorizedPlayer.class</p>
 
-						<ProgressBar
-							now={
-								(this.props.authorizedPlayer.stats.health /
-									this.props.authorizedPlayer.maxHealth) *
-								100
-							}
-							variant='success'
-						/>
+						<ProgressBar now={100} variant='success' />
 						{/* <section className='player_actions'>
             <Button onClick={this.handleShowInventory}>Attack</Button>
             <Button onClick={this.handleShowInventory}>Inventory</Button>

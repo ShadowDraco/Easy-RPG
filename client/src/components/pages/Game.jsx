@@ -7,11 +7,14 @@ import EnemyCard from '../gameElements/EnemyCard'
 import PlayerMenu from '../gameElements/playerMenus/PlayerMenu'
 
 import axios from 'axios'
+import StartAParty from '../gameElements/partyStuff/StartAParty'
+import PartyHud from '../gameElements/partyStuff/PartyHud'
+import socket from './socket'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {}
+		this.state = { inAParty: false }
 	}
 
 	// get the user
@@ -28,16 +31,50 @@ class Game extends React.Component {
 			}
 
 			const authorizedPlayer = await axios(config)
-			console.log(authorizedPlayer.data)
+
 			this.setState({ authorizedPlayer: authorizedPlayer.data })
 		}
 	}
+
+	// Socket Stuff
+
+	createOrStartAParty = partyName => {
+		this.setState({ inAParty: true, partyName: partyName })
+		// join a room
+		socket.connect()
+	}
+
+	sendChatMessage = () => {
+		//
+	}
+
+	updateParty = () => {
+		// get new data to display
+	}
+
+	leaveParty = () => {
+		socket.disconnect('left party')
+		this.setState({ inAParty: false, partyName: '' })
+	}
+
+	// end socket
 
 	render() {
 		return (
 			<>
 				{this.props.auth0.isAuthenticated ? (
 					<Container id='game_screen'>
+						<section id='party_screen'>
+							{!this.state.inAParty ? (
+								<StartAParty createOrStartAParty={this.createOrStartAParty} />
+							) : (
+								<PartyHud
+									partyName={this.state.partyName}
+									leaveParty={this.leaveParty}
+								/>
+							)}
+						</section>
+
 						<section id='encounter_screen'>
 							<EnemyCard />
 						</section>
@@ -47,10 +84,10 @@ class Game extends React.Component {
 									<PlayerCard authorizedPlayer={this.state.authorizedPlayer} />
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
-									{this.state.inParty ? (
+									{this.state.inAParty ? (
 										<>
-											<PartyPlayerCard />
-											<PartyPlayerCard />
+											{/* <PartyPlayerCard /> */}
+											{/* <PartyPlayerCard /> */}
 										</>
 									) : (
 										''
