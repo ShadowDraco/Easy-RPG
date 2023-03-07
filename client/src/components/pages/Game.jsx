@@ -16,9 +16,9 @@ import Button from 'react-bootstrap/esm/Button'
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { 
+		this.state = {
 			inAParty: false,
-			showInventory: false, 
+			showInventory: false,
 		}
 	}
 
@@ -62,8 +62,18 @@ class Game extends React.Component {
 		this.setState({ inAParty: false, partyName: '' })
 	}
 
-	getNewMap = () => {
-		axios.get('http://localhost:3001/player/new-map').then(response => {
+	getNewMap = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'get',
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/new-map',
+		}
+
+		axios(config).then(response => {
 			console.log(response)
 		})
 	}
@@ -102,11 +112,11 @@ class Game extends React.Component {
 						{this.state.authorizedPlayer ? (
 							<section id='player_screen'>
 								<div id='party_members'>
-									<PlayerCard 
-										authorizedPlayer={this.state.authorizedPlayer} 
-										key='my_player' 
-										showInventory={this.state.showInventory} 
-										handleShowInventory={this.handleShowInventory} 
+									<PlayerCard
+										authorizedPlayer={this.state.authorizedPlayer}
+										key='my_player'
+										showInventory={this.state.showInventory}
+										handleShowInventory={this.handleShowInventory}
 									/>
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}

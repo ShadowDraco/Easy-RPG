@@ -19,7 +19,6 @@ router.get('/get', async (request, response, next) => {
 		const player = await PlayerModel.findOne({ email: user.email })
 
 		if (player !== null) {
-
 			response.status(200).send(player)
 		} else {
 			createNewPlayer(user.email, user.name)
@@ -39,10 +38,12 @@ router.get('/get', async (request, response, next) => {
 
 router.get('/new-map', async (request, response) => {
 	console.log('creating a new map')
+	const newMap = createNewMap()
+	console.log(newMap ? true : false)
 	try {
 		let updatedPlayer = await PlayerModel.findOneAndUpdate(
 			{ email: request.user.email },
-			{ map: createNewMap() },
+			{ map: newMap },
 			{ new: true }
 		)
 
