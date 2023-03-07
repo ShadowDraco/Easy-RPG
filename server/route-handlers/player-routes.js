@@ -1,16 +1,10 @@
+const express = require('express')
+const router = express.Router()
 
-const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose')
 
-const mongoose = require('mongoose');
+const PlayerModel = require('../Models/player')
 
-const PlayerModel = require('../Models/player');
-
-<<<<<<< Updated upstream
-router.get('/', (request, response)=> {
-    response.send('Player Route response').status(200);
-});
-=======
 router.get('/get', async (request, response, next) => {
 	const user = request.user
 
@@ -33,14 +27,12 @@ createNewPlayer = async (email, username) => {
 		stats: { health: 100, gold: 10, AP: 15 },
 	})
 }
->>>>>>> Stashed changes
 
 router.post('/new', async (request, response) => {
-    let email = request.body.email
-    let username = request.body.username
-    const Player = await PlayerModel.create({email: email, username: username});
-    response.send('New Player Created').status(200);
-});
+	let email = request.body.email
+	let username = request.body.username
+	const Player = await PlayerModel.create({ email: email, username: username })
+	response.send('New Player Created').status(200)
+})
 
-
-module.exports = router;
+module.exports = router

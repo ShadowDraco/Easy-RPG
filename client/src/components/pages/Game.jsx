@@ -8,9 +8,6 @@ import EnemyCard from '../gameElements/EnemyCard'
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
-<<<<<<< Updated upstream
-		console.log()
-=======
 		this.state = {}
 	}
 
@@ -31,7 +28,6 @@ class Game extends React.Component {
 
 			this.setState({ authorizedPlayer: authorizedPlayer.data })
 		}
->>>>>>> Stashed changes
 	}
 
 	render() {
@@ -46,7 +42,6 @@ class Game extends React.Component {
 							<PlayerCard />
 						</section>
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
-
 					</Container>
 				) : (
 					<NotAuthenticated />
