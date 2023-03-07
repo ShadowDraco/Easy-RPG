@@ -5,9 +5,10 @@ import Modal from 'react-bootstrap/Modal'
 
 import Accordion from 'react-bootstrap/Accordion'
 
-class PlayerCard extends React.Component {
+class PartyPlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
+
 		this.state = {
 			showInventory: false,
 		}
@@ -29,11 +30,7 @@ class PlayerCard extends React.Component {
 					<Card.Body>
 						<p>Class: this.props.authorizedPlayer.class</p>
 
-						{/* calculate health percentage out of 100 to display accurate health bar */}
-						<ProgressBar
-							now={(this.props.authorizedPlayer.stats.health / 150) * 100}
-							variant='success'
-						/>
+						<ProgressBar now={100} variant='success' />
 						{/* <section className='player_actions'>
             <Button onClick={this.handleShowInventory}>Attack</Button>
             <Button onClick={this.handleShowInventory}>Inventory</Button>
@@ -71,4 +68,4 @@ class PlayerCard extends React.Component {
 	}
 }
 
-export default PlayerCard
+export default PartyPlayerCard
