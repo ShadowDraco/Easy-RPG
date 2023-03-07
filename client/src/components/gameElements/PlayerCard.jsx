@@ -35,11 +35,11 @@ class PlayerCard extends React.Component{
         <Card.Body>
           <p>Class: this.props/state.playerClass</p>
           <ProgressBar now={100} variant='success' />
-          <section class='player_actions'>
+          {/* <section className='player_actions'>
             <Button onClick={this.handleShowInventory}>Attack</Button>
             <Button onClick={this.handleShowInventory}>Inventory</Button>
             <Button onClick={this.handleShowInventory}>Run</Button>
-          </section>
+          </section> */}
         </Card.Body>
       </Card>
 

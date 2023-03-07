@@ -4,6 +4,7 @@ import { withAuth0 } from '@auth0/auth0-react'
 import NotAuthenticated from '../auth0/NotAuthenticated'
 import PlayerCard from '../gameElements/PlayerCard'
 import EnemyCard from '../gameElements/EnemyCard'
+import PlayerMenu from '../gameElements/playerMenus/PlayerMenu'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -20,7 +21,12 @@ class Game extends React.Component {
 							<EnemyCard />
 						</section>
 						<section id='player_screen'>
-							<PlayerCard />
+							<div id='party_members'>
+								<PlayerCard />
+								<PlayerCard />
+								<PlayerCard />
+							</div>
+							<PlayerMenu />
 						</section>
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
 
