@@ -8,10 +8,6 @@ import Accordion from 'react-bootstrap/Accordion'
 class PlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
-
-		console.log(props)
-		// don't hard code this later
-
 		this.state = {
 			showInventory: false,
 		}
@@ -33,12 +29,9 @@ class PlayerCard extends React.Component {
 					<Card.Body>
 						<p>Class: this.props.authorizedPlayer.class</p>
 
+						{/* calculate health percentage out of 100 to display accurate health bar */}
 						<ProgressBar
-							now={
-								(this.props.authorizedPlayer.stats.health /
-									this.props.authorizedPlayer.maxHealth) *
-								100
-							}
+							now={(this.props.authorizedPlayer.stats.health / 150) * 100}
 							variant='success'
 						/>
 						{/* <section className='player_actions'>
