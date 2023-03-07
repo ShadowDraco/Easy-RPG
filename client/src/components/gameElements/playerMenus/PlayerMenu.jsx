@@ -14,7 +14,7 @@ class PlayerMenu extends React.Component {
   render() {
     return(
       <Container id='player_menu'>
-        <PlayerContextMenu />
+        <PlayerContextMenu handleShowInventory={this.props.handleShowInventory}/>
         <TextLog />
       </Container>
     )

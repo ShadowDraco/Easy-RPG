@@ -13,6 +13,10 @@ class PlayerCard extends React.Component {
 		}
 	}
 
+	showTargets = () => {
+
+	}
+
 	handleInputChange = () => {}
 
 	handleShowInventory = () => {
@@ -34,18 +38,14 @@ class PlayerCard extends React.Component {
 							now={(this.props.authorizedPlayer.stats.health / 150) * 100}
 							variant='success'
 						/>
-						{/* <section className='player_actions'>
-            <Button onClick={this.handleShowInventory}>Attack</Button>
-            <Button onClick={this.handleShowInventory}>Inventory</Button>
-            <Button onClick={this.handleShowInventory}>Run</Button>
-          </section> */}
 					</Card.Body>
 				</Card>
 
 				<Modal
-					show={this.state.showInventory}
-					onHide={this.handleShowInventory}
+					show={this.props.showInventory}
+					onHide={this.props.handleShowInventory}
 					centered
+					key='player_inventory'
 				>
 					<Modal.Header>Inventory</Modal.Header>
 					<Modal.Body>

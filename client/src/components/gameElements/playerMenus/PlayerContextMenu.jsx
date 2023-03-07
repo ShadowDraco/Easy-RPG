@@ -16,7 +16,7 @@ class PlayerContextMenu extends React.Component {
     return (
       <Container id="player_context_menu">
         <PlayerInfoMenu></PlayerInfoMenu>
-        <PlayerActionMenu></PlayerActionMenu>
+        <PlayerActionMenu handleShowInventory={this.props.handleShowInventory}></PlayerActionMenu>
       </Container>
     )
   }

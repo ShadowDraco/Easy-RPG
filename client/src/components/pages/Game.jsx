@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
 
@@ -14,7 +15,10 @@ import socket from './socket'
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { inAParty: false }
+		this.state = { 
+			inAParty: false,
+			showInventory: false, 
+		}
 	}
 
 	// get the user
@@ -59,6 +63,16 @@ class Game extends React.Component {
 
 	// end socket
 
+	handleAttackEnemy = () => {
+		console.log(document.getElementById())
+	}
+
+	handleShowInventory = () => {
+		this.setState({
+			showInventory: !this.state.showInventory,
+		})
+	}
+
 	render() {
 		return (
 			<>
@@ -81,7 +95,12 @@ class Game extends React.Component {
 						{this.state.authorizedPlayer ? (
 							<section id='player_screen'>
 								<div id='party_members'>
-									<PlayerCard authorizedPlayer={this.state.authorizedPlayer} />
+									<PlayerCard 
+										authorizedPlayer={this.state.authorizedPlayer} 
+										key='my_player' 
+										showInventory={this.state.showInventory} 
+										handleShowInventory={this.handleShowInventory} 
+									/>
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
 									{this.state.inAParty ? (
@@ -93,7 +112,7 @@ class Game extends React.Component {
 										''
 									)}
 								</div>
-								<PlayerMenu />
+								<PlayerMenu handleShowInventory={this.handleShowInventory} />
 							</section>
 						) : (
 							'Player is coming out of the dungeon!'
