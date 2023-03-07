@@ -12,13 +12,17 @@ import StartAParty from '../gameElements/partyStuff/StartAParty'
 import PartyHud from '../gameElements/partyStuff/PartyHud'
 import socket from './socket'
 import Button from 'react-bootstrap/esm/Button'
+import Modal from 'react-bootstrap/Modal'
+import Card from 'react-bootstrap/Card'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = { 
 			inAParty: false,
-			showInventory: false, 
+			showInventory: false,
+			enemies: [],
+			showEnemies: false, 
 		}
 	}
 
@@ -71,13 +75,47 @@ class Game extends React.Component {
 	// end socket
 
 	handleAttackEnemy = () => {
-		console.log(document.getElementById())
+		return 8;
+	}
+
+	handleShowEnemies = () => {
+		this.setState({
+			showEnemies: !this.state.showEnemies
+		})
 	}
 
 	handleShowInventory = () => {
 		this.setState({
 			showInventory: !this.state.showInventory,
 		})
+	}
+
+	getUpdatedMapInfo = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
+		const jwt = res.__raw
+		const config = {
+				headers: { Authorization: `Bearer ${jwt}` },
+				method: 'get',
+				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+				url: '/player/get',
+		}
+
+		axios(config)
+			.then(response => console.log(response))
+	}
+
+	postUpdatedMapInfo = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
+		const jwt = res.__raw
+		const config = {
+				headers: { Authorization: `Bearer ${jwt}` },
+				method: 'post',
+				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+				url: '/player/get',
+		}
+
+		axios(config)
+			.then(response => console.log(response))
 	}
 
 	render() {
@@ -97,7 +135,9 @@ class Game extends React.Component {
 						</section>
 
 						<section id='encounter_screen'>
-							<EnemyCard />
+							<EnemyCard handleAttackEnemy={this.handleAttackEnemy}/>
+							<EnemyCard handleAttackEnemy={this.handleAttackEnemy}/>
+							<EnemyCard handleAttackEnemy={this.handleAttackEnemy}/>
 						</section>
 						{this.state.authorizedPlayer ? (
 							<section id='player_screen'>
@@ -107,6 +147,7 @@ class Game extends React.Component {
 										key='my_player' 
 										showInventory={this.state.showInventory} 
 										handleShowInventory={this.handleShowInventory} 
+										updateMapInfo = {this.updateMapInfo}
 									/>
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
@@ -119,7 +160,7 @@ class Game extends React.Component {
 										''
 									)}
 								</div>
-								<PlayerMenu handleShowInventory={this.handleShowInventory} />
+								<PlayerMenu handleShowInventory={this.handleShowInventory} handleAttackEnemy={this.handleAttackEnemy} />
 							</section>
 						) : (
 							'Player is coming out of the dungeon!'
@@ -131,6 +172,13 @@ class Game extends React.Component {
 				) : (
 					<NotAuthenticated />
 				)}
+
+					<Modal show={this.state.showEnemies} onHide={this.handleShowEnemies}>
+						<Modal.Body>
+							{this.state.enemies.map(element => {element})}
+						</Modal.Body>
+					</Modal>
+
 			</>
 		)
 	}

@@ -28,7 +28,7 @@ class PlayerCard extends React.Component {
 	render() {
 		return (
 			<>
-				<Card className='player'>
+				<Card className='player' onClick={this.props.updateMapInfo}>
 					<Card.Header>{this.props.authorizedPlayer.username}</Card.Header>
 					<Card.Body>
 						<p>Class: this.props.authorizedPlayer.class</p>
