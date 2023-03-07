@@ -11,6 +11,7 @@ import axios from 'axios'
 import StartAParty from '../gameElements/partyStuff/StartAParty'
 import PartyHud from '../gameElements/partyStuff/PartyHud'
 import socket from './socket'
+import Button from 'react-bootstrap/esm/Button'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -59,6 +60,12 @@ class Game extends React.Component {
 	leaveParty = () => {
 		socket.disconnect('left party')
 		this.setState({ inAParty: false, partyName: '' })
+	}
+
+	getNewMap = () => {
+		axios.get('http://localhost:3001/player/new-map').then(response => {
+			console.log(response)
+		})
 	}
 
 	// end socket
@@ -118,6 +125,8 @@ class Game extends React.Component {
 							'Player is coming out of the dungeon!'
 						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
+
+						<Button onClick={this.getNewMap}>get new map</Button>
 					</Container>
 				) : (
 					<NotAuthenticated />
