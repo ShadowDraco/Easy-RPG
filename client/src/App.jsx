@@ -10,7 +10,7 @@ import ConstantHeader from './components/pages/ConstantHeader'
 import ConstantFooter from './components/pages/ConstantFooter'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import PlayerCard from './components/gameElements/PlayerCard'
+import NotAuthenticated from './components/auth0/NotAuthenticated'
 
 class App extends React.Component {
 	constructor(props) {
@@ -25,7 +25,17 @@ class App extends React.Component {
 
 					<Routes>
 						<Route exact path='/' element={<Welcome />}></Route>
-						<Route exact path='/game' element={<Game />}></Route>
+						<Route
+							exact
+							path='/game'
+							element={
+								this.props.auth0.isAuthenticated ? (
+									<Game />
+								) : (
+									<NotAuthenticated />
+								)
+							}
+						></Route>
 					</Routes>
 					{/* <PlayerCard /> */}
 
