@@ -5,6 +5,11 @@ const mongoose = require('mongoose')
 
 const PlayerModel = require('../Models/player')
 
+router.get('/', (request, response) => {
+	console.log('player route accessed')
+	response.send('Player Route').status(200)
+})
+
 router.get('/get', async (request, response, next) => {
 	const user = request.user
 
@@ -14,6 +19,11 @@ router.get('/get', async (request, response, next) => {
 		player
 			? response.status(200).send(player)
 			: createNewPlayer(user.email, user.name)
+		/*{
+            email,
+            username,
+            stats: { health, etc....}
+        } */
 	} catch (error) {
 		console.log('error getting user')
 		next()
@@ -31,7 +41,9 @@ createNewPlayer = async (email, username) => {
 router.post('/new', async (request, response) => {
 	let email = request.body.email
 	let username = request.body.username
-	const Player = await PlayerModel.create({ email: email, username: username })
+
+	createNewPlayer(email, username)
+
 	response.send('New Player Created').status(200)
 })
 

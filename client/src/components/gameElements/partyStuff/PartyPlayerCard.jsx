@@ -5,13 +5,12 @@ import Modal from 'react-bootstrap/Modal'
 
 import Accordion from 'react-bootstrap/Accordion'
 
-class PlayerCard extends React.Component {
+class PartyPlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
 
-		console.log(props)
 		// don't hard code this later
-
+		this.props.authorizedPlayer.maxHealth = 150
 		this.state = {
 			showInventory: false,
 		}
@@ -78,4 +77,4 @@ class PlayerCard extends React.Component {
 	}
 }
 
-export default PlayerCard
+export default PartyPlayerCard

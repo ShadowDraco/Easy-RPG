@@ -26,6 +26,17 @@ div.player, div.enemy {
   width: 15rem;
 }
 
+div.player.card {
+  width: 30%;
+  height: 200px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .card-body > * {
   margin: 1rem 0;
 }
@@ -34,7 +45,7 @@ div.player, div.enemy {
   display: flex;
   flex-direction: column;
   background-color: cadetblue;
-  height: 75vh;
+  height: 95vh;
   width: 100vw;
 }
 
@@ -47,11 +58,85 @@ div.player, div.enemy {
 
 #player_screen {
   display: flex;
-  justify-content: center;
-  align-content: flex-end;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   height: 50%;
+  width: 100%;
+}
+
+#party_members {
+  display: flex;
 }
 
 .player_actions > * {
   margin: 0 0.5rem;
 }
+
+#text_log {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  float: right;
+  width: 35%;
+  height: 100%;
+  padding: 0 !important;
+}
+
+#player_menu {
+  border: solid white 1px;
+  display: flex;
+  height: 40%;
+  width: 100%;
+  margin: 1rem !important;
+  padding: 0.25rem !important;
+}
+
+#player_menu > * {
+  margin: 0 !important;
+}
+
+#player_context_menu {
+  display: flex;
+  width: 70%;
+}
+
+#player_info_menu {
+  width: 35%;
+  margin: 0 !important;
+}
+
+#player_action_menu {
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+}
+
+#player_action_menu > * {
+  margin: 0.5rem;
+}
+
+#action_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+#action_buttons > * {
+  margin: 0.5rem;
+}
+
+#player_info_menu > * {
+  padding: 0.5rem;
+}
+
+.player_stat_display {
+  display: flex;
+  justify-content: space-around;
+}
+
+.player_stat_block {
+  display: flex;
+  flex-direction: column;
+}
+

@@ -1,9 +1,12 @@
 import React from 'react'
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
-import NotAuthenticated from '../auth0/NotAuthenticated'
+
 import PlayerCard from '../gameElements/PlayerCard'
 import EnemyCard from '../gameElements/EnemyCard'
+import PlayerMenu from '../gameElements/playerMenus/PlayerMenu'
+
+import axios from 'axios'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -25,7 +28,7 @@ class Game extends React.Component {
 			}
 
 			const authorizedPlayer = await axios(config)
-
+			console.log(authorizedPlayer.data)
 			this.setState({ authorizedPlayer: authorizedPlayer.data })
 		}
 	}
@@ -38,9 +41,26 @@ class Game extends React.Component {
 						<section id='encounter_screen'>
 							<EnemyCard />
 						</section>
-						<section id='player_screen'>
-							<PlayerCard />
-						</section>
+						{this.state.authorizedPlayer ? (
+							<section id='player_screen'>
+								<div id='party_members'>
+									<PlayerCard authorizedPlayer={this.state.authorizedPlayer} />
+									{/* // get other player names from the SOCKET */}
+									{/* if party session render more players */}
+									{this.state.inParty ? (
+										<>
+											<PartyPlayerCard />
+											<PartyPlayerCard />
+										</>
+									) : (
+										''
+									)}
+								</div>
+								<PlayerMenu />
+							</section>
+						) : (
+							'Player is coming out of the dungeon!'
+						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
 					</Container>
 				) : (
