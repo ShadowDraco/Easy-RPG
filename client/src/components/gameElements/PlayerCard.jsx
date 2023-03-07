@@ -15,7 +15,12 @@ class PlayerCard extends React.Component{
     }
   }
 
+<<<<<<< Updated upstream
   handleInputChange = () => {
+=======
+		// don't hard code this later
+		this.props.authorizedPlayer.maxHealth = 150
+>>>>>>> Stashed changes
 
   }
 

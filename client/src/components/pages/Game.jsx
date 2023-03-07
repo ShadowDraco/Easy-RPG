@@ -8,7 +8,30 @@ import EnemyCard from '../gameElements/EnemyCard'
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
+<<<<<<< Updated upstream
 		console.log()
+=======
+		this.state = {}
+	}
+
+	// get the user
+	async componentDidMount() {
+		if (this.props.auth0.isAuthenticated) {
+			const res = await this.props.auth0.getIdTokenClaims()
+
+			const jwt = res.__raw
+			const config = {
+				headers: { Authorization: `Bearer ${jwt}` },
+				method: 'get',
+				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+				url: '/player/get',
+			}
+
+			const authorizedPlayer = await axios(config)
+
+			this.setState({ authorizedPlayer: authorizedPlayer.data })
+		}
+>>>>>>> Stashed changes
 	}
 
 	render() {
