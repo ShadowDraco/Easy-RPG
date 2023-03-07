@@ -11,6 +11,7 @@ const playerSchema = new mongoose.Schema({
 		AP: Number,
 	},
 	map: Object,
+	position: Number
 })
 
 module.exports = mongoose.model('Player', playerSchema)

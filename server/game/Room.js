@@ -5,6 +5,7 @@ class Room {
 		this.treasure = []
 		this.enemies = []
 		this.descriptionElements = []
+		this.cleared = false
 		this.generateRoom()
 	}
 
@@ -20,6 +21,10 @@ class Room {
 		if (this.type === 'treasure') {
 			this.enemies.push(new Enemy())
 			this.treasure.push('gold')
+		}
+
+		if (this.type === 'starter') {
+			this.descriptionElements = ['Tutorial: Click on a room to move forward']
 		}
 	}
 }
