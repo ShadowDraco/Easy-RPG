@@ -15,7 +15,7 @@ class ConstantFooter extends React.Component {
 				<section className='main-footer'>
 				<div className='container'>
 					<div className='row'>
-					<section className='ul-footer'>
+					<section className='ul'>
 					<div className='col-md-3 col-sm-6'>
 					<h5>Dungeons crafted by:</h5>
 					<ul className='list-unstyled'>
