@@ -41,6 +41,7 @@ class Game extends React.Component {
 			enemyDeathCount: 0,
 			showEnemies: false,
 			inFight: false,
+			gettingLoot: false,
 			choosingNextRoom: true,
 			roomsToChoose: '',
 			textAddedToLog: '',
@@ -171,9 +172,34 @@ class Game extends React.Component {
 		console.log('check enemies dead firing')
 		if (this.state.enemyDeathCount === this.state.enemies.length - 1) {
 			this.setState({
-				inFight: false,
+				gettingLoot: true,
 			})
 		}
+	}
+
+	getLoot = async treasure => {
+		console.log('getting loot')
+
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: { amountOfGold: treasure.gold },
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/add-gold',
+		}
+
+		axios(config).then(response => {
+			console.log(response.data)
+
+			this.setState({
+				inFight: false,
+				gettingLoot: false,
+				authorizedPlayer: response.data.updatedPlayer,
+			})
+		})
 	}
 
 	handleAttackEnemy = () => {
@@ -280,6 +306,18 @@ class Game extends React.Component {
 											checkAllEnemiesDead={this.checkAllEnemiesDead}
 										/>
 									))}
+
+									{this.state.gettingLoot ? (
+										<Button
+											onClick={() => {
+												this.getLoot(this.state.room.treasure)
+											}}
+										>
+											GET LOOT
+										</Button>
+									) : (
+										''
+									)}
 								</>
 							) : (
 								<Container
@@ -338,7 +376,7 @@ class Game extends React.Component {
 								/>
 							</section>
 						) : (
-							'Player is coming out of the dungeon!'
+							'Player is traversing the dungeon!'
 						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
 					</Container>

@@ -158,24 +158,30 @@ router.get('/attack-enemy', async (request, response, next) => {
 			{ new: true }
 		)
 
-		res.send(updatedPlayer.map.rooms[player.position]).status(200)
+		response.send(updatedPlayer.map.rooms[player.position]).status(200)
 	} catch (error) {
 		console.log('error attacking enemy')
 		next()
 	}
 })
 
-
 // Add Gold
-router.get('/add-gold', async (request, response, next) => {
+router.put('/add-gold', async (request, response, next) => {
+	console.log('adding gold')
 	try {
-		// findOneAndUpdate({email}, {stats: { gold: pnewGold }}, {new:true})
+		// findOneAndUpdate({email}, {stats: { gold: newGold }}, {new:true})
 		// newPlayerGold = player.gold + request.body.gold
 		// res.send(updatedPlayer)
-		let updatedPlayer = PlayerModel.findOneAndUpdate({ email: request.user.email }, {stats: {gold: newGold}}, {new: true})
-		newPlayerGold = player.gold + request.body.gold
+		let player = await PlayerModel.findOne({ email: request.user.email })
+		const newPlayerGold = player.stats.gold + request.body.amountOfGold
 
-		res.send(updatedPlayer).status(200)
+		let updatedPlayer = await PlayerModel.findOneAndUpdate(
+			{ email: request.user.email },
+			{ stats: { ...player.stats, gold: newPlayerGold } },
+			{ new: true }
+		)
+
+		response.status(202).send(updatedPlayer)
 	} catch (error) {
 		console.log('you might need a bank...')
 		next()

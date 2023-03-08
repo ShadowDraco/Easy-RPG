@@ -9,7 +9,7 @@ class Enemy {
 	generateEnemy = () => {
 		this.name = enemyTypes[randomFromTo(0, enemyTypes.length - 1)]
 		this.health = 100
-		this.class = 'random'
+		this.class = this.name
 	}
 }
 

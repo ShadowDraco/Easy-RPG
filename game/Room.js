@@ -1,8 +1,9 @@
 const Enemy = require('./Enemy')
+const randomFromTo = require('./lib/helperFunctions/RandomFromTo')
 class Room {
 	constructor(type, index) {
 		this.type = type
-		this.treasure = []
+		this.treasure = { gold: 0 }
 		this.enemies = []
 		this.descriptionElements = []
 		this.cleared = false
@@ -17,12 +18,13 @@ class Room {
 
 			this.enemies.push(new Enemy())
 			this.enemies.push(new Enemy())
+			this.treasure.gold = randomFromTo(1, 3)
 			this.descriptionElements = ['Danger', 'Enemies', 'Loot?', 'Fun']
 		}
 
 		if (this.type === 'treasure') {
 			this.enemies.push(new Enemy())
-			this.treasure.push('gold')
+			this.treasure.gold = randomFromTo(5, 10)
 			this.descriptionElements = ['Gold', 'Treasure', 'Traps?']
 		}
 
