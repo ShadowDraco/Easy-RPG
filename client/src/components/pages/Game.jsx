@@ -38,6 +38,7 @@ class Game extends React.Component {
 				health: 150
 			}
 			],
+			enemyDeathCount: 0,
 			showEnemies: false,
 			inFight: true,
 			choosingNextRoom: false,
@@ -124,16 +125,20 @@ class Game extends React.Component {
 		})
 	}
 
+	incrementEnemyDeathCount = () => {
+		this.setState({
+			enemyDeathCount: this.state.enemyDeathCount + 1 
+		})
+	}
+
 	checkAllEnemiesDead = () => {
 		console.log('check enemies dead firing')
-		console.log(this.state.enemies.every(enemy => enemy.health === 0));
-		// this.state.enemies.every(enemy => enemy.health = 0) ?
-		// 	// this.setState({
-		// 	// 	inFight: false,
-		// 	// })
-		// 	console.log('all enemies dead')
-		// 	:
-		// 	null
+		console.log(this.state.enemies.length)
+		if (this.state.enemyDeathCount === this.state.enemies.length - 1){
+			this.setState({
+				inFight: false
+			})
+		}
 	}
 
 	handleAttackEnemy = () => {
@@ -199,7 +204,12 @@ class Game extends React.Component {
 							{this.state.inFight ? (
 								<>
 									{this.state.enemies.map(enemy => (
-										<EnemyCard enemyInfo={enemy} handleAttackEnemy={this.handleAttackEnemy} checkAllEnemiesDead={this.checkAllEnemiesDead} />
+										<EnemyCard 
+											enemyInfo={enemy} 
+											handleAttackEnemy={this.handleAttackEnemy}
+											incrementEnemyDeathCount={this.incrementEnemyDeathCount}
+											checkAllEnemiesDead={this.checkAllEnemiesDead}
+											  />
 									))}
 								</>
 							) : (
