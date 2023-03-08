@@ -43,7 +43,7 @@ class Player {
         },
         gold: 50
     },
-descriptionElemnts: {
+descriptionElements: {
     slime, rocks, tattered
 }}}
 
@@ -54,3 +54,4 @@ descriptionElemnts: {
 */
 
 
+module.exports = Animal

@@ -1,146 +1,166 @@
 #root {
-  /* max-width: 1280px; */
-  /* margin: 0 auto; */
-  /* padding: 2rem; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
+	/* max-width: 1280px; */
+	/* margin: 0 auto; */
+	/* padding: 2rem; */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .container {
-  /* override bootstrap default margin cause its dumb */
-  margin: 0 2rem !important;
-  max-width: 90% !important;
+	/* override bootstrap default margin cause its dumb */
+	margin: 0 2rem !important;
+	max-width: 90% !important;
 }
 
 body {
-  justify-content: center;
+	justify-content: center;
 }
 
-div.player, div.enemy {
-  margin: 1rem;
-  width: 15rem;
+div.player,
+div.enemy {
+	margin: 1rem;
+	width: 15rem;
 }
 
 div.player.card {
-  /* width: 30%; */
-  /* height: 200px; */
+	/* width: 30%; */
+	/* height: 200px; */
 }
 
 .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .card-body > * {
-  margin: 1rem 0;
+	margin: 1rem 0;
 }
 
 #game_screen {
-  display: flex;
-  flex-direction: column;
-  background-color: cadetblue;
-  height: 95vh;
-  width: 100vw;
+	display: flex;
+	flex-direction: column;
+	background-color: cadetblue;
+	height: 95vh;
+	width: 100vw;
 }
 
 #encounter_screen {
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-content: flex-start;
+	height: 50%;
+	display: flex;
+	justify-content: center;
+	align-content: flex-start;
 }
 
 #player_screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  height: 50%;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 50%;
+	width: 100%;
 }
 
 #party_members {
-  display: flex;
+	display: flex;
 }
 
 .player_actions > * {
-  margin: 0 0.5rem;
+	margin: 0 0.5rem;
 }
 
 #text_log {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  float: right;
-  width: 35%;
-  height: 100%;
-  padding: 0 !important;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
+	float: right;
+	width: 35%;
+	height: 100%;
+	padding: 0 !important;
 }
 
 #player_menu {
-  border: solid white 1px;
-  display: flex;
-  height: 40%;
-  width: 100%;
-  margin: 1rem !important;
-  padding: 0.25rem !important;
+	border: solid white 1px;
+	display: flex;
+	height: 40%;
+	width: 100%;
+	margin: 1rem !important;
+	padding: 0.25rem !important;
 }
 
 #player_menu > * {
-  margin: 0 !important;
+	margin: 0 !important;
 }
 
 #player_context_menu {
-  display: flex;
-  width: 70%;
-  padding: 0 !important;
-  margin: 0 1rem !important;
+	display: flex;
+	width: 70%;
+	padding: 0 !important;
+	margin: 0 1rem !important;
 }
 
 #player_info_menu {
-  width: 35%;
-  margin: 0 !important;
-  padding: 0 !important;
+	width: 35%;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 #player_action_menu {
-  display: flex;
-  flex-direction: column;
-  margin: 0 !important;
-  padding: 0 2rem !important;
+	display: flex;
+	flex-direction: column;
+	margin: 0 !important;
+	padding: 0 2rem !important;
 }
 
 #player_action_menu > * {
-  margin: 0.5rem;
+	margin: 0.5rem;
 }
 
 #action_buttons {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 #action_buttons > * {
-  margin: 0.5rem;
+	margin: 0.5rem;
 }
 
 #player_info_menu > * {
-  padding: 0.5rem;
+	padding: 0.5rem;
 }
 
 .player_stat_display {
-  display: flex;
-  justify-content: space-around;
+	display: flex;
+	justify-content: space-around;
 }
 
 .player_stat_block {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
+#choose_room_container > * {
+	margin: 1rem 0;
+}
+
+#choose_room_options > * {
+	margin: 0 1rem;
+}
+
+.Navbar{
+  width: 100%;
+  height: 75px;
+}
+
+/* .footer{
+  background-color: grey;
+  color: whitesmoke;
+  height: 75px;
+  width: 100%;
+} */
