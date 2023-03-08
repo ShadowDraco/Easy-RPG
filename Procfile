@@ -1,1 +1,1 @@
-web: cd ./server && npm run start-deployed
+web: npm run start-deployed
