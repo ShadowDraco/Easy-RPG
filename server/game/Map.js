@@ -12,9 +12,6 @@ class Map {
 		this.inFight = false
 
 		this.generateMap(randomFromTo(5, 10))
-		this.getPresentableRooms()
-
-		this.presentableRooms = this.getPresentableRooms()
 	}
 
 	generateMap(size) {
@@ -26,13 +23,11 @@ class Map {
 	}
 
 	getPresentableRooms() {
-		console.log('getting Presentable rooms')
 		let roomsToPresent = this.rooms.filter(
 			room => !room.cleared && room.type !== 'starter'
 		)
-		console.log(roomsToPresent.slice(0, 2))
 
-		return roomsToPresent.slice(0, 2)
+		this.presentableRooms = roomsToPresent.slice(0, 2)
 	}
 }
 

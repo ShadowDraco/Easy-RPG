@@ -6,7 +6,10 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-const port = process.env.PORT
+let port = process.env.PORT
+if (port == null || port == '') {
+	port = 8000
+}
 const verifyUser = require('./auth/authorize.js')
 
 // socket io stuff //////////////////////////////

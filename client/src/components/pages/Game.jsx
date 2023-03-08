@@ -41,7 +41,7 @@ class Game extends React.Component {
 			enemyDeathCount: 0,
 			showEnemies: false,
 			inFight: true,
-			choosingNextRoom: false,
+			choosingNextRoom: true,
 			roomsToChoose: '',
 			textAddedToLog: '',
 			messages: [{ from: 'Server', message: 'connected!' }],
@@ -128,15 +128,15 @@ class Game extends React.Component {
 
 	incrementEnemyDeathCount = () => {
 		this.setState({
-			enemyDeathCount: this.state.enemyDeathCount + 1 
+			enemyDeathCount: this.state.enemyDeathCount + 1,
 		})
 	}
 
 	checkAllEnemiesDead = () => {
 		console.log('check enemies dead firing')
-		if (this.state.enemyDeathCount === this.state.enemies.length - 1){
+		if (this.state.enemyDeathCount === this.state.enemies.length - 1) {
 			this.setState({
-				inFight: false
+				inFight: false,
 			})
 		}
 	}
@@ -225,7 +225,7 @@ class Game extends React.Component {
 										<EnemyCard
 											key={i}
 											enemyInfo={enemy}
-                      incrementEnemyDeathCount={this.incrementEnemyDeathCount}
+											incrementEnemyDeathCount={this.incrementEnemyDeathCount}
 											handleAttackEnemy={this.handleAttackEnemy}
 											checkAllEnemiesDead={this.checkAllEnemiesDead}
 										/>
