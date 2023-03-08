@@ -12,14 +12,15 @@
 		"@auth0/auth0-react": "^2.0.1",
 		"axios": "^1.3.4",
 		"bootstrap": "^5.2.3",
+		"cdbreact": "^1.5.9",
 		"dotenv": "^16.0.3",
 		"react": "^18.2.0",
 		"react-bootstrap": "^2.7.2",
 		"react-dom": "^18.2.0",
 		"react-router": "^6.8.2",
 		"react-router-dom": "^6.8.2",
-		"uuid": "^9.0.0",
-		"socket.io-client": "^4.6.1"
+		"socket.io-client": "^4.6.1",
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.27",

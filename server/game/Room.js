@@ -1,11 +1,12 @@
 const Enemy = require('./Enemy')
 class Room {
-	constructor(type) {
+	constructor(type, index) {
 		this.type = type
 		this.treasure = []
 		this.enemies = []
 		this.descriptionElements = []
 		this.cleared = false
+		this.index
 		this.generateRoom()
 	}
 
@@ -16,11 +17,13 @@ class Room {
 
 			this.enemies.push(new Enemy())
 			this.enemies.push(new Enemy())
+			this.descriptionElements = ['Danger', 'Enemies', 'Loot?', 'Fun']
 		}
 
 		if (this.type === 'treasure') {
 			this.enemies.push(new Enemy())
 			this.treasure.push('gold')
+			this.descriptionElements = ['Gold', 'Treasure', 'Traps?']
 		}
 
 		if (this.type === 'starter') {
