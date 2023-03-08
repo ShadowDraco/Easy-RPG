@@ -165,6 +165,23 @@ router.get('/attack-enemy', async (request, response, next) => {
 	}
 })
 
+
+// Add Gold
+router.get('/add-gold', async (request, response, next) => {
+	try {
+		// findOneAndUpdate({email}, {stats: { gold: pnewGold }}, {new:true})
+		// newPlayerGold = player.gold + request.body.gold
+		// res.send(updatedPlayer)
+		let updatedPlayer = PlayerModel.findOneAndUpdate({ email: request.user.email }, {stats: {gold: newGold}}, {new: true})
+		newPlayerGold = player.gold + request.body.gold
+
+		res.send(updatedPlayer).status(200)
+	} catch (error) {
+		console.log('you might need a bank...')
+		next()
+	}
+})
+
 ///// PLAYER MAP
 
 router.get('/new-map', async (request, response, next) => {
