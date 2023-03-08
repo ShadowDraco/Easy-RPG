@@ -7,10 +7,11 @@ class EnemyCard extends React.Component{
     super(props);
     this.enemy0 = React.createRef();
     this.state = {
-      maxHP: 20,
-      currentHP: 15,
-      name: 'Goblin',
-      class: ['Fighter', 'Necromancer', 'Assassin'],
+      enemyInfo: this.props.enemyInfo,
+      maxHP: this.props.enemyInfo.health,
+      currentHP: this.props.enemyInfo.health,
+      name: this.props.enemyInfo.name,
+      class: this.props.enemyInfo.class,
       itemsDropped: ['health potion', 'mana potion', '3gold'],
       variant: ''
     }
@@ -22,6 +23,7 @@ class EnemyCard extends React.Component{
         variant: 'danger',
         currentHP: 0
       })
+      this.props.checkAllEnemiesDead();
     } else {
       this.setState({
       currentHP: this.state.currentHP - this.props.handleAttackEnemy()
@@ -29,7 +31,6 @@ class EnemyCard extends React.Component{
     }
 
   }
-
 
   render(){
     return(
@@ -39,7 +40,7 @@ class EnemyCard extends React.Component{
           {this.state.name}
         </Card.Header>
         <Card.Body>
-          <p>Class: {this.state.class[Math.round(Math.random() * 2)]}</p>
+          <p>Class: {this.state.class}</p>
           <ProgressBar 
             min={0} 
             max={this.state.maxHP} 

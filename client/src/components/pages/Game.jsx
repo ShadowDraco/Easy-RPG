@@ -21,7 +21,23 @@ class Game extends React.Component {
 		this.state = {
 			inAParty: false,
 			showInventory: false,
-			enemies: [],
+			enemies: [
+			{
+				name: 'Goblin',
+				class: 'Fighter',
+				health: 100,
+			},
+			{
+				name: 'Skeleton',
+				class: 'Necromancer',
+				health: 80,
+			},
+			{
+				name: 'Slime',
+				class: 'Slime',
+				health: 150
+			}
+			],
 			showEnemies: false,
 			inFight: true,
 			choosingNextRoom: false,
@@ -52,7 +68,7 @@ class Game extends React.Component {
 			this.setState({
 				authorizedPlayer: playerAndRoom.data.player,
 				room: playerAndRoom.data.room,
-				presentableRooms: playerAndRoom.presentableRooms,
+				presentableRooms: playerAndRoom.data.presentableRooms,
 			})
 
 			this.updateTextLog(playerAndRoom.data.room.descriptionElements[0])
@@ -106,6 +122,18 @@ class Game extends React.Component {
 		this.setState({
 			textAddedToLog: text,
 		})
+	}
+
+	checkAllEnemiesDead = () => {
+		console.log('check enemies dead firing')
+		console.log(this.state.enemies.every(enemy => enemy.health === 0));
+		// this.state.enemies.every(enemy => enemy.health = 0) ?
+		// 	// this.setState({
+		// 	// 	inFight: false,
+		// 	// })
+		// 	console.log('all enemies dead')
+		// 	:
+		// 	null
 	}
 
 	handleAttackEnemy = () => {
@@ -170,9 +198,9 @@ class Game extends React.Component {
 						<section id='encounter_screen'>
 							{this.state.inFight ? (
 								<>
-									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
-									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
-									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
+									{this.state.enemies.map(enemy => (
+										<EnemyCard enemyInfo={enemy} handleAttackEnemy={this.handleAttackEnemy} checkAllEnemiesDead={this.checkAllEnemiesDead} />
+									))}
 								</>
 							) : (
 								<Container
