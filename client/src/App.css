@@ -158,9 +158,39 @@ div.player.card {
   height: 75px;
 }
 
-/* .footer{
-  background-color: grey;
+.main-footer{
+  background-color: #222529;
   color: whitesmoke;
-  height: 75px;
-  width: 100%;
-} */
+
+
+}
+
+#column2{
+	align-content: right;
+	
+}
+
+.footer{
+	width: 100vw;
+}
+
+.ul-footer{
+	display: flex;
+	justify-content: space-between;
+}
+
+.ul-footer li {
+	font-size: 14px;
+}
+
+.footer-container{
+	margin: 0;
+}
+#root > div.footer.container {
+	margin-left: 0px;
+}
+
+.footer.container{
+	margin: 0 !important;
+	padding: 0 !important;
+}
