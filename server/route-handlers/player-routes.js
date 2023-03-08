@@ -47,8 +47,8 @@ router.get('/get', async (request, response, next) => {
 
 			response.status(200).send({
 				player: noMapPlayer,
-				room: player.map.rooms[player.position],
-				presentableRooms: player.map.getPresentableRooms(), ////////// FIX ME PLEASE
+				// room: player.map.rooms[player.position],
+				// presentableRooms: player.map.getPresentableRooms(), ////////// FIX ME PLEASE
 			}) /// returns 3 rooms to the client as options to go forward - onClick = axios.get('/move-player', {selectedRoom.index})  <- moves player.positon to selected Room
 		} else {
 			console.log('creating player')
