@@ -6,7 +6,10 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon server.js",
-		"start-deployed": "node server.js && cd ./client && npm i && npm run build && npm run dev"
+		"server": "node server.js",
+		"client": "cd ./client && npm run dev",
+		"build": "cd ./client && npm run build",
+		"start-deployed": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"repository": {
 		"type": "git",
