@@ -84,7 +84,7 @@ class Game extends React.Component {
 		const config = {
 			headers: { Authorization: `Bearer ${jwt}` },
 			method: 'get',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			baseURL: `https://easy-rpg.herokuapp.com/`,
 			url: '/player/new-map',
 		}
 
@@ -100,7 +100,7 @@ class Game extends React.Component {
 		const config = {
 			headers: { Authorization: `Bearer ${jwt}` },
 			method: 'get',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			baseURL: `https://easy-rpg.herokuapp.com/`,
 			url: '/player/get',
 		}
 
