@@ -6,16 +6,16 @@ const roomTypes = ['enemy', 'treasure', 'empty']
 class Map {
 	constructor() {
 		this.rooms = []
-		this.rooms[0] = new Room('starter')
+		this.rooms[0] = new Room('starter', 0)
 
 		this.choosingNextRoom = true
 		this.inFight = false
 
-		this.generateMap(randomFromTo(5, 10))
+		this.generateMap(randomFromTo(3, 5))
 	}
 
 	generateMap(size) {
-		for (let index = 0; index < size; index++) {
+		for (let index = 1; index < size; index++) {
 			this.rooms.push(
 				new Room(roomTypes[randomFromTo(0, roomTypes.length - 1)], index)
 			)

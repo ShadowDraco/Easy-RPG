@@ -16,7 +16,6 @@ function getPresentableRooms(roomsArg) {
 	let roomsToPresent = rooms.filter(
 		room => !room.cleared && room.type !== 'starter'
 	)
-	console.log(roomsToPresent.slice(0, 2))
 
 	return roomsToPresent.slice(0, 2)
 }
@@ -26,7 +25,7 @@ router.get('/', (request, response) => {
 	response.send('Player Route').status(200)
 })
 
-router.post('/change-info', async (request, response) => {
+router.post('/change-info', async (request, response, next) => {
 	try {
 		const player = await PlayerModel.findOneAndUpdate(
 			{ email: request.user.email },
@@ -83,13 +82,68 @@ router.get('/get', async (request, response, next) => {
 	}
 })
 
-///////// GAME FUNCTIONS
+router.put('/move', async (request, response, next) => {
+	console.log('moving position')
 
-// router.get ('/attack-enemy')
-//choose room
+	// UPDATE ROOMS AND POSITION IF MORE ROOMS TO CLEAR
+	try {
+		let player = await PlayerModel.findOne({ email: request.user.email })
+
+		let newPlayerMap = { ...player._doc.map }
+
+		newPlayerMap.rooms[request.body.oldIndex].cleared = true
+
+		let newPresentableRooms = getPresentableRooms(newPlayerMap.rooms)
+
+		if (newPresentableRooms.length > 0) {
+			let updatedPlayer = await PlayerModel.findOneAndUpdate(
+				{ email: request.user.email },
+				{
+					position: request.body.index,
+					map: newPlayerMap,
+				},
+				{ new: true }
+			)
+
+			console.log('successful move')
+
+			response.status(202).send({
+				updatedPlayer: updatedPlayer,
+				newPresentableRooms: newPresentableRooms,
+				message: 'player cleared room',
+				room: updatedPlayer.map.rooms[updatedPlayer.index],
+			})
+		} else {
+			// GIVE PLAYER NEW MAP AFTER CLEARING LAST ROOM
+			let newMap = createNewMap()
+			let newPresentableRoomsFromNewMap = getPresentableRooms(newMap.rooms)
+			let updatedPlayer = await PlayerModel.findOneAndUpdate(
+				{ email: request.user.email },
+				{
+					position: 0,
+					map: newMap,
+				},
+				{ new: true }
+			)
+
+			console.log('Player cleared the floor!')
+
+			response.status(202).send({
+				updatedPlayer: updatedPlayer,
+				room: player.map.rooms[0],
+				newPresentableRooms: newPresentableRoomsFromNewMap,
+				clearedFloor: true,
+				message: 'Player Cleared Floor!',
+			})
+		}
+	} catch (error) {
+		console.log('We lost the new rooms', error)
+		next()
+	}
+})
 
 // enemy and player attack
-router.get('/attack-enemy', async (request, response) => {
+router.get('/attack-enemy', async (request, response, next) => {
 	console.log('attacking')
 	try {
 		let player = PlayerModel.findOne({ email: request.user.email })

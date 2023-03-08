@@ -40,7 +40,7 @@ class Game extends React.Component {
 			],
 			enemyDeathCount: 0,
 			showEnemies: false,
-			inFight: true,
+			inFight: false,
 			choosingNextRoom: true,
 			roomsToChoose: '',
 			textAddedToLog: '',
@@ -74,6 +74,7 @@ class Game extends React.Component {
 			})
 
 			this.updateTextLog(playerAndRoom.data.room.descriptionElements[0])
+			console.log('room index: ' + this.state.room?.index)
 		}
 	}
 
@@ -91,6 +92,40 @@ class Game extends React.Component {
 		axios(config).then(response => {
 			console.log(response)
 			this.setState({ choosingNextRoom: true, room: response })
+		})
+	}
+
+	playerMove = async (indexOfOldRoom, indexOfChosenRoom) => {
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: { oldIndex: indexOfOldRoom, index: indexOfChosenRoom },
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/move',
+		}
+
+		axios(config).then(response => {
+			console.log(response.data.message)
+			if (response.data.clearedFloor) {
+				console.log('IT WORKED')
+				console.log(response.data.newPresentableRooms)
+				this.setState({
+					authorizedPlayer: response.data.updatedPlayer,
+					presentableRooms: response.data.newPresentableRooms,
+					room: response.data.room,
+					choosingNextRoom: true,
+					inFight: false,
+				})
+			} else {
+				this.setState({
+					authorizedPlayer: response.data.updatedPlayer,
+					presentableRooms: response.data.newPresentableRooms,
+				})
+			}
+			console.log(this.state.presentableRooms)
 		})
 	}
 
@@ -142,7 +177,7 @@ class Game extends React.Component {
 	}
 
 	handleAttackEnemy = () => {
-		return 8
+		return 50
 	}
 
 	handleShowEnemies = () => {
@@ -159,6 +194,21 @@ class Game extends React.Component {
 		this.setState({
 			showInventory: !this.state.showInventory,
 		})
+	}
+
+	handleEnterNewRoom = async roomInfo => {
+		let oldRoomIdx = this.state.room.index
+
+		this.setState({
+			room: roomInfo,
+			choosingNextRoom: false,
+			enemies: roomInfo.enemies,
+			enemyDeathCount: 0,
+			inFight: roomInfo.enemies.length > 0 ? true : false,
+		})
+
+		console.log(oldRoomIdx, roomInfo.index)
+		await this.playerMove(oldRoomIdx, roomInfo.index)
 	}
 
 	// Socket Stuff
@@ -243,8 +293,17 @@ class Game extends React.Component {
 								>
 									<h4>Choose Wisely...</h4>
 									<div id='choose_room_options'>
-										<Button>Go Left?</Button>
-										<Button>Go Right?</Button>
+										{this.state.presentableRooms?.map((element, i) => (
+											<Button
+												key={i}
+												room={element}
+												onClick={() => {
+													this.handleEnterNewRoom(element)
+												}}
+											>
+												Path
+											</Button>
+										))}
 									</div>
 								</Container>
 							)}

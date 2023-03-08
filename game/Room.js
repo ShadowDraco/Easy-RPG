@@ -6,7 +6,7 @@ class Room {
 		this.enemies = []
 		this.descriptionElements = []
 		this.cleared = false
-		this.index
+		this.index = index
 		this.generateRoom()
 	}
 
@@ -28,6 +28,11 @@ class Room {
 
 		if (this.type === 'starter') {
 			this.descriptionElements = ['Tutorial: Click on a room to move forward']
+		}
+		if (this.type === 'empty') {
+			this.descriptionElements = [
+				'This is an empty room! Click on a room to move forward',
+			]
 		}
 	}
 }
