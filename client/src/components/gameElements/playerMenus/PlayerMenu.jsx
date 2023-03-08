@@ -1,24 +1,25 @@
-import React from 'react';
-import Container from 'react-bootstrap/Container';
-import TextLog from '../TextLog';
-import PlayerContextMenu from './PlayerContextMenu';
+import React from 'react'
+import Container from 'react-bootstrap/Container'
+import TextLog from '../TextLog'
+import PlayerContextMenu from './PlayerContextMenu'
 
 class PlayerMenu extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
+	constructor(props) {
+		super(props)
+		this.state = {}
+	}
 
-    }
-  }
-
-  render() {
-    return(
-      <Container id='player_menu'>
-        <PlayerContextMenu handleShowInventory={this.props.handleShowInventory}/>
-        <TextLog />
-      </Container>
-    )
-  }
+	render() {
+		return (
+			<Container id='player_menu'>
+				<PlayerContextMenu
+					handleShowInventory={this.props.handleShowInventory}
+					handleAttackEnemy={this.props.handleAttackEnemy}
+				/>
+				<TextLog textAddedToLog={this.props.textAddedToLog} />
+			</Container>
+		)
+	}
 }
 
-export default PlayerMenu;
+export default PlayerMenu

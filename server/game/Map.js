@@ -1,29 +1,41 @@
-const Room = require('./Room');
-const randomFromTo = require('./lib/helperFunctions/RandomFromTo');
+const Room = require('./Room')
+const randomFromTo = require('./lib/helperFunctions/RandomFromTo')
 
 const roomTypes = ['enemy', 'treasure', 'empty']
 
 class Map {
 	constructor() {
-	
 		this.rooms = []
+		this.rooms[0] = new Room('starter')
 
-		this.generateMap(randomFromTo(5, 10))
+		this.choosingNextRoom = true
+		this.inFight = false
+
+		this.generateMap(randomFromTo(2, 3))
+		this.getPresentableRooms()
+
+		this.getPresentableRooms = () => {
+			this.getPresentableRooms()
+		}
 	}
 
-	generateMap = size => {
-		for (let i = 0; i < size; i++) {
+	generateMap(size) {
+		for (let index = 0; index < size; index++) {
 			this.rooms.push(
-				new Room(roomTypes[randomFromTo(0, roomTypes.length)])
+				new Room(roomTypes[randomFromTo(0, roomTypes.length - 1)], index)
 			)
 		}
 	}
-};
 
+	getPresentableRooms() {
+		console.log('getting Presentable rooms')
+		let roomsToPresent = this.rooms.filter(
+			room => !room.cleared && room.type !== 'starter'
+		)
+		console.log(roomsToPresent.slice(0, 2))
 
-getPresentableRooms = () => {
-	roomsToPresent = this.rooms.filter(room => !room.cleared)
-	return roomsToPresent
+		this.presentableRooms = roomsToPresent.slice(0, 2)
+	}
 }
 
 module.exports = Map
@@ -90,4 +102,3 @@ router.get('/attack-enemy') => {
 
 
 */
-

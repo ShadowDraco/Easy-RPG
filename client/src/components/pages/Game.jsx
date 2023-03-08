@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
 
@@ -12,13 +12,21 @@ import StartAParty from '../gameElements/partyStuff/StartAParty'
 import PartyHud from '../gameElements/partyStuff/PartyHud'
 import socket from './socket'
 import Button from 'react-bootstrap/esm/Button'
+import Modal from 'react-bootstrap/Modal'
+import Card from 'react-bootstrap/Card'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { 
+		this.state = {
 			inAParty: false,
-			showInventory: false, 
+			showInventory: false,
+			enemies: [],
+			showEnemies: false,
+			inFight: true,
+			choosingNextRoom: false,
+			roomsToChoose: '',
+			textAddedToLog: '',
 		}
 	}
 
@@ -35,13 +43,19 @@ class Game extends React.Component {
 				url: '/player/get',
 			}
 
-			const authorizedPlayer = await axios(config)
+			const playerAndRoom = await axios(config)
+			console.log(playerAndRoom.data)
+			this.setState({
+				authorizedPlayer: playerAndRoom.data.player,
+				room: playerAndRoom.data.room,
+				presentableRooms: playerAndRoom.presentableRooms,
+			})
 
-			this.setState({ authorizedPlayer: authorizedPlayer.data })
+			this.updateTextLog(playerAndRoom.data.room.descriptionElements[0])
 		}
 	}
 
-getNewMap = async () => {
+	getNewMap = async () => {
 		const res = await this.props.auth0.getIdTokenClaims()
 
 		const jwt = res.__raw
@@ -54,11 +68,54 @@ getNewMap = async () => {
 
 		axios(config).then(response => {
 			console.log(response)
+			this.setState({ choosingNextRoom: true, room: response })
+		})
+	}
+
+	getUpdatedMapInfo = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'get',
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/get',
+		}
+
+		axios(config).then(response => console.log(response))
+	}
+
+	postUpdatedMapInfo = async () => {
+		const res = await this.props.auth0.getIdTokenClaims()
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'post',
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/get',
+		}
+
+		axios(config).then(response => console.log(response))
+	}
+
+	updateTextLog = text => {
+		this.setState({
+			textAddedToLog: text,
 		})
 	}
 
 	handleAttackEnemy = () => {
-		console.log(document.getElementById())
+		return 8
+	}
+
+	handleShowEnemies = () => {
+		enemyArr = document.getElementsByClassName('enemy')
+		console.log(enemyArr)
+
+		this.setState({
+			showEnemies: !this.state.showEnemies,
+			enemies: [...enemyArr],
+		})
 	}
 
 	handleShowInventory = () => {
@@ -67,7 +124,7 @@ getNewMap = async () => {
 		})
 	}
 
-		// Socket Stuff
+	// Socket Stuff
 
 	createOrStartAParty = partyName => {
 		this.setState({ inAParty: true, partyName: partyName })
@@ -107,16 +164,40 @@ getNewMap = async () => {
 						</section>
 
 						<section id='encounter_screen'>
-							<EnemyCard />
+							{this.state.inFight ? (
+								<>
+									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
+									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
+									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
+								</>
+							) : (
+								<Container
+									id='choose_room_container'
+									style={{
+										display: 'flex',
+										flexDirection: 'column',
+										justifyContent: 'center',
+										alignItems: 'center',
+									}}
+								>
+									<h4>Choose Wisely...</h4>
+									<div id='choose_room_options'>
+										<Button>Go Left?</Button>
+										<Button>Go Right?</Button>
+									</div>
+								</Container>
+							)}
 						</section>
+
 						{this.state.authorizedPlayer ? (
 							<section id='player_screen'>
 								<div id='party_members'>
-									<PlayerCard 
-										authorizedPlayer={this.state.authorizedPlayer} 
-										key='my_player' 
-										showInventory={this.state.showInventory} 
-										handleShowInventory={this.handleShowInventory} 
+									<PlayerCard
+										authorizedPlayer={this.state.authorizedPlayer}
+										key='my_player'
+										showInventory={this.state.showInventory}
+										handleShowInventory={this.handleShowInventory}
+										updateMapInfo={this.updateMapInfo}
 									/>
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
@@ -129,18 +210,28 @@ getNewMap = async () => {
 										''
 									)}
 								</div>
-								<PlayerMenu handleShowInventory={this.handleShowInventory} />
+								<PlayerMenu
+									textAddedToLog={this.state.textAddedToLog}
+									handleShowInventory={this.handleShowInventory}
+									handleAttackEnemy={this.handleAttackEnemy}
+								/>
 							</section>
 						) : (
 							'Player is coming out of the dungeon!'
 						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
-
-						<Button onClick={this.getNewMap}>get new map</Button>
 					</Container>
 				) : (
 					<NotAuthenticated />
 				)}
+
+				<Modal show={this.state.showEnemies} onHide={this.handleShowEnemies}>
+					<Modal.Body>
+						{this.state.enemies.map(element => {
+							element
+						})}
+					</Modal.Body>
+				</Modal>
 			</>
 		)
 	}

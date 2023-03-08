@@ -10,8 +10,9 @@ const playerSchema = new mongoose.Schema({
 		gold: Number,
 		AP: Number,
 	},
+	class: String,
 	map: Object,
-	position: Number
+	position: Number,
 })
 
 module.exports = mongoose.model('Player', playerSchema)

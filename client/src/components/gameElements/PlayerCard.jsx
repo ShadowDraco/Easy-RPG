@@ -2,20 +2,22 @@ import React from 'react'
 import Card from 'react-bootstrap/Card'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Modal from 'react-bootstrap/Modal'
-
+import Form from 'react-bootstrap/Form'
 import Accordion from 'react-bootstrap/Accordion'
+import axios from 'axios'
+import Button from 'react-bootstrap/Button'
+import { withAuth0 } from '@auth0/auth0-react'
 
 class PlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			showInventory: false,
+			showEditCharacter: false,
 		}
 	}
 
-	showTargets = () => {
-
-	}
+	showTargets = () => {}
 
 	handleInputChange = () => {}
 
@@ -25,11 +27,38 @@ class PlayerCard extends React.Component {
 		})
 	}
 
+	handleEditCharacter = () => {
+		this.setState({
+			showEditCharacter: !this.state.showEditCharacter,
+		})
+	}
+
+	handleSubmit = async event => {
+		event.preventDefault()
+		const res = await this.props.auth0.getIdTokenClaims()
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'post',
+			body: {
+				pName: event.target.character_name.value,
+				pClass: event.target.character_class.value,
+			},
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/change-info',
+		}
+
+		axios(config).then(response => console.log(response))
+	}
+
 	render() {
 		return (
 			<>
-				<Card className='player'>
-					<Card.Header>{this.props.authorizedPlayer.username}</Card.Header>
+				<Card className='player' onClick={this.props.updateMapInfo}>
+					<Card.Header>
+						{this.props.authorizedPlayer.username}{' '}
+						<Button onClick={this.handleEditCharacter}></Button>
+					</Card.Header>
 					<Card.Body>
 						<p>Class: this.props.authorizedPlayer.class</p>
 
@@ -66,9 +95,37 @@ class PlayerCard extends React.Component {
 						</Accordion>
 					</Modal.Body>
 				</Modal>
+
+				<Modal
+					show={this.state.showEditCharacter}
+					onHide={this.handleEditCharacter}
+				>
+					<Modal.Header>Edit Character Information</Modal.Header>
+					<Modal.Body>
+						<Form onSubmit={this.handleSubmit}>
+							<Form.Control
+								type='text'
+								id='character_name'
+								placeholder='Character Name'
+							></Form.Control>
+							<Form.Select type='option' id='character_class'>
+								<option value='archer'>Archer</option>
+								<option value='barbarian'>Barbarian</option>
+								<option value='druid'>Druid</option>
+								<option value='rouge'>Rouge</option>
+								<option value='warrior'>Warrior</option>
+								<option value='wizard'>Wizard</option>
+							</Form.Select>
+							<Button type='submit'>Save</Button>
+						</Form>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button type='submit'>Save</Button>
+					</Modal.Footer>
+				</Modal>
 			</>
 		)
 	}
 }
 
-export default PlayerCard
+export default withAuth0(PlayerCard)

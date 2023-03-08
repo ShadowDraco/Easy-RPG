@@ -27,10 +27,16 @@ class StartAParty extends React.Component {
 	render() {
 		return (
 			<Form onSubmit={this.handleSubmit}>
-				<Form.Group className='mb-3' controlId='partyName'>
-					<Form.Label>Party Name</Form.Label>
-					<Form.Control type='text' placeholder='Enter name' />
-					<Form.Text className='text-muted'>
+				<Form.Group
+					className='mb-3'
+					style={{ display: 'flex', flexDirection: 'column' }}
+					controlId='partyName'
+				>
+					<Form.Label style={{ textAlign: 'left' }} className='m-3'>
+						Party Name
+					</Form.Label>
+					<Form.Control type='text' placeholder='Enter name' className='w-25' />
+					<Form.Text className='text-muted text-start text-light'>
 						{this.state.error
 							? this.state.error
 							: 'Everyone with this unique* party name will join you!'}
