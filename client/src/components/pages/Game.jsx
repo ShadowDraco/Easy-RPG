@@ -30,6 +30,10 @@ class Game extends React.Component {
 		}
 	}
 
+	updateAuthorizedPlayer = (responsedata) => {
+		this.setState({ authorizedPlayer: responsedata })
+	}
+
 	// get the user
 	async componentDidMount() {
 		if (this.props.auth0.isAuthenticated) {
@@ -193,6 +197,7 @@ class Game extends React.Component {
 							<section id='player_screen'>
 								<div id='party_members'>
 									<PlayerCard
+										updateAuthorizedPlayer={this.updateAuthorizedPlayer}
 										authorizedPlayer={this.state.authorizedPlayer}
 										key='my_player'
 										showInventory={this.state.showInventory}

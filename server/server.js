@@ -18,6 +18,7 @@ const io = socketIo(3000, {
 	},
 })
 
+
 io.on('connection', socket => {
 	console.log('client connected: ', socket.id)
 
@@ -64,3 +65,15 @@ app.use((error, request, response, next) => {
 })
 
 app.listen(port, console.log(`Begin dungeon crawling on port: ${port}`))
+
+function getPresentableRooms(roomsArg) {
+	console.log('getting Presentable rooms')
+
+	let rooms = roomsArg;
+	let roomsToPresent = rooms.filter(
+		room => !room.cleared && room.type !== 'starter'
+	)
+	console.log(roomsToPresent.slice(0, 2))
+
+	return roomsToPresent.slice(0, 2)
+}
