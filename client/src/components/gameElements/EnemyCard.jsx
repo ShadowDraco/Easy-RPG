@@ -18,17 +18,25 @@ class EnemyCard extends React.Component{
   }
 
   takeDamage = () => {
-    if (this.state.currentHP - this.props.handleAttackEnemy() < 0) {
+    if (this.state.isDead) {
+      // do nothing
+    } else {
+      if (this.state.currentHP - this.props.handleAttackEnemy() < 1) {
       this.setState({
         variant: 'danger',
-        currentHP: 0
+        currentHP: 0,
+        isDead: true,
       })
+      this.props.incrementEnemyDeathCount();
       this.props.checkAllEnemiesDead();
     } else {
       this.setState({
       currentHP: this.state.currentHP - this.props.handleAttackEnemy()
       })
     }
+    }
+
+
 
   }
 
