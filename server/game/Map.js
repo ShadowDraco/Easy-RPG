@@ -11,7 +11,7 @@ class Map {
 		this.choosingNextRoom = true
 		this.inFight = false
 
-		this.generateMap(randomFromTo(2, 3))
+		this.generateMap(randomFromTo(5, 10))
 		this.getPresentableRooms()
 
 		this.presentableRooms = this.getPresentableRooms()

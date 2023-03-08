@@ -22,21 +22,21 @@ class Game extends React.Component {
 			inAParty: false,
 			showInventory: false,
 			enemies: [
-			{
-				name: 'Goblin',
-				class: 'Fighter',
-				health: 100,
-			},
-			{
-				name: 'Skeleton',
-				class: 'Necromancer',
-				health: 80,
-			},
-			{
-				name: 'Slime',
-				class: 'Slime',
-				health: 150
-			}
+				{
+					name: 'Goblin',
+					class: 'Fighter',
+					health: 100,
+				},
+				{
+					name: 'Skeleton',
+					class: 'Necromancer',
+					health: 80,
+				},
+				{
+					name: 'Slime',
+					class: 'Slime',
+					health: 150,
+				},
 			],
 			enemyDeathCount: 0,
 			showEnemies: false,
@@ -44,10 +44,11 @@ class Game extends React.Component {
 			choosingNextRoom: false,
 			roomsToChoose: '',
 			textAddedToLog: '',
+			messages: [{ from: 'Server', message: 'connected!' }],
 		}
 	}
 
-	updateAuthorizedPlayer = (responsedata) => {
+	updateAuthorizedPlayer = responsedata => {
 		this.setState({ authorizedPlayer: responsedata })
 	}
 
@@ -133,7 +134,6 @@ class Game extends React.Component {
 
 	checkAllEnemiesDead = () => {
 		console.log('check enemies dead firing')
-		console.log(this.state.enemies.length)
 		if (this.state.enemyDeathCount === this.state.enemies.length - 1){
 			this.setState({
 				inFight: false
@@ -167,10 +167,26 @@ class Game extends React.Component {
 		this.setState({ inAParty: true, partyName: partyName })
 		// join a room
 		socket.connect()
+		socket.emit('join-room', partyName)
+		socket.on('receive-message', (from, message) => {
+			console.log('receiving message')
+			this.receiveChatMessage(from, message)
+		})
 	}
 
-	sendChatMessage = () => {
-		//
+	sendChatMessage = message => {
+		socket.emit(
+			'send-message',
+			this.state.partyName,
+			this.state.authorizedPlayer.username,
+			message
+		)
+	}
+
+	receiveChatMessage = (from, message) => {
+		this.setState({
+			messages: [...this.state.messages, { from: from, message: message }],
+		})
 	}
 
 	updateParty = () => {
@@ -196,6 +212,8 @@ class Game extends React.Component {
 								<PartyHud
 									partyName={this.state.partyName}
 									leaveParty={this.leaveParty}
+									messages={this.state.messages}
+									sendChatMessage={this.sendChatMessage}
 								/>
 							)}
 						</section>
@@ -203,13 +221,14 @@ class Game extends React.Component {
 						<section id='encounter_screen'>
 							{this.state.inFight ? (
 								<>
-									{this.state.enemies.map(enemy => (
-										<EnemyCard 
-											enemyInfo={enemy} 
+									{this.state.enemies.map((enemy, i) => (
+										<EnemyCard
+											key={i}
+											enemyInfo={enemy}
+                      incrementEnemyDeathCount={this.incrementEnemyDeathCount}
 											handleAttackEnemy={this.handleAttackEnemy}
-											incrementEnemyDeathCount={this.incrementEnemyDeathCount}
 											checkAllEnemiesDead={this.checkAllEnemiesDead}
-											  />
+										/>
 									))}
 								</>
 							) : (

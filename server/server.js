@@ -18,11 +18,28 @@ const io = socketIo(3000, {
 	},
 })
 
-
+// when a socket connects to the server
 io.on('connection', socket => {
 	console.log('client connected: ', socket.id)
 
-	socket.join(socket.name)
+	socket.on('join-room', partyName => {
+		try {
+			socket.join(partyName)
+			console.log('success!')
+		} catch (error) {
+			console.log('error joining room', partyName)
+		}
+
+		socket.on('receive-message', (from, message) => {
+			console.log('receiving message', from, message)
+		})
+	})
+
+	socket.on('send-message', (partyName, playerName, message) => {
+		console.log(partyName, playerName, message)
+		console.log('sending message to party', partyName)
+		io.to(partyName).emit('receive-message', playerName, message)
+	})
 
 	socket.on('disconnect', reason => {
 		console.log(reason)
@@ -69,7 +86,7 @@ app.listen(port, console.log(`Begin dungeon crawling on port: ${port}`))
 function getPresentableRooms(roomsArg) {
 	console.log('getting Presentable rooms')
 
-	let rooms = roomsArg;
+	let rooms = roomsArg
 	let roomsToPresent = rooms.filter(
 		room => !room.cleared && room.type !== 'starter'
 	)
