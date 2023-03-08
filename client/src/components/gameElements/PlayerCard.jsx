@@ -35,20 +35,25 @@ class PlayerCard extends React.Component {
 
 	handleSubmit = async event => {
 		event.preventDefault()
+		console.log(event.target.character_name.value)
 		const res = await this.props.auth0.getIdTokenClaims()
 		const jwt = res.__raw
 		const config = {
-			headers: { Authorization: `Bearer ${jwt}` },
+			headers: { Authorization: `Bearer ${jwt}`, accept: 'application/json' },
 			method: 'post',
-			body: {
+			data: {
 				pName: event.target.character_name.value,
 				pClass: event.target.character_class.value,
 			},
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 			url: '/player/change-info',
 		}
-
-		axios(config).then(response => console.log(response))
+		axios(config)
+			.then(response => {
+				console.log(response);
+				this.props.updateAuthorizedPlayer(response.data);
+				this.handleEditCharacter();
+			})
 	}
 
 	render() {
@@ -57,10 +62,10 @@ class PlayerCard extends React.Component {
 				<Card className='player' onClick={this.props.updateMapInfo}>
 					<Card.Header>
 						{this.props.authorizedPlayer.username}{' '}
-						<Button onClick={this.handleEditCharacter}></Button>
+						<Button onClick={this.handleEditCharacter}>Edit</Button>
 					</Card.Header>
 					<Card.Body>
-						<p>Class: this.props.authorizedPlayer.class</p>
+						<p>Class: {this.props.authorizedPlayer.class}</p>
 
 						{/* calculate health percentage out of 100 to display accurate health bar */}
 						<ProgressBar
@@ -119,9 +124,6 @@ class PlayerCard extends React.Component {
 							<Button type='submit'>Save</Button>
 						</Form>
 					</Modal.Body>
-					<Modal.Footer>
-						<Button type='submit'>Save</Button>
-					</Modal.Footer>
 				</Modal>
 			</>
 		)

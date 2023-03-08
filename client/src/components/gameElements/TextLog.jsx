@@ -6,7 +6,7 @@ class TextLog extends React.Component {
 		super(props)
 
 		this.state = {
-			log: ['sample text', 'sample text 2'],
+			log: ['sample text', 'sample text 2', 'blah', 'blah', 'blah'],
 		}
 	}
 

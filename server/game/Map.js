@@ -14,9 +14,7 @@ class Map {
 		this.generateMap(randomFromTo(2, 3))
 		this.getPresentableRooms()
 
-		this.getPresentableRooms = () => {
-			this.getPresentableRooms()
-		}
+		this.presentableRooms = this.getPresentableRooms()
 	}
 
 	generateMap(size) {
@@ -34,7 +32,7 @@ class Map {
 		)
 		console.log(roomsToPresent.slice(0, 2))
 
-		this.presentableRooms = roomsToPresent.slice(0, 2)
+		return roomsToPresent.slice(0, 2)
 	}
 }
 

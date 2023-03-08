@@ -1,4 +1,8 @@
 const express = require('express')
+const cors = require('cors')
+const app = express();
+app.use(express.json())
+app.use(cors)
 const router = express.Router()
 
 const mongoose = require('mongoose')
@@ -7,23 +11,32 @@ const Map = require('../game/Map')
 
 const PlayerModel = require('../Models/player')
 
+function getPresentableRooms(roomsArg) {
+	console.log('getting Presentable rooms')
+
+	let rooms = roomsArg;
+	let roomsToPresent = rooms.filter(
+		room => !room.cleared && room.type !== 'starter'
+	)
+	console.log(roomsToPresent.slice(0, 2))
+
+	return roomsToPresent.slice(0, 2)
+}
+
 router.get('/', (request, response) => {
 	console.log('player route accessed')
 	response.send('Player Route').status(200)
 })
 
 router.post('/change-info', async (request, response) => {
-	console.log('changing player info')
-
 	try {
-		const player = await PlayerModel.findOne({ email: request.user.email })
-		const updatedPlayer = await PlayerModel.updateOne(
-			player,
+		const player = await PlayerModel.findOneAndUpdate(
+			{ email: request.user.email },
 			{ username: request.body.pName, class: request.body.pClass },
 			{ new: true }
-		)
-		console.log(`player info updated on the database | ${updatedPlayer}`)
-		response.status(202).send(updatedPlayer)
+			)
+		console.log(`player info updated on the database | ${player}`)
+		response.status(202).send(player)
 	} catch (err) {
 		console.log(err + 'Error updating player info')
 		response.status(400).send(err | `Unable to update database`)
@@ -47,8 +60,8 @@ router.get('/get', async (request, response, next) => {
 
 			response.status(200).send({
 				player: noMapPlayer,
-				// room: player.map.rooms[player.position],
-				// presentableRooms: player.map.getPresentableRooms(), ////////// FIX ME PLEASE
+				room: player.map.rooms[player.position],
+				presentableRooms: getPresentableRooms(player.map.rooms)
 			}) /// returns 3 rooms to the client as options to go forward - onClick = axios.get('/move-player', {selectedRoom.index})  <- moves player.positon to selected Room
 		} else {
 			console.log('creating player')
