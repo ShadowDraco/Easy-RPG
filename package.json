@@ -6,7 +6,10 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon server.js",
-		"start-deployed": "node server.js"
+		"server": "node server.js",
+		"client": "cd ./client && npm run dev",
+		"build": "cd ./client && npm run build",
+		"start-deployed": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"repository": {
 		"type": "git",
@@ -20,6 +23,7 @@
 	"homepage": "https://github.com/ShadowDraco/Easy-RPG#readme",
 	"dependencies": {
 		"bufferutil": "^4.0.7",
+		"concurrently": "^7.6.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
