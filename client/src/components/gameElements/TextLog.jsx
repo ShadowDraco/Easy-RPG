@@ -26,8 +26,8 @@ class TextLog extends React.Component {
 	render() {
 		return (
 			<Container id='text_log'>
-				{this.state.log.map(element => (
-					<p>{element}</p>
+				{this.state.log.map((element, i) => (
+					<p key={i}>{element}</p>
 				))}
 			</Container>
 		)
