@@ -111,6 +111,9 @@ router.get('/attack-enemy', async (request, response) => {
 	}
 })
 
+// Add Gold
+router.get('')
+
 ///// PLAYER MAP
 
 router.get('/new-map', async (request, response, next) => {
@@ -155,6 +158,9 @@ router.post('/new', async (request, response) => {
 
 	response.send('New Player Created').status(200)
 })
+
+
+
 
 module.exports = router
 
