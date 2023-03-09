@@ -13,8 +13,8 @@ class Welcome extends React.Component {
 
 	render() {
 		return (
-			<Container className='my-3'>
-				<h1>Welcome</h1>
+			<Container className='my-5'>
+				<h1 className='my-5'>Welcome</h1>
 				{!this.props.auth0.isAuthenticated && <LoginButton />}
 			</Container>
 		)

@@ -14,20 +14,20 @@ class ConstantHeader extends React.Component {
 
 	render() {
 		return (
-			<Navbar className='Navbar' bg='dark' variant='dark' expand='lg'>
-				<Container className='my-5 flex'>
+			<Navbar className='Navbar p-3' bg='dark' variant='dark'>
+				<Container className='my-5 p-2'>
 					<Navbar.Brand href='#home'>Easy-RPG</Navbar.Brand>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
-					<Navbar.Collapse id='basic-navbar-nav'>
-					<Nav className="Nav">
-					<Nav.Link href='#home'>Home</Nav.Link>
-					<Nav.Link href='#about'>About Us</Nav.Link>
-					<NavDropdown title='Account' id='basic-nav-dropdown'>
-					<NavDropdown.Item>
-						{this.props.auth0.isAuthenticated && <LogoutButton />}
-						</NavDropdown.Item>
-					</NavDropdown>
-					</Nav>
+					<Navbar.Collapse id='basic-navbar-nav p-3'>
+						<Nav className='Nav p-3'>
+							<Nav.Link href='#home'>Home</Nav.Link>
+							<Nav.Link href='#about'>About Us</Nav.Link>
+							<NavDropdown title='Account' id='basic-nav-dropdown'>
+								<NavDropdown.Item>
+									{this.props.auth0.isAuthenticated && <LogoutButton />}
+								</NavDropdown.Item>
+							</NavDropdown>
+						</Nav>
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
