@@ -174,12 +174,22 @@ router.put('/add-gold', async (request, response, next) => {
 		// res.send(updatedPlayer)
 		let player = await PlayerModel.findOne({ email: request.user.email })
 		const newPlayerGold = player.stats.gold + request.body.amountOfGold
+		const newPlayerHealth = request.body.newPlayerHealth
+		console.log(newPlayerHealth)
 
 		let updatedPlayer = await PlayerModel.findOneAndUpdate(
 			{ email: request.user.email },
-			{ stats: { ...player.stats, gold: newPlayerGold } },
+			{
+				stats: {
+					...player.stats,
+					gold: newPlayerGold,
+					health: newPlayerHealth,
+				},
+			},
 			{ new: true }
 		)
+
+		console.log('updated health', updatedPlayer.stats)
 
 		response.status(202).send(updatedPlayer)
 	} catch (error) {

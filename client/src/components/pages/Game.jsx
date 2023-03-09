@@ -67,7 +67,6 @@ class Game extends React.Component {
 
 	// get the user
 	async componentDidMount() {
-		console.log(this.props.auth0)
 		if (this.props.auth0.isAuthenticated) {
 			const res = await this.props.auth0.getIdTokenClaims()
 
@@ -78,7 +77,7 @@ class Game extends React.Component {
 				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 				url: '/player/get',
 			}
-			console.log(config)
+
 			const playerAndRoom = await axios(config)
 
 			this.setState({
@@ -102,6 +101,7 @@ class Game extends React.Component {
 		}
 
 		axios(config).then(response => {
+			console.log(response.data.updatedPlayer)
 			if (response.data.clearedFloor) {
 				this.updateTextLog('Cleared a FLOOR!')
 				this.setState({
@@ -165,7 +165,10 @@ class Game extends React.Component {
 		const config = {
 			headers: { Authorization: `Bearer ${jwt}` },
 			method: 'put',
-			data: { amountOfGold: treasure.gold },
+			data: {
+				amountOfGold: treasure.gold,
+				newPlayerHealth: this.state.authorizedPlayer.stats.health,
+			},
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 			url: '/player/add-gold',
 		}
@@ -174,7 +177,7 @@ class Game extends React.Component {
 			this.setState({
 				inFight: false,
 				gettingLoot: false,
-				authorizedPlayer: response.data.updatedPlayer,
+				authorizedPlayer: response.data,
 			})
 		})
 	}
