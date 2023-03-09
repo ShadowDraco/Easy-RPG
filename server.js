@@ -85,14 +85,14 @@ app.get('/', (request, response) => {
 
 app.use(verifyUser)
 
-app.use('/player', PlayerRoute)
-
 if (process.env.NODE_ENV === 'production') {
 	app.get('*', (req, resp, next) => {
 		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
 		next()
 	})
 }
+
+app.use('/player', PlayerRoute)
 
 app.use('*', (request, response) => {
 	response.status(404).send('You entered the wrong corridor!')

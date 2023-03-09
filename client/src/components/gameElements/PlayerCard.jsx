@@ -12,12 +12,24 @@ class PlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.playerRef = React.createRef();
+		this.playerRef = React.createRef()
 
 		this.state = {
-			showInventory: false,
+			// showInventory: false,
 			showEditCharacter: false,
-			maxHealth: 1
+			maxHealth: 1,
+			inventory: [
+				{
+					name: 'Potion of Placeholding',
+					description: 'This potion does nothing but take up inventory space',
+					amount: 99,
+				},
+				{
+					name: 'Health Potion',
+					description: 'Heals the player for 10 - 30 HP',
+					amount: 5,
+				},
+			],
 		}
 	}
 
@@ -25,12 +37,12 @@ class PlayerCard extends React.Component {
 
 	handleInputChange = () => {}
 
-	// toggles hide/show of inventory
-	handleShowInventory = () => {
-		this.setState({
-			showInventory: !this.state.showInventory,
-		})
-	}
+	// // toggles hide/show of inventory
+	// handleShowInventory = () => {
+	// 	this.setState({
+	// 		showInventory: !this.state.showInventory,
+	// 	})
+	// }
 
 	// toggles hide/show of edit character modal
 	handleEditCharacter = () => {
@@ -39,12 +51,23 @@ class PlayerCard extends React.Component {
 		})
 	}
 
+	handleHealPlayer = itemIdx => {
+		let newInventory = this.state.inventory
+		newInventory[itemIdx].amount--
+
+		this.setState({
+			inventory: newInventory,
+		})
+
+		this.props.healPlayer()
+		this.props.handleShowInventory()
+	}
 
 	// submits new player information
 
 	handleSubmit = async event => {
 		event.preventDefault()
-		console.log(event.target.character_name.value)
+
 		const res = await this.props.auth0.getIdTokenClaims()
 		const jwt = res.__raw
 		const config = {
@@ -58,7 +81,6 @@ class PlayerCard extends React.Component {
 			url: '/player/change-info',
 		}
 		axios(config).then(response => {
-			console.log(response)
 			this.props.updateAuthorizedPlayer(response.data)
 			this.handleEditCharacter()
 		})
@@ -66,14 +88,13 @@ class PlayerCard extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			maxHealth: this.props.authorizedPlayer.stats.health
+			maxHealth: this.props.authorizedPlayer.stats.health,
 		})
 	}
 
 	render() {
 		return (
 			<>
-
 				<Card
 					id={`player_0`}
 					className='player'
@@ -106,7 +127,28 @@ class PlayerCard extends React.Component {
 					<Modal.Header>Inventory</Modal.Header>
 					<Modal.Body>
 						<Accordion>
-							<Accordion.Item eventKey='0'>
+							{this.state.inventory.map((item, idx) => (
+								<Accordion.Item eventKey={idx} key={`${item}_${idx}`}>
+									<Accordion.Header>
+										{item.name} x{item.amount}
+									</Accordion.Header>
+									<Accordion.Body>
+										{item.name === 'Health Potion' ? (
+											<>
+												<Button onClick={() => this.handleHealPlayer(idx)}>
+													Use
+												</Button>{' '}
+												{item.description}
+											</>
+										) : (
+											<>
+												<Button>Use</Button> {item.description}
+											</>
+										)}
+									</Accordion.Body>
+								</Accordion.Item>
+							))}
+							{/* <Accordion.Item eventKey='0'>
 								<Accordion.Header>Potion of Placeholding</Accordion.Header>
 								<Accordion.Body>
 									This potion does absolutely nothing but act as a placeholder
@@ -116,9 +158,9 @@ class PlayerCard extends React.Component {
 							<Accordion.Item eventKey='1'>
 								<Accordion.Header>Health Potion</Accordion.Header>
 								<Accordion.Body>
-									This is where my health potion would go... IF I HAD ONE!
+									<Button onClick={this.props.healPlayer}></Button>This is where my health potion would go... IF I HAD ONE!
 								</Accordion.Body>
-							</Accordion.Item>
+							</Accordion.Item> */}
 						</Accordion>
 					</Modal.Body>
 				</Modal>

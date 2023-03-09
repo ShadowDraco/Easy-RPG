@@ -45,13 +45,14 @@ div.player.card {
 #game_screen {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-evenly !important;
 	background-color: cadetblue;
 	height: 95vh;
 	width: 100vw;
 }
 
 #encounter_screen {
-	height: 50%;
+	max-height: 50%;
 	display: flex;
 	justify-content: center;
 	align-content: flex-start;
@@ -75,19 +76,36 @@ div.player.card {
 }
 
 #text_log {
-	position: relative;
+	/* position: relative; */
 	display: flex;
 	flex-direction: column;
-	overflow-y: scroll;
-	float: right;
-	width: 35%;
+	justify-content: space-between;
+	/* align-items: center; */
+	overflow-x: hidden;
+	/* float: right; */
+	width: 90%;
 	height: 100%;
 	padding: 0 !important;
+	margin: 0 !important;
+}
+
+#text_log_messages {
+	float: right;
+	height: 80%;
+	overflow-y: scroll;
+	/* padding: 0 !important;
+	margin: 0 !important; */
+	padding-top: 0.2em;
+}
+
+#chat_submit {
+	margin-top: 1rem !important;
 }
 
 #player_menu {
 	border: solid white 1px;
 	display: flex;
+	justify-content: space-between;
 	height: 40%;
 	width: 100%;
 	margin: 1rem !important;
@@ -100,7 +118,9 @@ div.player.card {
 
 #player_context_menu {
 	display: flex;
-	width: 70%;
+	align-self: center !important;
+	justify-self: center !important;
+	width: fit-content !important;
 	padding: 0 !important;
 	margin: 0 1rem !important;
 }
@@ -114,8 +134,10 @@ div.player.card {
 #player_action_menu {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	margin: 0 !important;
-	padding: 0 2rem !important;
+	padding: 0 !important;
 }
 
 #player_action_menu > * {
@@ -124,6 +146,7 @@ div.player.card {
 
 #action_buttons {
 	display: flex;
+	flex-direction: column;
 	justify-content: space-between;
 }
 
@@ -153,28 +176,25 @@ div.player.card {
 	margin: 0 1rem;
 }
 
-.Navbar{
-  width: 100%;
-  height: 75px;
+.Navbar {
+	width: 100%;
+	height: 75px;
 }
 
-.main-footer{
-  background-color: #222529;
-  color: whitesmoke;
-
-
+.main-footer {
+	background-color: #222529;
+	color: whitesmoke;
 }
 
-#column2{
+#column2 {
 	align-content: right;
-	
 }
 
-.footer{
+.footer {
 	width: 100vw;
 }
 
-.ul-footer{
+.ul-footer {
 	display: flex;
 	justify-content: space-between;
 }
@@ -183,14 +203,43 @@ div.player.card {
 	font-size: 14px;
 }
 
-.footer-container{
+.footer-container {
 	margin: 0;
 }
 #root > div.footer.container {
 	margin-left: 0px;
 }
 
-.footer.container{
+.footer.container {
 	margin: 0 !important;
 	padding: 0 !important;
+}
+
+.party-messages {
+	margin: 0 !important;
+	padding: 0 !important;
+	max-height: 100% !important;
+	height: 100% !important;
+	overflow-y: scroll;
+}
+
+.partyIn {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.party-container {
+	margin: 0 !important;
+	padding: 0 !important;
+	max-height: 100% !important;
+	height: 100% !important;
+}
+
+.coloredTextLog {
+	color: greenyellow;
+}
+
+#text-container {
+	display: flex;
+	flex-direction: column;
 }

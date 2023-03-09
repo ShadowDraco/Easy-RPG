@@ -1,7 +1,9 @@
 import React from 'react'
-import Container from 'react-bootstrap/Container'
+
 import Button from 'react-bootstrap/Button'
-import ProgressBar from 'react-bootstrap/ProgressBar'
+
+import StartAParty from '../partyStuff/StartAParty'
+import PartyHud from '../partyStuff/PartyHud'
 
 class PlayerActionMenu extends React.Component {
 	constructor(props) {
@@ -13,20 +15,30 @@ class PlayerActionMenu extends React.Component {
 	render() {
 		return (
 			<>
-				<Container id='player_action_menu'>
-					<ProgressBar variant='success' now={50} />
-					<ProgressBar variant='primary' now={50} />
-					<ProgressBar variant='warning' now={50} />
+				<div id='player_action_menu' className='p-0 m-0'>
 					<div id='action_buttons'>
-						<Button size='lg' onClick={this.props.handleDealDamage}>
-							Attack
-						</Button>
-						<Button size='lg' onClick={this.props.handleShowInventory}>
+						<Button size='md' onClick={this.props.handleShowInventory}>
 							Inventory
 						</Button>
-						<Button size='lg'>Run</Button>
+
+					
+
+						<section id='party_screen' className='my-2 mx-2 w-25'>
+							{!this.props.inAParty ? (
+								<StartAParty
+									createOrStartAParty={this.props.createOrStartAParty}
+								/>
+							) : (
+								<PartyHud
+									partyName={this.props.partyName}
+									leaveParty={this.props.leaveParty}
+									messages={this.props.messages}
+									sendChatMessage={this.props.sendChatMessage}
+								/>
+							)}
+						</section>
 					</div>
-				</Container>
+				</div>
 			</>
 		)
 	}
