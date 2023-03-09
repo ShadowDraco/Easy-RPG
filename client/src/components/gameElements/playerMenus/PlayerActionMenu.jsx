@@ -21,8 +21,6 @@ class PlayerActionMenu extends React.Component {
 							Inventory
 						</Button>
 
-					
-
 						<section id='party_screen' className='my-2 mx-2 w-25'>
 							{!this.props.inAParty ? (
 								<StartAParty
