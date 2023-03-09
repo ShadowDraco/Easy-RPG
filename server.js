@@ -4,9 +4,26 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const app = express()
 const path = require('path')
-app.use(cors())
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client', 'dist')))
+	app.get('*', (req, resp) => {
+		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+	})
+}
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.use(function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header(
+		'Access-Control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type, Accept'
+	)
+	next()
+})
+
 let port = process.env.PORT
 if (port == null || port == '') {
 	port = 8000
@@ -83,13 +100,6 @@ app.use(verifyUser)
 const PlayerRoute = require('./route-handlers/player-routes')
 
 app.use('/player', PlayerRoute)
-
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'client', 'dist')))
-	app.get('*', (req, resp) => {
-		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-	})
-}
 
 app.use('*', (request, response) => {
 	response.status(404).send('You entered the wrong corridor!')
