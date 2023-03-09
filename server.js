@@ -9,6 +9,9 @@ const PlayerRoute = require('./route-handlers/player-routes')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// server static file from react app
+app.use(express.static(path.join(__dirname, 'client', 'dist')))
+
 app.use(cors())
 
 let port = process.env.PORT
@@ -76,6 +79,13 @@ app.get('/', (request, response) => {
 app.use(verifyUser)
 
 app.use('/player', PlayerRoute)
+
+if (process.env.NODE_ENV === 'production') {
+	app.get('*', (req, resp, next) => {
+		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+		next()
+	})
+}
 
 app.use('*', (request, response) => {
 	response.status(404).send('You entered the wrong corridor!')

@@ -3,7 +3,6 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import socket from '../../pages/socket'
 
 class PartyHud extends React.Component {
 	constructor(props) {
@@ -22,11 +21,13 @@ class PartyHud extends React.Component {
 
 	render() {
 		return (
-			<Container>
-				<h4>You are in: {this.props.partyName}</h4>
-				<Button onClick={this.props.leaveParty}>Leave</Button>
+			<Container className='w-100 d-flex flex-column mx-5'>
+				<Container className='d-flex'>
+					<h4 className='w-50  mx-5'>You are in: {this.props.partyName}</h4>
+					<Button onClick={this.props.leaveParty}>Leave</Button>
+				</Container>
 
-				<Container className='party-messages w-50'>
+				<Container className='party-messages w-100'>
 					{this.props.messages?.map((message, i) => {
 						return (
 							<p key={i}>
@@ -54,9 +55,6 @@ class PartyHud extends React.Component {
 									: 'Everyone with this unique* party name will see your messages!'}
 							</Form.Text>
 						</Form.Group>
-						<Button variant='primary' type='submit'>
-							Start a party!
-						</Button>
 					</Form>
 				</Container>
 			</Container>

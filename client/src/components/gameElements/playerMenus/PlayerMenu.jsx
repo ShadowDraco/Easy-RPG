@@ -11,14 +11,13 @@ class PlayerMenu extends React.Component {
 
 	render() {
 		return (
-			<Container id='player_menu'>
+			<Container fluid id='player_menu' className='w-100 h-50'>
 				<PlayerContextMenu
 					playerInfo={this.props.playerInfo}
 					handleShowInventory={this.props.handleShowInventory}
 					handleDealDamage={this.props.handleDealDamage}
 				/>
-				<TextLog 
-					textAddedToLog={this.props.textAddedToLog} />
+				<TextLog textAddedToLog={this.props.textAddedToLog} />
 			</Container>
 		)
 	}
