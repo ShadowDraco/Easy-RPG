@@ -37,9 +37,7 @@ class StartAParty extends React.Component {
 					</Form.Label>
 					<Form.Control type='text' placeholder='Enter name' className='' />
 					<Form.Text className='text-muted text-start text-light'>
-						{this.state.error
-							? this.state.error
-							: 'Everyone with this unique* party name will join you!'}
+						{this.state.error ? this.state.error : ''}
 					</Form.Text>
 					<Button variant='primary' type='submit' className=''>
 						Start a party!

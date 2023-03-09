@@ -24,6 +24,7 @@ class PlayerMenu extends React.Component {
 					createOrStartAParty={this.props.createOrStartAParty}
 				/>
 				<TextLog
+					inAParty={this.props.inAParty}
 					textAddedToLog={this.props.textAddedToLog}
 					sendChatMessage={this.props.sendChatMessage}
 				/>

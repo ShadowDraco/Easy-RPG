@@ -20,22 +20,21 @@ class PlayerActionMenu extends React.Component {
 						<Button size='md' onClick={this.props.handleShowInventory}>
 							Inventory
 						</Button>
-
-						<section id='party_screen' className='my-2 mx-2 w-25'>
-							{!this.props.inAParty ? (
-								<StartAParty
-									createOrStartAParty={this.props.createOrStartAParty}
-								/>
-							) : (
-								<PartyHud
-									partyName={this.props.partyName}
-									leaveParty={this.props.leaveParty}
-									messages={this.props.messages}
-									sendChatMessage={this.props.sendChatMessage}
-								/>
-							)}
-						</section>
 					</div>
+					<section id='party_screen' className='my-2 mx-2 w-100'>
+						{!this.props.inAParty ? (
+							<StartAParty
+								createOrStartAParty={this.props.createOrStartAParty}
+							/>
+						) : (
+							<PartyHud
+								partyName={this.props.partyName}
+								leaveParty={this.props.leaveParty}
+								messages={this.props.messages}
+								sendChatMessage={this.props.sendChatMessage}
+							/>
+						)}
+					</section>
 				</div>
 			</>
 		)
