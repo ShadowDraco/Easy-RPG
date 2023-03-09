@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
@@ -264,10 +263,6 @@ class Game extends React.Component {
 		this.setState({
 			messages: [...this.state.messages, { from: from, message: message }],
 		})
-	}
-
-	updateParty = () => {
-		// get new data to display
 	}
 
 	leaveParty = () => {
