@@ -12,6 +12,8 @@ import axios from 'axios'
 import socket from './socket'
 import Button from 'react-bootstrap/esm/Button'
 
+import logo from '/public/MSL.jpg'
+
 class Game extends React.Component {
 	constructor(props) {
 		super(props)

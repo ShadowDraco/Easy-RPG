@@ -22,7 +22,6 @@ class App extends React.Component {
 			<>
 				<Router>
 					<ConstantHeader />
-
 					<Routes>
 						<Route exact path='/' element={<Welcome />}></Route>
 						<Route

@@ -46,7 +46,7 @@ div.player.card {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly !important;
-	background-color: cadetblue;
+	background-color: rgba(88, 70, 29, 0.493);
 	height: 95vh;
 	width: 100vw;
 }
