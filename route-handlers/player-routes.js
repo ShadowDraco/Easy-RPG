@@ -53,7 +53,7 @@ router.get('/get', async (request, response, next) => {
 			let noMapPlayer = { ...player._doc }
 			noMapPlayer.map = ''
 
-			response.send({
+			response.json({
 				player: noMapPlayer,
 				room: player.map.rooms[player.position],
 				presentableRooms: getPresentableRooms(player.map.rooms),
@@ -64,7 +64,7 @@ router.get('/get', async (request, response, next) => {
 			let noMapPlayer = { ...newPlayer._doc }
 			noMapPlayer.map = ''
 
-			response.send({
+			response.json({
 				player: noMapPlayer,
 				room: newPlayer.map.rooms[player.position],
 				presentableRooms: newPlayer.map.presentableRooms,
