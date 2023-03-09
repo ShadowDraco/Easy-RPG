@@ -14,8 +14,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 				clientId={import.meta.env.VITE_AUTH_CLIENT_ID}
 				authorizationParams={{
 					redirect_uri: `${window.location.origin}/game`,
-					audience: 'https://easy-rpg-backend.herokuapp.com/',
-					scope: 'read:current_user update:current_user_metadata',
+					//audience: 'https://easy-rpg-backend.herokuapp.com/',
+					//scope: 'read:current_user update:current_user_metadata',
 				}}
 			>
 				<App />
