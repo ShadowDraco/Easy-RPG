@@ -85,12 +85,4 @@ app.use((error, request, response, next) => {
 	response.status(500).send(`We miss placed the dungeon... ${error}`)
 })
 
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'client', 'dist')))
-	app.get('*', (req, resp, next) => {
-		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-		next()
-	})
-}
-
 app.listen(port, console.log(`Begin dungeon crawling on port: ${port}`))
