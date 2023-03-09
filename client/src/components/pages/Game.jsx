@@ -244,8 +244,6 @@ class Game extends React.Component {
 
 	createOrStartAParty = partyName => {
 		this.setState({ inAParty: true, partyName: partyName })
-		// join a room
-		socket.connect()
 		socket.emit('join-room', partyName)
 		socket.on('receive-message', (from, message) => {
 			console.log('receiving message')

@@ -25,6 +25,7 @@ const verifyUser = require('./auth/authorize.js')
 
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+io.listen(3000)
 
 // when a socket connects to the server
 io.on('connection', socket => {
