@@ -65,9 +65,9 @@ class Game extends React.Component {
 				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 				url: '/player/get',
 			}
-
+			console.log(`${import.meta.env.VITE_SERVER_URL}`)
 			const playerAndRoom = await axios(config)
-			console.log(playerAndRoom.data)
+			console.log(playerAndRoom.data, 'component mounted')
 			this.setState({
 				authorizedPlayer: playerAndRoom.data.player,
 				room: playerAndRoom.data.room,
