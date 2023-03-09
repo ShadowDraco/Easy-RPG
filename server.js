@@ -11,12 +11,7 @@ let port = process.env.PORT
 if (port == null || port == '') {
 	port = 8000
 }
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'client', 'dist')))
-	app.get('*', (req, resp) => {
-		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-	})
-}
+
 const verifyUser = require('./auth/authorize.js')
 
 // socket io stuff //////////////////////////////
@@ -88,6 +83,13 @@ app.use(verifyUser)
 const PlayerRoute = require('./route-handlers/player-routes')
 
 app.use('/player', PlayerRoute)
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client', 'dist')))
+	app.get('*', (req, resp) => {
+		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+	})
+}
 
 app.use('*', (request, response) => {
 	response.status(404).send('You entered the wrong corridor!')
