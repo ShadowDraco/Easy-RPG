@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
 
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
@@ -12,8 +13,6 @@ import StartAParty from '../gameElements/partyStuff/StartAParty'
 import PartyHud from '../gameElements/partyStuff/PartyHud'
 import socket from './socket'
 import Button from 'react-bootstrap/esm/Button'
-import Modal from 'react-bootstrap/Modal'
-import Card from 'react-bootstrap/Card'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -49,6 +48,19 @@ class Game extends React.Component {
 		}
 	}
 
+	getRoomDescription = (thing) => {
+		let roomDescriptionPrefixes = [
+			`This room is dimly lit... you see something that vaguely looks like ${thing} on the other side.`,
+			`This room has a wretched odor. In the distance you see some ${thing} , but is it worth trying to obtain?`,
+			`Piles of bones lie scattered on the floor and old bloodstains cover the walls... you see what looks like ${thing} in a pile of remains. `,
+			`The air is cold and stale.. you feel uneasy at the sight of the ${thing} lying out in the open. Tread carefully. `,
+			`You see tattered walls and some ${thing} through a pale haze. You  begin to feel a bit nauseous. You probably should not linger here long.`
+		]
+
+		return roomDescriptionPrefixes[Math.floor(Math.random() * roomDescriptionPrefixes.length)]
+
+	}
+
 	updateAuthorizedPlayer = responsedata => {
 		this.setState({ authorizedPlayer: responsedata })
 	}
@@ -74,7 +86,6 @@ class Game extends React.Component {
 				presentableRooms: playerAndRoom.data.presentableRooms,
 			})
 
-			this.updateTextLog(playerAndRoom.data.room.descriptionElements[0])
 			console.log('room index: ' + this.state.room?.index)
 		}
 	}
@@ -125,12 +136,13 @@ class Game extends React.Component {
 		return roomDescriptionPrefixes[
 			Math.floor(Math.random() * roomDescriptionPrefixes.length)
 		]
+
 	}
 
 	updateTextLog = text => {
-		this.setState({
-			textAddedToLog: text,
-		})
+			this.setState({
+				textAddedToLog: text,
+			})
 	}
 
 	incrementEnemyDeathCount = () => {
@@ -147,6 +159,7 @@ class Game extends React.Component {
 			})
 		}
 	}
+
 
 	getLoot = async treasure => {
 		console.log('getting loot')
@@ -174,17 +187,35 @@ class Game extends React.Component {
 	}
 
 	handleDealDamage = () => {
-		return 50
+		let damage = Math.floor(Math.random() * 20)+10;
+		// get attacker's ATK
+		// get defender's DEF
+		// ATK - DEF = Damage Dealt
+		// return damage dealt
+		this.updateTextLog(`Player deals ${damage} to the enemy!`)
+		return damage
 	}
 
-	handleShowEnemies = () => {
-		enemyArr = document.getElementsByClassName('enemy')
-		console.log(enemyArr)
+	doDamageToPlayer = () => {
+		let damage = Math.floor(Math.random() * 10);
+		setTimeout(() => {
+			let newPlayerInfo = this.state.authorizedPlayer;
 
-		this.setState({
-			showEnemies: !this.state.showEnemies,
-			enemies: [...enemyArr],
-		})
+			newPlayerInfo.stats.health = newPlayerInfo.stats.health - damage;
+			newPlayerInfo.stats.gold = newPlayerInfo.stats.gold + 5;
+
+			if (newPlayerInfo.stats.health < 0) {
+				newPlayerInfo.stats.health = 0;
+			}
+
+			this.updateTextLog(`Enemy deals ${damage} damage to the player!`)
+	
+			this.setState({
+				authorizedPlayer: newPlayerInfo
+			})
+
+		}, 1000)
+
 	}
 
 	handleShowInventory = () => {
@@ -192,6 +223,7 @@ class Game extends React.Component {
 			showInventory: !this.state.showInventory,
 		})
 	}
+
 
 	handleEnterNewRoom = async roomInfo => {
 		let oldRoomIdx = this.state.room.index
@@ -212,8 +244,11 @@ class Game extends React.Component {
 			inFight: roomInfo.enemies.length > 0 ? true : false,
 		})
 
+		// this.playerMove(roomInfo.index)
+
 		console.log(oldRoomIdx, roomInfo.index)
 		await this.playerMove(oldRoomIdx, roomInfo.index)
+
 	}
 
 	// Socket Stuff
@@ -279,10 +314,12 @@ class Game extends React.Component {
 									{this.state.enemies.map((enemy, i) => (
 										<EnemyCard
 											key={i}
+											id={`enemy_${i}`}
 											enemyInfo={enemy}
-											incrementEnemyDeathCount={this.incrementEnemyDeathCount}
+                      incrementEnemyDeathCount={this.incrementEnemyDeathCount}
 											handleDealDamage={this.handleDealDamage}
 											checkAllEnemiesDead={this.checkAllEnemiesDead}
+											doDamageToPlayer={this.doDamageToPlayer}
 										/>
 									))}
 
@@ -310,6 +347,7 @@ class Game extends React.Component {
 								>
 									<h4>Choose Wisely...</h4>
 									<div id='choose_room_options'>
+
 										{this.state.presentableRooms?.map((element, i) => (
 											<Button
 												key={i}
@@ -326,9 +364,13 @@ class Game extends React.Component {
 							)}
 						</section>
 
-						{this.state.authorizedPlayer ? (
+						{this.state.authorizedPlayer ? 
+						(
 							<section id='player_screen'>
-								<div id='party_members'>
+								{this.state.authorizedPlayer.stats.health !== 0 ?
+									<>
+									<div id='party_members'>
+
 									<PlayerCard
 										updateAuthorizedPlayer={this.updateAuthorizedPlayer}
 										authorizedPlayer={this.state.authorizedPlayer}
@@ -337,6 +379,7 @@ class Game extends React.Component {
 										handleShowInventory={this.handleShowInventory}
 										updateMapInfo={this.updateMapInfo}
 									/>
+
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
 									{this.state.inAParty ? (
@@ -344,8 +387,10 @@ class Game extends React.Component {
 											{/* <PartyPlayerCard /> */}
 											{/* <PartyPlayerCard /> */}
 										</>
-									) : (
-										''
+									) 
+									: 
+									(
+										null//if no authorized player, dont render any player cards
 									)}
 								</div>
 								<PlayerMenu
@@ -354,6 +399,10 @@ class Game extends React.Component {
 									handleShowInventory={this.handleShowInventory}
 									handleDealDamage={this.handleDealDamage}
 								/>
+								</>
+									:
+								<h1>GAME OVER</h1>
+								}
 							</section>
 						) : (
 							'Player is traversing the dungeon!'
@@ -363,14 +412,6 @@ class Game extends React.Component {
 				) : (
 					<NotAuthenticated />
 				)}
-
-				<Modal show={this.state.showEnemies} onHide={this.handleShowEnemies}>
-					<Modal.Body>
-						{this.state.enemies.map(element => {
-							element
-						})}
-					</Modal.Body>
-				</Modal>
 			</>
 		)
 	}

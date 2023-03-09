@@ -17,7 +17,8 @@ class PlayerMenu extends React.Component {
 					handleShowInventory={this.props.handleShowInventory}
 					handleDealDamage={this.props.handleDealDamage}
 				/>
-				<TextLog textAddedToLog={this.props.textAddedToLog} />
+				<TextLog 
+					textAddedToLog={this.props.textAddedToLog} />
 			</Container>
 		)
 	}
