@@ -14,7 +14,10 @@ class PartyHud extends React.Component {
 
 	handleSubmit = e => {
 		e.preventDefault()
-		this.props.sendChatMessage(e.target.partyMessage.value)
+		if (e.target.partyMessage.value !== '') {
+			this.props.sendChatMessage(e.target.partyMessage.value)
+			e.target.partyMessage.value = ''
+		}
 	}
 
 	render() {
