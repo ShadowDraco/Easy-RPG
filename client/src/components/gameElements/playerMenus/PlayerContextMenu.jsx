@@ -12,10 +12,8 @@ class PlayerContextMenu extends React.Component {
 
 	render() {
 		return (
-			<Container id='player_context_menu'>
-				<PlayerInfoMenu
-					playerInfo={this.props.playerInfo}
-				></PlayerInfoMenu>
+			<Container fluid id='player_context_menu' className='w-100'>
+				<PlayerInfoMenu playerInfo={this.props.playerInfo}></PlayerInfoMenu>
 
 				<PlayerActionMenu
 					handleShowInventory={this.props.handleShowInventory}
