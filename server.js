@@ -11,14 +11,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cors())
 
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'client', 'dist')))
-	app.get('*', (req, resp, next) => {
-		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-		next()
-	})
-}
-
 let port = process.env.PORT
 if (port == null || port == '') {
 	port = 8000
