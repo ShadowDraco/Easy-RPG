@@ -20,7 +20,7 @@ class PlayerActionMenu extends React.Component {
           <ProgressBar variant="primary" now={50}/>
           <ProgressBar variant="warning" now={50}/>
           <div id='action_buttons'>
-            <Button size='lg' onClick={this.props.handleAttackEnemy}>Attack</Button>
+            <Button size='lg' onClick={this.props.handleDealDamage}>Attack</Button>
             <Button size='lg'onClick={this.props.handleShowInventory}>Inventory</Button>
             <Button size='lg'>Run</Button>
           </div>
