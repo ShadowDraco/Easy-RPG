@@ -4,6 +4,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const app = express()
 const path = require('path')
+const PlayerRoute = require('./route-handlers/player-routes')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -88,18 +89,16 @@ app.get('/', (request, response) => {
 	console.log('Dungeon running on 3001')
 })
 
-app.use(verifyUser)
-
-const PlayerRoute = require('./route-handlers/player-routes')
-
-app.use('/player', PlayerRoute)
-
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, 'client', 'dist')))
 	app.get('*', (req, resp) => {
 		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
 	})
 }
+
+app.use(verifyUser)
+
+app.use('/player', PlayerRoute)
 
 app.use('*', (request, response) => {
 	response.status(404).send('You entered the wrong corridor!')
