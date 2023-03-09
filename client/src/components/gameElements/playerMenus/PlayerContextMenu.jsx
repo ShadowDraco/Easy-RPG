@@ -13,10 +13,10 @@ class PlayerContextMenu extends React.Component {
 	render() {
 		return (
 			<Container id='player_context_menu'>
-				<PlayerInfoMenu></PlayerInfoMenu>
+				<PlayerInfoMenu playerInfo={this.props.playerInfo}></PlayerInfoMenu>
 				<PlayerActionMenu
 					handleShowInventory={this.props.handleShowInventory}
-					handleAttackEnemy={this.props.handleAttackEnemy}
+					handleDealDamage={this.props.handleDealDamage}
 				></PlayerActionMenu>
 			</Container>
 		)

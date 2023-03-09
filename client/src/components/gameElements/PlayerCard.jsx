@@ -21,18 +21,21 @@ class PlayerCard extends React.Component {
 
 	handleInputChange = () => {}
 
+	// toggles hide/show of inventory
 	handleShowInventory = () => {
 		this.setState({
 			showInventory: !this.state.showInventory,
 		})
 	}
 
+	// toggles hide/show of edit character modal
 	handleEditCharacter = () => {
 		this.setState({
 			showEditCharacter: !this.state.showEditCharacter,
 		})
 	}
 
+	// submits new player character information
 	handleSubmit = async event => {
 		event.preventDefault()
 		console.log(event.target.character_name.value)
@@ -59,7 +62,7 @@ class PlayerCard extends React.Component {
 	render() {
 		return (
 			<>
-				<Card className='player' onClick={this.props.updateMapInfo}>
+				<Card id={`player_0`} className='player' onClick={this.props.updateMapInfo}>
 					<Card.Header>
 						{this.props.authorizedPlayer.username}{' '}
 						<Button onClick={this.handleEditCharacter}>Edit</Button>

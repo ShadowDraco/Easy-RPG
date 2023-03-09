@@ -13,7 +13,8 @@ class PlayerInfoMenu extends React.Component{
   render(){
     return(
       <Container id='player_info_menu'>
-        <h5>this.props/state.playerName</h5>
+        <h4>{this.props.playerInfo.username}</h4>
+        <h5>{this.props.playerInfo.class}</h5>
         <div className='player_stat_display'>
           <div className="player_stat_block">
             <p>HP: xx</p>

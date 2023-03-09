@@ -79,23 +79,6 @@ class Game extends React.Component {
 		}
 	}
 
-	getNewMap = async () => {
-		const res = await this.props.auth0.getIdTokenClaims()
-
-		const jwt = res.__raw
-		const config = {
-			headers: { Authorization: `Bearer ${jwt}` },
-			method: 'get',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-			url: '/player/new-map',
-		}
-
-		axios(config).then(response => {
-			console.log(response)
-			this.setState({ choosingNextRoom: true, room: response })
-		})
-	}
-
 	playerMove = async (indexOfOldRoom, indexOfChosenRoom) => {
 		const res = await this.props.auth0.getIdTokenClaims()
 
@@ -130,30 +113,18 @@ class Game extends React.Component {
 		})
 	}
 
-	getUpdatedMapInfo = async () => {
-		const res = await this.props.auth0.getIdTokenClaims()
-		const jwt = res.__raw
-		const config = {
-			headers: { Authorization: `Bearer ${jwt}` },
-			method: 'get',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-			url: '/player/get',
-		}
+	getRoomDescription = thing => {
+		let roomDescriptionPrefixes = [
+			`This room is dimly lit... you see something that vaguely looks like ${thing} on the other side.`,
+			`This room has a wretched odor. In the distance you see some ${thing} , but is it worth trying to obtain?`,
+			`Piles of bones lie scattered on the floor and old bloodstains cover the walls... you see what looks like ${thing} in a pile of remains. `,
+			`The air is cold and stale.. you feel uneasy at the sight of the ${thing} lying out in the open. Tread carefully. `,
+			`You see tattered walls and some ${thing} through a pale haze. You  begin to feel a bit nauseous. You probably should not linger here long.`,
+		]
 
-		axios(config).then(response => console.log(response))
-	}
-
-	postUpdatedMapInfo = async () => {
-		const res = await this.props.auth0.getIdTokenClaims()
-		const jwt = res.__raw
-		const config = {
-			headers: { Authorization: `Bearer ${jwt}` },
-			method: 'post',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-			url: '/player/get',
-		}
-
-		axios(config).then(response => console.log(response))
+		return roomDescriptionPrefixes[
+			Math.floor(Math.random() * roomDescriptionPrefixes.length)
+		]
 	}
 
 	updateTextLog = text => {
@@ -202,7 +173,7 @@ class Game extends React.Component {
 		})
 	}
 
-	handleAttackEnemy = () => {
+	handleDealDamage = () => {
 		return 50
 	}
 
@@ -224,6 +195,14 @@ class Game extends React.Component {
 
 	handleEnterNewRoom = async roomInfo => {
 		let oldRoomIdx = this.state.room.index
+
+		this.updateTextLog(
+			this.getRoomDescription(
+				roomInfo.descriptionElements[
+					Math.floor(Math.random() * roomInfo.descriptionElements.length)
+				].toLowerCase()
+			)
+		)
 
 		this.setState({
 			room: roomInfo,
@@ -302,7 +281,7 @@ class Game extends React.Component {
 											key={i}
 											enemyInfo={enemy}
 											incrementEnemyDeathCount={this.incrementEnemyDeathCount}
-											handleAttackEnemy={this.handleAttackEnemy}
+											handleDealDamage={this.handleDealDamage}
 											checkAllEnemiesDead={this.checkAllEnemiesDead}
 										/>
 									))}
@@ -370,9 +349,10 @@ class Game extends React.Component {
 									)}
 								</div>
 								<PlayerMenu
+									playerInfo={this.state.authorizedPlayer}
 									textAddedToLog={this.state.textAddedToLog}
 									handleShowInventory={this.handleShowInventory}
-									handleAttackEnemy={this.handleAttackEnemy}
+									handleDealDamage={this.handleDealDamage}
 								/>
 							</section>
 						) : (
