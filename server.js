@@ -65,12 +65,13 @@ mongoose
 // If the user is valid, we'll have them in request.user in every route!
 // If not, it'll throw an error for us
 // all routes after will have the verified user
-app.use(verifyUser)
 
 app.get('/', (request, response) => {
 	response.status(200).send("You've enter the dungeon")
 	console.log('Dungeon running on 3001')
 })
+
+app.use(verifyUser)
 
 const PlayerRoute = require('./route-handlers/player-routes')
 
