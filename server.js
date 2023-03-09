@@ -20,8 +20,9 @@ const verifyUser = require('./auth/authorize.js')
 
 // socket io stuff //////////////////////////////
 
-const socketIo = require('socket.io')
-const io = socketIo(3000, {
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+io.listen(3000, {
 	cors: {
 		origin: [
 			'http://localhost:5173',
