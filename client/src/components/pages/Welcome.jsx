@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 import LoginButton from '../auth0/LoginButton'
 
 import { withAuth0 } from '@auth0/auth0-react'
-import Button from 'react-bootstrap//Button'
+import Button from 'react-bootstrap/Button'
 
 class Welcome extends React.Component {
 	constructor(props) {

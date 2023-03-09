@@ -170,12 +170,10 @@ class Game extends React.Component {
 		}
 
 		axios(config).then(response => {
-			console.log(response.data)
-
 			this.setState({
 				inFight: false,
 				gettingLoot: false,
-				authorizedPlayer: response.data.updatedPlayer,
+				authorizedPlayer: response.data,
 			})
 		})
 	}
@@ -208,6 +206,21 @@ class Game extends React.Component {
 				authorizedPlayer: newPlayerInfo,
 			})
 		}, 1000)
+	}
+
+	healPlayer = () => {
+		let healAmount = Math.round(Math.random() * 20) + 10;
+		let newPlayerInfo = this.state.authorizedPlayer;
+
+		newPlayerInfo.stats.health = newPlayerInfo.stats.health + healAmount;
+
+		if (newPlayerInfo.stats.health > 100) {
+			newPlayerInfo.stats.health = 100;
+		}
+
+		this.setState({
+			authorizedPlayer: newPlayerInfo
+		})
 	}
 
 	handleShowInventory = () => {
@@ -276,8 +289,8 @@ class Game extends React.Component {
 		return (
 			<>
 				{this.props.auth0.isAuthenticated ? (
-					<Container id='game_screen'>
-						<section id='encounter_screen'>
+					<Container id='game_screen' key='game_screen' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+						<Container id='encounter_screen' key='encounter_screen'>
 							{this.state.inFight ? (
 								<>
 									{this.state.enemies.map((enemy, i) => (
@@ -304,8 +317,9 @@ class Game extends React.Component {
 										''
 									)}
 								</>
-							) : (
+								) : (
 								<Container
+									key='choose_room_container'
 									id='choose_room_container'
 									style={{
 										display: 'flex',
@@ -329,11 +343,12 @@ class Game extends React.Component {
 										))}
 									</div>
 								</Container>
-							)}
-						</section>
+								)
+							}
+						</Container>
 
 						{this.state.authorizedPlayer ? (
-							<section id='player_screen'>
+							<Container id='player_screen' key='player_screen'>
 								{this.state.authorizedPlayer.stats.health !== 0 ? (
 									<>
 										<div id='party_members'>
@@ -344,6 +359,7 @@ class Game extends React.Component {
 												showInventory={this.state.showInventory}
 												handleShowInventory={this.handleShowInventory}
 												updateMapInfo={this.updateMapInfo}
+												healPlayer={this.healPlayer}
 											/>
 
 											{/* // get other player names from the SOCKET */}
@@ -367,7 +383,7 @@ class Game extends React.Component {
 								) : (
 									<h1>GAME OVER</h1>
 								)}
-							</section>
+							</Container>
 						) : (
 							'Player is traversing the dungeon!'
 						)}
