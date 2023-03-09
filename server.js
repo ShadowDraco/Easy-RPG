@@ -10,6 +10,12 @@ let port = process.env.PORT
 if (port == null || port == '') {
 	port = 8000
 }
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client', 'build')))
+	app.get('*', (req, resp) => {
+		resp.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+	})
+}
 const verifyUser = require('./auth/authorize.js')
 
 // socket io stuff //////////////////////////////
