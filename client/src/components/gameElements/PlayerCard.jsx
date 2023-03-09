@@ -12,7 +12,7 @@ class PlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.playerRef = React.createRef();
+		this.playerRef = React.createRef()
 
 		this.state = {
 			// showInventory: false,
@@ -28,7 +28,7 @@ class PlayerCard extends React.Component {
 					name: 'Health Potion',
 					description: 'Heals the player for 10 - 30 HP',
 					amount: 5,
-				}
+				},
 			],
 		}
 	}
@@ -51,24 +51,23 @@ class PlayerCard extends React.Component {
 		})
 	}
 
-	handleHealPlayer = (itemIdx) => {
-		let newInventory = this.state.inventory;
-		newInventory[itemIdx].amount--;
+	handleHealPlayer = itemIdx => {
+		let newInventory = this.state.inventory
+		newInventory[itemIdx].amount--
 
 		this.setState({
-			inventory: newInventory
+			inventory: newInventory,
 		})
 
-		this.props.healPlayer();
-		this.props.handleShowInventory();
+		this.props.healPlayer()
+		this.props.handleShowInventory()
 	}
-
 
 	// submits new player information
 
 	handleSubmit = async event => {
 		event.preventDefault()
-		console.log(event.target.character_name.value)
+
 		const res = await this.props.auth0.getIdTokenClaims()
 		const jwt = res.__raw
 		const config = {
@@ -82,7 +81,6 @@ class PlayerCard extends React.Component {
 			url: '/player/change-info',
 		}
 		axios(config).then(response => {
-			console.log(response)
 			this.props.updateAuthorizedPlayer(response.data)
 			this.handleEditCharacter()
 		})
@@ -90,14 +88,13 @@ class PlayerCard extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			maxHealth: this.props.authorizedPlayer.stats.health
+			maxHealth: this.props.authorizedPlayer.stats.health,
 		})
 	}
 
 	render() {
 		return (
 			<>
-
 				<Card
 					id={`player_0`}
 					className='player'
@@ -136,17 +133,18 @@ class PlayerCard extends React.Component {
 										{item.name} x{item.amount}
 									</Accordion.Header>
 									<Accordion.Body>
-										{item.name === 'Health Potion' ?
+										{item.name === 'Health Potion' ? (
 											<>
-											<Button onClick={() => this.handleHealPlayer(idx)}>Use</Button> {item.description} 
+												<Button onClick={() => this.handleHealPlayer(idx)}>
+													Use
+												</Button>{' '}
+												{item.description}
 											</>
-
-											:
+										) : (
 											<>
-											<Button>Use</Button> {item.description}
+												<Button>Use</Button> {item.description}
 											</>
-
-										}
+										)}
 									</Accordion.Body>
 								</Accordion.Item>
 							))}

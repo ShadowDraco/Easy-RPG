@@ -2,6 +2,8 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import TextLog from '../TextLog'
 import PlayerContextMenu from './PlayerContextMenu'
+import StartAParty from '../partyStuff/StartAParty'
+import PartyHud from '../partyStuff/PartyHud'
 
 class PlayerMenu extends React.Component {
 	constructor(props) {
@@ -16,8 +18,15 @@ class PlayerMenu extends React.Component {
 					playerInfo={this.props.playerInfo}
 					handleShowInventory={this.props.handleShowInventory}
 					handleDealDamage={this.props.handleDealDamage}
+					partyName={this.props.partyName}
+					inAParty={this.props.inAParty}
+					leaveParty={this.props.leaveParty}
+					createOrStartAParty={this.props.createOrStartAParty}
 				/>
-				<TextLog textAddedToLog={this.props.textAddedToLog} />
+				<TextLog
+					textAddedToLog={this.props.textAddedToLog}
+					sendChatMessage={this.props.sendChatMessage}
+				/>
 			</Container>
 		)
 	}
