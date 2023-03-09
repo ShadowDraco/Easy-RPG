@@ -14,7 +14,7 @@ class PlayerInfoMenu extends React.Component{
     return(
       <Container id='player_info_menu'>
         <h4>{this.props.playerInfo.username}</h4>
-        <h5>{this.props.playerInfo.class}</h5>
+        <h5>Class: {this.props.playerInfo.class} | Gold: {this.props.playerInfo.stats.gold}</h5>
         <div className='player_stat_display'>
           <div className="player_stat_block">
             <p>HP: xx</p>

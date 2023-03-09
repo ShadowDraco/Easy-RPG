@@ -11,9 +11,13 @@ import { withAuth0 } from '@auth0/auth0-react'
 class PlayerCard extends React.Component {
 	constructor(props) {
 		super(props)
+
+		this.playerRef = React.createRef();
+
 		this.state = {
 			showInventory: false,
 			showEditCharacter: false,
+			maxHealth: 1
 		}
 	}
 
@@ -35,7 +39,9 @@ class PlayerCard extends React.Component {
 		})
 	}
 
-	// submits new player character information
+
+	// submits new player information
+
 	handleSubmit = async event => {
 		event.preventDefault()
 		console.log(event.target.character_name.value)
@@ -58,9 +64,16 @@ class PlayerCard extends React.Component {
 		})
 	}
 
+	componentDidMount() {
+		this.setState({
+			maxHealth: this.props.authorizedPlayer.stats.health
+		})
+	}
+
 	render() {
 		return (
 			<>
+
 				<Card
 					id={`player_0`}
 					className='player'
@@ -75,12 +88,15 @@ class PlayerCard extends React.Component {
 
 						{/* calculate health percentage out of 100 to display accurate health bar */}
 						<ProgressBar
-							now={(this.props.authorizedPlayer.stats.health / 150) * 100}
+							now={this.props.authorizedPlayer.stats.health}
+							max={this.state.maxHealth}
+							label={`${this.props.authorizedPlayer.stats.health} / ${this.state.maxHealth}`}
 							variant='success'
 						/>
 					</Card.Body>
 				</Card>
 
+				{/* inventory modal  */}
 				<Modal
 					show={this.props.showInventory}
 					onHide={this.props.handleShowInventory}
@@ -107,6 +123,7 @@ class PlayerCard extends React.Component {
 					</Modal.Body>
 				</Modal>
 
+				{/* edit player character modal */}
 				<Modal
 					show={this.state.showEditCharacter}
 					onHide={this.handleEditCharacter}
