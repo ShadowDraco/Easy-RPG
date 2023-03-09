@@ -170,8 +170,6 @@ class Game extends React.Component {
 		}
 
 		axios(config).then(response => {
-			console.log(response.data)
-
 			this.setState({
 				inFight: false,
 				gettingLoot: false,
