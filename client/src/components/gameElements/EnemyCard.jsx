@@ -1,23 +1,24 @@
+
 import React from "react";
 import ReactDOM from 'react-dom';
 import Card from 'react-bootstrap/Card';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import PlayerCard from "./PlayerCard";
 
-class EnemyCard extends React.Component{
-  constructor(props){
-    super(props);
-    this.enemy0 = React.createRef();
-    this.state = {
-      enemyInfo: this.props.enemyInfo,
-      maxHP: this.props.enemyInfo.health,
-      currentHP: this.props.enemyInfo.health,
-      name: this.props.enemyInfo.name,
-      class: this.props.enemyInfo.class,
-      itemsDropped: ['health potion', 'mana potion', '3gold'],
-      variant: ''
-    }
-  }
+class EnemyCard extends React.Component {
+	constructor(props) {
+		super(props)
+		this.enemy0 = React.createRef()
+		this.state = {
+			enemyInfo: this.props.enemyInfo,
+			maxHP: this.props.enemyInfo.health,
+			currentHP: this.props.enemyInfo.health,
+			name: this.props.enemyInfo.name,
+			class: this.props.enemyInfo.class,
+			itemsDropped: ['health potion', 'mana potion', '3gold'],
+			variant: '',
+		}
+	}
 
   takeDamage = () => {
     if (this.state.isDead) {
@@ -71,6 +72,7 @@ class EnemyCard extends React.Component{
 
     )
   }
+
 }
 
-export default EnemyCard;
+export default EnemyCard

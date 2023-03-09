@@ -39,8 +39,9 @@ class Game extends React.Component {
 			],
 			enemyDeathCount: 0,
 			showEnemies: false,
-			inFight: true,
-			choosingNextRoom: false,
+			inFight: false,
+			gettingLoot: false,
+			choosingNextRoom: true,
 			roomsToChoose: '',
 			textAddedToLog: '',
 			messages: [{ from: 'Server', message: 'connected!' }],
@@ -76,17 +77,66 @@ class Game extends React.Component {
 				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 				url: '/player/get',
 			}
-
+			console.log(`${import.meta.env.VITE_SERVER_URL}`)
 			const playerAndRoom = await axios(config)
-			console.log(playerAndRoom.data)
+			console.log(playerAndRoom.data, 'component mounted')
 			this.setState({
 				authorizedPlayer: playerAndRoom.data.player,
 				room: playerAndRoom.data.room,
 				presentableRooms: playerAndRoom.data.presentableRooms,
 			})
+
+			console.log('room index: ' + this.state.room?.index)
+		}
+	}
+
+	playerMove = async (indexOfOldRoom, indexOfChosenRoom) => {
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: { oldIndex: indexOfOldRoom, index: indexOfChosenRoom },
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/move',
 		}
 
-		this.updateTextLog(this.state.room.descriptionElements[0])
+		axios(config).then(response => {
+			console.log(response.data.message)
+			if (response.data.clearedFloor) {
+				console.log('IT WORKED')
+				console.log(response.data.newPresentableRooms)
+				this.setState({
+					authorizedPlayer: response.data.updatedPlayer,
+					presentableRooms: response.data.newPresentableRooms,
+					room: response.data.room,
+					choosingNextRoom: true,
+					inFight: false,
+				})
+			} else {
+				this.setState({
+					authorizedPlayer: response.data.updatedPlayer,
+					presentableRooms: response.data.newPresentableRooms,
+				})
+			}
+			console.log(this.state.presentableRooms)
+		})
+	}
+
+	getRoomDescription = thing => {
+		let roomDescriptionPrefixes = [
+			`This room is dimly lit... you see something that vaguely looks like ${thing} on the other side.`,
+			`This room has a wretched odor. In the distance you see some ${thing} , but is it worth trying to obtain?`,
+			`Piles of bones lie scattered on the floor and old bloodstains cover the walls... you see what looks like ${thing} in a pile of remains. `,
+			`The air is cold and stale.. you feel uneasy at the sight of the ${thing} lying out in the open. Tread carefully. `,
+			`You see tattered walls and some ${thing} through a pale haze. You  begin to feel a bit nauseous. You probably should not linger here long.`,
+		]
+
+		return roomDescriptionPrefixes[
+			Math.floor(Math.random() * roomDescriptionPrefixes.length)
+		]
+
 	}
 
 	updateTextLog = text => {
@@ -97,17 +147,43 @@ class Game extends React.Component {
 
 	incrementEnemyDeathCount = () => {
 		this.setState({
-			enemyDeathCount: this.state.enemyDeathCount + 1 
+			enemyDeathCount: this.state.enemyDeathCount + 1,
 		})
 	}
 
 	checkAllEnemiesDead = () => {
 		console.log('check enemies dead firing')
-		if (this.state.enemyDeathCount === this.state.enemies.length - 1){
+		if (this.state.enemyDeathCount === this.state.enemies.length - 1) {
 			this.setState({
-				inFight: false
+				gettingLoot: true,
 			})
 		}
+	}
+
+
+	getLoot = async treasure => {
+		console.log('getting loot')
+
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: { amountOfGold: treasure.gold },
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/add-gold',
+		}
+
+		axios(config).then(response => {
+			console.log(response.data)
+
+			this.setState({
+				inFight: false,
+				gettingLoot: false,
+				authorizedPlayer: response.data.updatedPlayer,
+			})
+		})
 	}
 
 	handleDealDamage = () => {
@@ -148,12 +224,17 @@ class Game extends React.Component {
 		})
 	}
 
-	handleEnterNewRoom = roomInfo => {
 
-		console.log(roomInfo.descriptionElements[0]);
+	handleEnterNewRoom = async roomInfo => {
+		let oldRoomIdx = this.state.room.index
+
 		this.updateTextLog(
-			this.getRoomDescription(roomInfo.descriptionElements[Math.floor(Math.random() * roomInfo.descriptionElements.length)].toLowerCase())
-		);
+			this.getRoomDescription(
+				roomInfo.descriptionElements[
+					Math.floor(Math.random() * roomInfo.descriptionElements.length)
+				].toLowerCase()
+			)
+		)
 
 		this.setState({
 			room: roomInfo,
@@ -162,7 +243,12 @@ class Game extends React.Component {
 			enemyDeathCount: 0,
 			inFight: roomInfo.enemies.length > 0 ? true : false,
 		})
+
 		// this.playerMove(roomInfo.index)
+
+		console.log(oldRoomIdx, roomInfo.index)
+		await this.playerMove(oldRoomIdx, roomInfo.index)
+
 	}
 
 	// Socket Stuff
@@ -235,8 +321,19 @@ class Game extends React.Component {
 											checkAllEnemiesDead={this.checkAllEnemiesDead}
 											doDamageToPlayer={this.doDamageToPlayer}
 										/>
-									))
-									}
+									))}
+
+									{this.state.gettingLoot ? (
+										<Button
+											onClick={() => {
+												this.getLoot(this.state.room.treasure)
+											}}
+										>
+											GET LOOT
+										</Button>
+									) : (
+										''
+									)}
 								</>
 							) : (
 								<Container
@@ -250,15 +347,18 @@ class Game extends React.Component {
 								>
 									<h4>Choose Wisely...</h4>
 									<div id='choose_room_options'>
-										{this.state.presentableRooms.map((element, i) => (
+
+										{this.state.presentableRooms?.map((element, i) => (
 											<Button
-												key={i} 
-												room={element} 
-												onClick={() => this.handleEnterNewRoom(element)}
-											>Path</Button>
+												key={i}
+												room={element}
+												onClick={() => {
+													this.handleEnterNewRoom(element)
+												}}
+											>
+												Path
+											</Button>
 										))}
-										{/* <Button>Go Left?</Button>
-										<Button>Go Right?</Button> */}
 									</div>
 								</Container>
 							)}
@@ -305,7 +405,7 @@ class Game extends React.Component {
 								}
 							</section>
 						) : (
-							'Player is coming out of the dungeon!'
+							'Player is traversing the dungeon!'
 						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
 					</Container>

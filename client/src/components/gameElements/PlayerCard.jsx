@@ -39,7 +39,9 @@ class PlayerCard extends React.Component {
 		})
 	}
 
+
 	// submits new player information
+
 	handleSubmit = async event => {
 		event.preventDefault()
 		console.log(event.target.character_name.value)
@@ -55,12 +57,11 @@ class PlayerCard extends React.Component {
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 			url: '/player/change-info',
 		}
-		axios(config)
-			.then(response => {
-				console.log(response);
-				this.props.updateAuthorizedPlayer(response.data);
-				this.handleEditCharacter();
-			})
+		axios(config).then(response => {
+			console.log(response)
+			this.props.updateAuthorizedPlayer(response.data)
+			this.handleEditCharacter()
+		})
 	}
 
 	componentDidMount() {
@@ -72,8 +73,12 @@ class PlayerCard extends React.Component {
 	render() {
 		return (
 			<>
-				{/* displayed player card */}
-				<Card className='player' onClick={this.props.updateMapInfo}>
+
+				<Card
+					id={`player_0`}
+					className='player'
+					onClick={this.props.updateMapInfo}
+				>
 					<Card.Header>
 						{this.props.authorizedPlayer.username}{' '}
 						<Button onClick={this.handleEditCharacter}>Edit</Button>

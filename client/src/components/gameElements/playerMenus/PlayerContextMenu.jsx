@@ -16,6 +16,7 @@ class PlayerContextMenu extends React.Component {
 				<PlayerInfoMenu
 					playerInfo={this.props.playerInfo}
 				></PlayerInfoMenu>
+
 				<PlayerActionMenu
 					handleShowInventory={this.props.handleShowInventory}
 					handleDealDamage={this.props.handleDealDamage}
