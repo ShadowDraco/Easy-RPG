@@ -6,28 +6,30 @@ class TextLog extends React.Component {
 		super(props)
 
 		this.state = {
-			log: ['sample text', 'sample text 2'],
+			log: [],
 		}
 	}
 
 	addToLog = () => {
-		let newLog = [...this.state.log]
-		newLog.push(this.props.textAddedToLog)
+		let newLog = [this.props.textAddedToLog, ...this.state.log]
 
 		this.setState({
 			log: newLog,
 		})
 	}
 
-	componentDidMount() {
-		this.addToLog()
+	componentDidUpdate(prevProps) {
+		if(prevProps.textAddedToLog !== this.props.textAddedToLog) {
+			this.addToLog();
+		}
 	}
+
 
 	render() {
 		return (
-			<Container id='text_log'>
-				{this.state.log.map(element => (
-					<p>{element}</p>
+			<Container id='text_log' style={{textAlign: 'left'}}>
+				{this.state.log.map((element, i) => (
+					<p key={i} style={{margin: '0.25rem 0'}}>{element}</p>
 				))}
 			</Container>
 		)

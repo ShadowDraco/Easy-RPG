@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
 
 import Container from 'react-bootstrap/Container'
 import { withAuth0 } from '@auth0/auth0-react'
@@ -12,8 +13,6 @@ import StartAParty from '../gameElements/partyStuff/StartAParty'
 import PartyHud from '../gameElements/partyStuff/PartyHud'
 import socket from './socket'
 import Button from 'react-bootstrap/esm/Button'
-import Modal from 'react-bootstrap/Modal'
-import Card from 'react-bootstrap/Card'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -21,13 +20,49 @@ class Game extends React.Component {
 		this.state = {
 			inAParty: false,
 			showInventory: false,
-			enemies: [],
+			enemies: [
+				{
+					name: 'Goblin',
+					class: 'Fighter',
+					health: 100,
+				},
+				{
+					name: 'Skeleton',
+					class: 'Necromancer',
+					health: 80,
+				},
+				{
+					name: 'Slime',
+					class: 'Slime',
+					health: 150,
+				},
+			],
+			enemyDeathCount: 0,
 			showEnemies: false,
-			inFight: true,
-			choosingNextRoom: false,
+			inFight: false,
+			gettingLoot: false,
+			choosingNextRoom: true,
 			roomsToChoose: '',
 			textAddedToLog: '',
+			messages: [{ from: 'Server', message: 'connected!' }],
 		}
+	}
+
+	getRoomDescription = (thing) => {
+		let roomDescriptionPrefixes = [
+			`This room is dimly lit... you see something that vaguely looks like ${thing} on the other side.`,
+			`This room has a wretched odor. In the distance you see some ${thing} , but is it worth trying to obtain?`,
+			`Piles of bones lie scattered on the floor and old bloodstains cover the walls... you see what looks like ${thing} in a pile of remains. `,
+			`The air is cold and stale.. you feel uneasy at the sight of the ${thing} lying out in the open. Tread carefully. `,
+			`You see tattered walls and some ${thing} through a pale haze. You  begin to feel a bit nauseous. You probably should not linger here long.`
+		]
+
+		return roomDescriptionPrefixes[Math.floor(Math.random() * roomDescriptionPrefixes.length)]
+
+	}
+
+	updateAuthorizedPlayer = responsedata => {
+		this.setState({ authorizedPlayer: responsedata })
 	}
 
 	// get the user
@@ -42,80 +77,145 @@ class Game extends React.Component {
 				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 				url: '/player/get',
 			}
-
+			console.log(`${import.meta.env.VITE_SERVER_URL}`)
 			const playerAndRoom = await axios(config)
-			console.log(playerAndRoom.data)
+			console.log(playerAndRoom.data, 'component mounted')
 			this.setState({
 				authorizedPlayer: playerAndRoom.data.player,
 				room: playerAndRoom.data.room,
-				presentableRooms: playerAndRoom.presentableRooms,
+				presentableRooms: playerAndRoom.data.presentableRooms,
 			})
 
-			this.updateTextLog(playerAndRoom.data.room.descriptionElements[0])
+			console.log('room index: ' + this.state.room?.index)
 		}
 	}
 
-	getNewMap = async () => {
+	playerMove = async (indexOfOldRoom, indexOfChosenRoom) => {
 		const res = await this.props.auth0.getIdTokenClaims()
 
 		const jwt = res.__raw
 		const config = {
 			headers: { Authorization: `Bearer ${jwt}` },
-			method: 'get',
+			method: 'put',
+			data: { oldIndex: indexOfOldRoom, index: indexOfChosenRoom },
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-			url: '/player/new-map',
+			url: '/player/move',
 		}
 
 		axios(config).then(response => {
-			console.log(response)
-			this.setState({ choosingNextRoom: true, room: response })
+			console.log(response.data.message)
+			if (response.data.clearedFloor) {
+				console.log('IT WORKED')
+				console.log(response.data.newPresentableRooms)
+				this.setState({
+					authorizedPlayer: response.data.updatedPlayer,
+					presentableRooms: response.data.newPresentableRooms,
+					room: response.data.room,
+					choosingNextRoom: true,
+					inFight: false,
+				})
+			} else {
+				this.setState({
+					authorizedPlayer: response.data.updatedPlayer,
+					presentableRooms: response.data.newPresentableRooms,
+				})
+			}
+			console.log(this.state.presentableRooms)
 		})
 	}
 
-	getUpdatedMapInfo = async () => {
-		const res = await this.props.auth0.getIdTokenClaims()
-		const jwt = res.__raw
-		const config = {
-			headers: { Authorization: `Bearer ${jwt}` },
-			method: 'get',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-			url: '/player/get',
-		}
+	getRoomDescription = thing => {
+		let roomDescriptionPrefixes = [
+			`This room is dimly lit... you see something that vaguely looks like ${thing} on the other side.`,
+			`This room has a wretched odor. In the distance you see some ${thing} , but is it worth trying to obtain?`,
+			`Piles of bones lie scattered on the floor and old bloodstains cover the walls... you see what looks like ${thing} in a pile of remains. `,
+			`The air is cold and stale.. you feel uneasy at the sight of the ${thing} lying out in the open. Tread carefully. `,
+			`You see tattered walls and some ${thing} through a pale haze. You  begin to feel a bit nauseous. You probably should not linger here long.`,
+		]
 
-		axios(config).then(response => console.log(response))
-	}
+		return roomDescriptionPrefixes[
+			Math.floor(Math.random() * roomDescriptionPrefixes.length)
+		]
 
-	postUpdatedMapInfo = async () => {
-		const res = await this.props.auth0.getIdTokenClaims()
-		const jwt = res.__raw
-		const config = {
-			headers: { Authorization: `Bearer ${jwt}` },
-			method: 'post',
-			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-			url: '/player/get',
-		}
-
-		axios(config).then(response => console.log(response))
 	}
 
 	updateTextLog = text => {
+			this.setState({
+				textAddedToLog: text,
+			})
+	}
+
+	incrementEnemyDeathCount = () => {
 		this.setState({
-			textAddedToLog: text,
+			enemyDeathCount: this.state.enemyDeathCount + 1,
 		})
 	}
 
-	handleAttackEnemy = () => {
-		return 8
+	checkAllEnemiesDead = () => {
+		console.log('check enemies dead firing')
+		if (this.state.enemyDeathCount === this.state.enemies.length - 1) {
+			this.setState({
+				gettingLoot: true,
+			})
+		}
 	}
 
-	handleShowEnemies = () => {
-		enemyArr = document.getElementsByClassName('enemy')
-		console.log(enemyArr)
 
-		this.setState({
-			showEnemies: !this.state.showEnemies,
-			enemies: [...enemyArr],
+	getLoot = async treasure => {
+		console.log('getting loot')
+
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: { amountOfGold: treasure.gold },
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/add-gold',
+		}
+
+		axios(config).then(response => {
+			console.log(response.data)
+
+			this.setState({
+				inFight: false,
+				gettingLoot: false,
+				authorizedPlayer: response.data.updatedPlayer,
+			})
 		})
+	}
+
+	handleDealDamage = () => {
+		let damage = Math.floor(Math.random() * 20)+10;
+		// get attacker's ATK
+		// get defender's DEF
+		// ATK - DEF = Damage Dealt
+		// return damage dealt
+		this.updateTextLog(`Player deals ${damage} to the enemy!`)
+		return damage
+	}
+
+	doDamageToPlayer = () => {
+		let damage = Math.floor(Math.random() * 10);
+		setTimeout(() => {
+			let newPlayerInfo = this.state.authorizedPlayer;
+
+			newPlayerInfo.stats.health = newPlayerInfo.stats.health - damage;
+			newPlayerInfo.stats.gold = newPlayerInfo.stats.gold + 5;
+
+			if (newPlayerInfo.stats.health < 0) {
+				newPlayerInfo.stats.health = 0;
+			}
+
+			this.updateTextLog(`Enemy deals ${damage} damage to the player!`)
+	
+			this.setState({
+				authorizedPlayer: newPlayerInfo
+			})
+
+		}, 1000)
+
 	}
 
 	handleShowInventory = () => {
@@ -124,16 +224,59 @@ class Game extends React.Component {
 		})
 	}
 
+
+	handleEnterNewRoom = async roomInfo => {
+		let oldRoomIdx = this.state.room.index
+
+		this.updateTextLog(
+			this.getRoomDescription(
+				roomInfo.descriptionElements[
+					Math.floor(Math.random() * roomInfo.descriptionElements.length)
+				].toLowerCase()
+			)
+		)
+
+		this.setState({
+			room: roomInfo,
+			choosingNextRoom: false,
+			enemies: roomInfo.enemies,
+			enemyDeathCount: 0,
+			inFight: roomInfo.enemies.length > 0 ? true : false,
+		})
+
+		// this.playerMove(roomInfo.index)
+
+		console.log(oldRoomIdx, roomInfo.index)
+		await this.playerMove(oldRoomIdx, roomInfo.index)
+
+	}
+
 	// Socket Stuff
 
 	createOrStartAParty = partyName => {
 		this.setState({ inAParty: true, partyName: partyName })
 		// join a room
 		socket.connect()
+		socket.emit('join-room', partyName)
+		socket.on('receive-message', (from, message) => {
+			console.log('receiving message')
+			this.receiveChatMessage(from, message)
+		})
 	}
 
-	sendChatMessage = () => {
-		//
+	sendChatMessage = message => {
+		socket.emit(
+			'send-message',
+			this.state.partyName,
+			this.state.authorizedPlayer.username,
+			message
+		)
+	}
+
+	receiveChatMessage = (from, message) => {
+		this.setState({
+			messages: [...this.state.messages, { from: from, message: message }],
+		})
 	}
 
 	updateParty = () => {
@@ -159,6 +302,8 @@ class Game extends React.Component {
 								<PartyHud
 									partyName={this.state.partyName}
 									leaveParty={this.leaveParty}
+									messages={this.state.messages}
+									sendChatMessage={this.sendChatMessage}
 								/>
 							)}
 						</section>
@@ -166,9 +311,29 @@ class Game extends React.Component {
 						<section id='encounter_screen'>
 							{this.state.inFight ? (
 								<>
-									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
-									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
-									<EnemyCard handleAttackEnemy={this.handleAttackEnemy} />
+									{this.state.enemies.map((enemy, i) => (
+										<EnemyCard
+											key={i}
+											id={`enemy_${i}`}
+											enemyInfo={enemy}
+                      incrementEnemyDeathCount={this.incrementEnemyDeathCount}
+											handleDealDamage={this.handleDealDamage}
+											checkAllEnemiesDead={this.checkAllEnemiesDead}
+											doDamageToPlayer={this.doDamageToPlayer}
+										/>
+									))}
+
+									{this.state.gettingLoot ? (
+										<Button
+											onClick={() => {
+												this.getLoot(this.state.room.treasure)
+											}}
+										>
+											GET LOOT
+										</Button>
+									) : (
+										''
+									)}
 								</>
 							) : (
 								<Container
@@ -182,23 +347,39 @@ class Game extends React.Component {
 								>
 									<h4>Choose Wisely...</h4>
 									<div id='choose_room_options'>
-										<Button>Go Left?</Button>
-										<Button>Go Right?</Button>
+
+										{this.state.presentableRooms?.map((element, i) => (
+											<Button
+												key={i}
+												room={element}
+												onClick={() => {
+													this.handleEnterNewRoom(element)
+												}}
+											>
+												Path
+											</Button>
+										))}
 									</div>
 								</Container>
 							)}
 						</section>
 
-						{this.state.authorizedPlayer ? (
+						{this.state.authorizedPlayer ? 
+						(
 							<section id='player_screen'>
-								<div id='party_members'>
+								{this.state.authorizedPlayer.stats.health !== 0 ?
+									<>
+									<div id='party_members'>
+
 									<PlayerCard
+										updateAuthorizedPlayer={this.updateAuthorizedPlayer}
 										authorizedPlayer={this.state.authorizedPlayer}
 										key='my_player'
 										showInventory={this.state.showInventory}
 										handleShowInventory={this.handleShowInventory}
 										updateMapInfo={this.updateMapInfo}
 									/>
+
 									{/* // get other player names from the SOCKET */}
 									{/* if party session render more players */}
 									{this.state.inAParty ? (
@@ -206,32 +387,31 @@ class Game extends React.Component {
 											{/* <PartyPlayerCard /> */}
 											{/* <PartyPlayerCard /> */}
 										</>
-									) : (
-										''
+									) 
+									: 
+									(
+										null//if no authorized player, dont render any player cards
 									)}
 								</div>
 								<PlayerMenu
+									playerInfo={this.state.authorizedPlayer}
 									textAddedToLog={this.state.textAddedToLog}
 									handleShowInventory={this.handleShowInventory}
-									handleAttackEnemy={this.handleAttackEnemy}
+									handleDealDamage={this.handleDealDamage}
 								/>
+								</>
+									:
+								<h1>GAME OVER</h1>
+								}
 							</section>
 						) : (
-							'Player is coming out of the dungeon!'
+							'Player is traversing the dungeon!'
 						)}
 						{/* <h1>Create your character {this.props.auth0.user.name}!</h1> */}
 					</Container>
 				) : (
 					<NotAuthenticated />
 				)}
-
-				<Modal show={this.state.showEnemies} onHide={this.handleShowEnemies}>
-					<Modal.Body>
-						{this.state.enemies.map(element => {
-							element
-						})}
-					</Modal.Body>
-				</Modal>
 			</>
 		)
 	}
