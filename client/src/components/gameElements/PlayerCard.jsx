@@ -51,18 +51,21 @@ class PlayerCard extends React.Component {
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 			url: '/player/change-info',
 		}
-		axios(config)
-			.then(response => {
-				console.log(response);
-				this.props.updateAuthorizedPlayer(response.data);
-				this.handleEditCharacter();
-			})
+		axios(config).then(response => {
+			console.log(response)
+			this.props.updateAuthorizedPlayer(response.data)
+			this.handleEditCharacter()
+		})
 	}
 
 	render() {
 		return (
 			<>
-				<Card id={`player_0`} className='player' onClick={this.props.updateMapInfo}>
+				<Card
+					id={`player_0`}
+					className='player'
+					onClick={this.props.updateMapInfo}
+				>
 					<Card.Header>
 						{this.props.authorizedPlayer.username}{' '}
 						<Button onClick={this.handleEditCharacter}>Edit</Button>

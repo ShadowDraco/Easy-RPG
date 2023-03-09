@@ -18,6 +18,13 @@ app.use(function (req, res, next) {
 	next()
 })
 
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client', 'dist')))
+	app.get('*', (req, resp) => {
+		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+	})
+}
+
 let port = process.env.PORT
 if (port == null || port == '') {
 	port = 8000
@@ -88,13 +95,6 @@ app.get('/', (request, response) => {
 	response.status(200).send("You've enter the dungeon")
 	console.log('Dungeon running on 3001')
 })
-
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'client', 'dist')))
-	app.get('*', (req, resp) => {
-		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-	})
-}
 
 app.use(verifyUser)
 
