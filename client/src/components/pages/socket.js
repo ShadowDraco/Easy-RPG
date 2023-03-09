@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 
 const URL = 'https://easy-rpg-backend.herokuapp.com/'
 
-const socket = io(URL, {
+const socket = io({
 	autoConnect: false,
 })
 
