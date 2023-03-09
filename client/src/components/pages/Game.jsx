@@ -67,6 +67,7 @@ class Game extends React.Component {
 
 	// get the user
 	async componentDidMount() {
+		console.log(this.props.auth0)
 		if (this.props.auth0.isAuthenticated) {
 			const res = await this.props.auth0.getIdTokenClaims()
 
@@ -77,7 +78,7 @@ class Game extends React.Component {
 				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 				url: '/player/get',
 			}
-
+			console.log(config)
 			const playerAndRoom = await axios(config)
 
 			this.setState({
