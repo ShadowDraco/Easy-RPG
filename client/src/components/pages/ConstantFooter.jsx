@@ -11,9 +11,9 @@ class ConstantFooter extends React.Component {
 
 	render() {
 		return (
-			<Container fluid className='footer w-100'>
+			<Container fluid className='footer w-100 p-0'>
 				<section className='main-footer p-1 w-100'>
-					<div className='container p-3 w-100'>
+					<div className='container p-3 w-100 pb-0' >
 						<div className='row w-100'>
 							<section className='ul'>
 								<div className='col w-100' style={{ display: 'flex' }}>
@@ -37,14 +37,14 @@ class ConstantFooter extends React.Component {
 										className='list-unstyled w-100'
 										style={{ display: 'flex' }}
 									>
-										<li className='w-100 text-lg'>Github</li>
-										<li className='w-100'>Github</li>
-										<li className='w-100'>Github</li>
+										<li className='w-100 text-lg'><a href=' https://github.com/ShadowDraco' target="_blank">GitHub</a></li>
+										<li className='w-100'><a href='https://github.com/darranholmes74' target="_blank">GitHub</a></li>
+										<li className='w-100'><a href='https://github.com/KMArtwork' target="_blank">GitHub</a></li>
 									</ul>
 								</div>
 							</section>
 						</div>
-						<div className='footer-bottom my-5'>
+						<div className='footer-bottom my-5 mb-0'>
 							<p className='test-xs-center'>
 								&copy;{this.state.currentTime} Copyright: Easy-RPG.com
 							</p>
