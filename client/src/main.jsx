@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 					//scope: 'read:current_user update:current_user_metadata',
 				}}
 			>
-				<App style={{ backgroundImage: '/public/MSL.jpg' }} />
+				<App />
 			</Auth0Provider>
 		</ChakraProvider>
 	</React.StrictMode>

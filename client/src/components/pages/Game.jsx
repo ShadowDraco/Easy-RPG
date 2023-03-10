@@ -440,7 +440,7 @@ class Game extends React.Component {
 														{/* <PartyPlayerCard /> */}
 														{/* <PartyPlayerCard /> */}
 													</>
-												) : null //if no authorized player, dont render any player cards
+												) : null //if no authorized player, don't render any player cards
 											}
 										</div>
 
