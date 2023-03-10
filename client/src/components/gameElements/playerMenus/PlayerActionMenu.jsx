@@ -1,33 +1,44 @@
-import React from "react";
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import ProgressBar from "react-bootstrap/ProgressBar";
+import React from 'react'
+
+import Button from 'react-bootstrap/Button'
+
+import StartAParty from '../partyStuff/StartAParty'
+import PartyHud from '../partyStuff/PartyHud'
 
 class PlayerActionMenu extends React.Component {
-  constructor(props){
-    super(props);
+	constructor(props) {
+		super(props)
 
-    this.sate = {
+		this.sate = {}
+	}
 
-    }
-  }
-
-  render() {
-    return(
-      <>
-        <Container id='player_action_menu'>
-          <ProgressBar variant="success" now={50}/>
-          <ProgressBar variant="primary" now={50}/>
-          <ProgressBar variant="warning" now={50}/>
-          <div id='action_buttons'>
-            <Button size='lg'>Attack</Button>
-            <Button size='lg'>Inventory</Button>
-            <Button size='lg'>Run</Button>
-          </div>
-        </Container>
-      </>
-    )
-  }
+	render() {
+		return (
+			<>
+				<div id='player_action_menu' className='p-0 m-0'>
+					<div id='action_buttons'>
+						<Button size='md' onClick={this.props.handleShowInventory}>
+							Inventory
+						</Button>
+					</div>
+					<section id='party_screen' className='my-2 mx-2 w-100'>
+						{!this.props.inAParty ? (
+							<StartAParty
+								createOrStartAParty={this.props.createOrStartAParty}
+							/>
+						) : (
+							<PartyHud
+								partyName={this.props.partyName}
+								leaveParty={this.props.leaveParty}
+								messages={this.props.messages}
+								sendChatMessage={this.props.sendChatMessage}
+							/>
+						)}
+					</section>
+				</div>
+			</>
+		)
+	}
 }
 
-export default PlayerActionMenu;
+export default PlayerActionMenu
