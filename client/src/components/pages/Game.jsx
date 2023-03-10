@@ -84,7 +84,6 @@ class Game extends React.Component {
 		if (this.props.auth0.isAuthenticated) {
 			const res = await this.props.auth0.getIdTokenClaims()
 
-			console.log(this.state.authorizedPlayer)
 			const jwt = res.__raw
 			const config = {
 				headers: { Authorization: `Bearer ${jwt}` },
@@ -117,29 +116,36 @@ class Game extends React.Component {
 			url: '/player/move',
 		}
 
-		axios(config).then(response => {
-			if (response.data.clearedFloor) {
-				this.updateTextLog(
-					'You begin to enter a new floor of the dungeon...',
-					true
-				)
-				this.setState({
-					authorizedPlayer: response.data.updatedPlayer,
-					presentableRooms: response.data.newPresentableRooms,
-					room: response.data.room,
-					choosingNextRoom: true,
-					inFight: false,
-					highestGold: response.data.updatedPlayer.highestGold,
-				})
-			} else {
-				this.updateTextLog('This room looks clear!', false)
-				this.setState({
-					authorizedPlayer: response.data.updatedPlayer,
-					presentableRooms: response.data.newPresentableRooms,
-					highestGold: response.data.updatedPlayer.highestGold,
-				})
-			}
-		})
+		console.log(indexOfOldRoom, indexOfChosenRoom)
+
+		axios(config)
+			.then(response => {
+				if (response.data.clearedFloor) {
+					this.updateTextLog(
+						'You begin to enter a new floor of the dungeon...',
+						true
+					)
+					this.setState({
+						authorizedPlayer: response.data.updatedPlayer,
+						presentableRooms: response.data.newPresentableRooms,
+						room: response.data.room,
+						choosingNextRoom: true,
+						inFight: false,
+						highestGold: response.data.updatedPlayer.highestGold,
+					})
+				} else {
+					this.updateTextLog('This room looks clear!', false)
+					this.setState({
+						authorizedPlayer: response.data.updatedPlayer,
+						presentableRooms: response.data.newPresentableRooms,
+						highestGold: response.data.updatedPlayer.highestGold,
+					})
+				}
+			})
+			.catch(error => {
+				console.log('you got soft locked.... /: sorry!!')
+				this.resetPlayer()
+			})
 	}
 
 	getRoomDescription = thing => {
@@ -185,6 +191,7 @@ class Game extends React.Component {
 			method: 'put',
 			data: {
 				amountOfGold: treasure.gold,
+				amountOfPotions: this.state.authorizedPlayer.stats.potions,
 				newPlayerHealth: this.state.authorizedPlayer.stats.health,
 			},
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
@@ -235,19 +242,40 @@ class Game extends React.Component {
 		this.setState({ authorizedPlayer: responseData })
 	}
 
-	healPlayer = () => {
+	syncPlayerWithDataBase = async newPlayerInfo => {
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: {
+				newPlayerInfo: newPlayerInfo,
+			},
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/sync-player',
+		}
+
+		axios(config).then(response => {
+			this.setState({
+				authorizedPlayer: response.data,
+				highestGold: response.data.highestGold,
+			})
+		})
+	}
+
+	healPlayer = async () => {
 		let healAmount = Math.round(Math.random() * 20) + 10
-		let newPlayerInfo = this.state.authorizedPlayer
+		let newPlayerInfo = { ...this.state.authorizedPlayer }
 
 		newPlayerInfo.stats.health = newPlayerInfo.stats.health + healAmount
+		newPlayerInfo.stats.potions = newPlayerInfo.stats.potions -= 1
 
 		if (newPlayerInfo.stats.health > 100) {
 			newPlayerInfo.stats.health = 100
 		}
 
-		this.setState({
-			authorizedPlayer: newPlayerInfo,
-		})
+		let syncedPlayer = await this.syncPlayerWithDataBase(newPlayerInfo)
 	}
 
 	handleShowInventory = () => {
@@ -259,6 +287,12 @@ class Game extends React.Component {
 	handleEnterNewRoom = async roomInfo => {
 		let oldRoomIdx = this.state.room.index
 
+		if (oldRoomIdx === roomInfo.index) {
+			this.updateTextLog(
+				'Am I going in a circle? This room looks familiar...',
+				false
+			)
+		}
 		this.updateTextLog(
 			this.getRoomDescription(
 				roomInfo.descriptionElements[
@@ -400,6 +434,7 @@ class Game extends React.Component {
 												updateMapInfo={this.updateMapInfo}
 												healPlayer={this.healPlayer}
 												highestGold={this.state.highestGold}
+												resetPlayer={this.resetPlayer}
 												currentGold={this.state.authorizedPlayer.stats.gold}
 											/>
 
@@ -411,7 +446,7 @@ class Game extends React.Component {
 														{/* <PartyPlayerCard /> */}
 														{/* <PartyPlayerCard /> */}
 													</>
-												) : null //if no authorized player, dont render any player cards
+												) : null //if no authorized player, don't render any player cards
 											}
 										</div>
 

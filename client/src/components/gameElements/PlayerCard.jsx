@@ -17,7 +17,7 @@ class PlayerCard extends React.Component {
 		this.state = {
 			// showInventory: false,
 			showEditCharacter: false,
-			maxHealth: 1,
+			maxHealth: 100,
 			inventory: [
 				{
 					name: 'Potion of Placeholding',
@@ -27,7 +27,7 @@ class PlayerCard extends React.Component {
 				{
 					name: 'Health Potion',
 					description: 'Heals the player for 10 - 30 HP',
-					amount: 5,
+					amount: this.props.authorizedPlayer.stats.potions,
 				},
 			],
 		}
@@ -88,7 +88,7 @@ class PlayerCard extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			maxHealth: this.props.authorizedPlayer.stats.health,
+			maxHealth: 100,
 		})
 	}
 
@@ -179,15 +179,22 @@ class PlayerCard extends React.Component {
 								id='character_name'
 								placeholder='Character Name'
 							></Form.Control>
-							<Form.Select type='option' id='character_class'>
-								<option value='archer'>Astrological Archer</option>
-								<option value='barbarian'>Galactic Barbarian</option>
-								<option value='druid'>Interstellar Druid</option>
-								<option value='rouge'>Cosmic Rouge</option>
-								<option value='warrior'>Solar Warrior</option>
-								<option value='wizard'>Space Wizard</option>
+							<Form.Select type='option' id='character_class' className='my-2'>
+								<option value='Astrological Archer'>Astrological Archer</option>
+								<option value='Galactic Barbarian'>Galactic Barbarian</option>
+								<option value='Interstellar Druid'>Interstellar Druid</option>
+								<option value='Cosmic Rouge'>Cosmic Rouge</option>
+								<option value='Solar Warrior'>Solar Warrior</option>
+								<option value='Space Wizard'>Space Wizard</option>
 							</Form.Select>
 							<Button type='submit'>Save</Button>
+							<Button
+								className='mx-5 my-3 reset-character'
+								href='/'
+								onClick={this.props.resetPlayer}
+							>
+								Reset your character
+							</Button>
 						</Form>
 					</Modal.Body>
 				</Modal>
