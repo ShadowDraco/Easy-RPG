@@ -6,6 +6,7 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Button from 'react-bootstrap/Button'
+import Image from 'react-bootstrap/Image'
 
 class ConstantHeader extends React.Component {
 	constructor(props) {
@@ -17,7 +18,14 @@ class ConstantHeader extends React.Component {
 		return (
 			<Navbar className='Navbar p-3' bg='dark' variant='dark'>
 				<Container className='my-5 p-2'>
-					<Navbar.Brand href='/'>Easy-RPG</Navbar.Brand>
+					<Navbar.Brand href='/'>
+						<Image
+							src='/logo.png'
+							alt='Game logo!'
+							width='150'
+							height='70'
+						></Image>
+					</Navbar.Brand>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
 					<Navbar.Collapse id='basic-navbar-nav p-3'>
 						<Nav className='Nav p-3'>
