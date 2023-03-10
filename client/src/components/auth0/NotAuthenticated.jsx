@@ -10,7 +10,7 @@ class NotAuthenticated extends React.Component {
 	render() {
 		return (
 			<Container>
-				<a href='http://127.0.0.1:5173/'>
+				<a href='/'>
 					<h1>Please log in to continue!</h1>
 				</a>
 			</Container>
