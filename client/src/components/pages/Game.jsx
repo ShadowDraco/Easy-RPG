@@ -134,7 +134,6 @@ class Game extends React.Component {
 						highestGold: response.data.updatedPlayer.highestGold,
 					})
 				} else {
-					this.updateTextLog('This room looks clear!', false)
 					this.setState({
 						authorizedPlayer: response.data.updatedPlayer,
 						presentableRooms: response.data.newPresentableRooms,
@@ -300,6 +299,8 @@ class Game extends React.Component {
 			),
 			false
 		)
+
+		this.updateTextLog('This room looks clear!', false)
 
 		this.setState({
 			room: roomInfo,
