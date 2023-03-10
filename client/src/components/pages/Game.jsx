@@ -224,7 +224,6 @@ class Game extends React.Component {
 			let newPlayerInfo = this.state.authorizedPlayer
 
 			newPlayerInfo.stats.health = newPlayerInfo.stats.health - damage
-			newPlayerInfo.stats.gold = newPlayerInfo.stats.gold + 5
 
 			if (newPlayerInfo.stats.health < 0) {
 				newPlayerInfo.stats.health = 0
