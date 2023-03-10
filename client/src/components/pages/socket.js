@@ -1,17 +1,13 @@
 import io from 'socket.io-client'
 
-const URL = 'http://localhost:3000'
+const URL = 'https://easy-rpg-backend.herokuapp.com/'
 
-const socket = io(URL, {
-	autoConnect: false,
-})
-
-var mySocketId
+const socket = io(URL)
 
 // create a socket connection function
 
-socket.on('connect', () => console.log('connected with:', socket.id))
-socket.on('connect_error', () => {
+socket.on('connect', () => console.log('connected to socket'))
+socket.on('connect_error', error => {
 	console.log('connect error')
 	socket.disconnect()
 })

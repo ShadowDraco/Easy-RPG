@@ -1,142 +1,285 @@
 #root {
-  /* max-width: 1280px; */
-  /* margin: 0 auto; */
-  /* padding: 2rem; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
+	/* max-width: 1280px; */
+	/* margin: 0 auto; */
+	/* padding: 2rem; */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	box-sizing: border-box;
+	color: white;
 }
 
 .container {
-  /* override bootstrap default margin cause its dumb */
-  margin: 0 2rem !important;
-  max-width: 90% !important;
+	/* override bootstrap default margin cause its dumb */
+	margin: 0 2rem !important;
+	max-width: 90% !important;
 }
 
 body {
-  justify-content: center;
+	justify-content: center;
 }
 
-div.player, div.enemy {
-  margin: 1rem;
-  width: 15rem;
+div.player,
+div.enemy {
+	margin: 1rem;
+	width: 15rem;
 }
 
 div.player.card {
-  width: 30%;
-  height: 200px;
+	/* width: 30%; */
+	/* height: 200px; */
 }
 
 .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .card-body > * {
-  margin: 1rem 0;
+	margin: 1rem 0;
 }
 
 #game_screen {
-  display: flex;
-  flex-direction: column;
-  background-color: cadetblue;
-  height: 95vh;
-  width: 100vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly !important;
+	background-color: rgba(88, 70, 29, 0.493);
+	height: 90vh;
+	max-width: 100%;
+	min-width: 100%;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 #encounter_screen {
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-content: flex-start;
+	max-height: 50%;
+	display: flex;
+	justify-content: center;
+	align-content: flex-start;
 }
 
 #player_screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  height: 50%;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	max-height: 50%;
+	width: 100%;
 }
 
 #party_members {
-  display: flex;
+	display: flex;
 }
 
 .player_actions > * {
-  margin: 0 0.5rem;
+	margin: 0 0.5rem;
 }
 
 #text_log {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  float: right;
-  width: 35%;
-  height: 100%;
-  padding: 0 !important;
+	/* position: relative; */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+	overflow-x: hidden;
+	/* float: right; */
+	width: 90%;
+	height: 100%;
+	color: white;
+	padding: 0 !important;
+	margin: 0 !important;
+	/* margin-top: 2rem !important; */
+}
+
+#text_log_messages {
+	height: 80%;
+	overflow-y: scroll;
+	width: 100%;
+	/* padding: 0 !important;
+	margin: 0 !important; */
+	padding-top: 0.2em;
+	padding-left: 0;
+	padding-right: 0;
+	margin: 0 !important;
+}
+
+#chat_submit {
+	padding: 0 !important;
+	margin: 0 !important;
+	margin-top: 0.5rem !important;
 }
 
 #player_menu {
-  border: solid white 1px;
-  display: flex;
-  height: 40%;
-  width: 100%;
-  margin: 1rem !important;
-  padding: 0.25rem !important;
+	border: solid white 1px;
+	display: flex;
+	justify-content: space-between;
+	height: 40%;
+	width: 100%;
+	margin: 1rem !important;
+	padding: 0.25rem !important;
 }
 
 #player_menu > * {
-  margin: 0 !important;
+	margin: 0 !important;
 }
 
 #player_context_menu {
-  display: flex;
-  width: 70%;
+	display: flex;
+	align-self: center !important;
+	justify-self: center !important;
+	width: fit-content !important;
+	height: 100% !important;
+	padding: 0 !important;
+	margin: 0 1rem !important;
 }
 
 #player_info_menu {
-  width: 35%;
-  margin: 0 !important;
+	width: 35%;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 #player_action_menu {
-  display: flex;
-  flex-direction: column;
-  margin: 0 !important;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	max-height: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 #player_action_menu > * {
-  margin: 0.5rem;
+	margin: 0.5rem;
 }
 
 #action_buttons {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 #action_buttons > * {
-  margin: 0.5rem;
+	margin: 0.5rem;
 }
 
 #player_info_menu > * {
-  padding: 0.5rem;
+	padding: 0.5rem;
 }
 
 .player_stat_display {
-  display: flex;
-  justify-content: space-around;
+	display: flex;
+	justify-content: space-around;
 }
 
 .player_stat_block {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
+#choose_room_container > * {
+	margin: 1rem 0;
+}
+
+#choose_room_options > * {
+	margin: 0 1rem;
+}
+
+.Navbar {
+	width: 100%;
+	height: 75px;
+}
+
+.main-footer {
+	background-color: #222529;
+	color: whitesmoke;
+}
+
+#column2 {
+	align-content: right;
+}
+
+.footer {
+	width: 100vw;
+}
+
+.ul-footer {
+	display: flex;
+	justify-content: space-between;
+}
+
+.ul-footer li {
+	font-size: 14px;
+}
+
+.footer-container {
+	margin: 0;
+}
+#root > div.footer.container {
+	margin-left: 0px;
+}
+
+.footer.container {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.party-messages {
+	margin: 0 !important;
+	padding: 0 !important;
+	max-height: 100% !important;
+	height: 100% !important;
+	overflow-y: scroll;
+}
+
+.gold {
+	color: goldenrod;
+}
+
+.partyIn {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.party-container {
+	margin: 0 !important;
+	padding: 0 !important;
+	max-height: 100% !important;
+	height: 100% !important;
+}
+
+.coloredTextLog {
+	color: orange;
+}
+
+#text-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.card.player {
+	background-color: rgb(67, 47, 47);
+	border-color: rgb(255, 255, 255);
+}
+
+.btn {
+	background-color: #222529 !important;
+	border-color: orange !important;
+}
+
+.welcome {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 66.4vh;
+}
+
+.App {
+	height: 100vh;
+	/* overflow-y: hidden; */
+	padding: 0;
+}
