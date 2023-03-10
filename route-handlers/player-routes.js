@@ -189,6 +189,7 @@ router.put('/add-gold', async (request, response, next) => {
 		// newPlayerGold = player.gold + request.body.gold
 		// res.send(updatedPlayer)
 		let player = await PlayerModel.findOne({ email: request.user.email })
+		const newPlayerPotions = player.stats.potions + 2
 		const newPlayerGold = player.stats.gold + request.body.amountOfGold
 		const newPlayerHealth = request.body.newPlayerHealth
 		console.log(newPlayerHealth)
@@ -200,6 +201,7 @@ router.put('/add-gold', async (request, response, next) => {
 					...player.stats,
 					gold: newPlayerGold,
 					health: newPlayerHealth,
+					potions: newPlayerPotions,
 				},
 			},
 			{ new: true }
@@ -255,7 +257,7 @@ router.put('/reset-player', async (request, response, next) => {
 			username: oldPlayer.username,
 			class: this.class,
 			highestGold: highestGold,
-			stats: { health: 100, gold: 0, AP: 15 },
+			stats: { health: 100, gold: 0, AP: 15, potions: 5 },
 			position: 0,
 			map: createNewMap(),
 		},
@@ -277,7 +279,7 @@ createNewPlayer = async (email, username, highestGold) => {
 		username: username,
 		class: this.class,
 		highestGold: highestGold,
-		stats: { health: 100, gold: 10, AP: 15 },
+		stats: { health: 100, gold: 10, AP: 15, potions: 5 },
 		position: 0,
 		map: createNewMap(),
 	})

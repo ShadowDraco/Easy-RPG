@@ -10,6 +10,7 @@ const playerSchema = new mongoose.Schema({
 		health: Number,
 		gold: Number,
 		AP: Number,
+		potions: Number,
 	},
 	class: String,
 	map: Object,
