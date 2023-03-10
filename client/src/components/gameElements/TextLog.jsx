@@ -49,21 +49,23 @@ class TextLog extends React.Component {
 						))}
 					</Container>
 
-					<Container id='chat_submit'>
-						<Form onSubmit={this.handleSubmit}>
-							<Form.Group
-								className='mb-3'
-								style={{ display: 'flex', flexDirection: 'column' }}
-								controlId='partyMessage'
-							>
-								<Form.Control
-									type='text'
-									placeholder='Enter message'
-									className='w-100'
-								/>
-							</Form.Group>
-						</Form>
-					</Container>
+					{this.props.inAParty && (
+						<Container id='chat_submit'>
+							<Form onSubmit={this.handleSubmit}>
+								<Form.Group
+									className='mb-3'
+									style={{ display: 'flex', flexDirection: 'column' }}
+									controlId='partyMessage'
+								>
+									<Form.Control
+										type='text'
+										placeholder='Enter message'
+										className='w-100'
+									/>
+								</Form.Group>
+							</Form>
+						</Container>
+					)}
 				</Container>
 			</>
 		)

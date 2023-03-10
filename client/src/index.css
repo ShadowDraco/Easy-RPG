@@ -14,8 +14,18 @@
 	-webkit-text-size-adjust: 100%;
 }
 
+.App {
+	background-color: #222529;
+	/*background-image: url('/public/msl.jpg');*/
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	/* color-dodge and hard-light loook best! */
+	background-blend-mode: normal;
+}
+
 #root {
-	background-color: rgb(170, 170, 170);
+	background-color: #627286;
 }
 
 a {
