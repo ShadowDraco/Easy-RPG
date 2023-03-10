@@ -20,7 +20,7 @@ class ConstantHeader extends React.Component {
 				<Container className='my-5 p-2'>
 					<Navbar.Brand href='/'>
 						<Image
-							src='/favicon.ico/'
+							src='/EZRPG_logo2.png/'
 							alt='Game logo!'
 							width='150'
 							height='70'

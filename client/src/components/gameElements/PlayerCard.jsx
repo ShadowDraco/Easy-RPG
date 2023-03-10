@@ -188,6 +188,13 @@ class PlayerCard extends React.Component {
 								<option value='Space Wizard'>Space Wizard</option>
 							</Form.Select>
 							<Button type='submit'>Save</Button>
+							<Button
+								className='mx-5 reset-character'
+								href='/'
+								onClick={this.props.resetPlayer}
+							>
+								Reset your character
+							</Button>
 						</Form>
 					</Modal.Body>
 				</Modal>
