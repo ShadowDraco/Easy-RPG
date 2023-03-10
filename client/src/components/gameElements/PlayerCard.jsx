@@ -179,7 +179,7 @@ class PlayerCard extends React.Component {
 								id='character_name'
 								placeholder='Character Name'
 							></Form.Control>
-							<Form.Select type='option' id='character_class'>
+							<Form.Select type='option' id='character_class' className='my-2'>
 								<option value='Astrological Archer'>Astrological Archer</option>
 								<option value='Galactic Barbarian'>Galactic Barbarian</option>
 								<option value='Interstellar Druid'>Interstellar Druid</option>
@@ -189,7 +189,7 @@ class PlayerCard extends React.Component {
 							</Form.Select>
 							<Button type='submit'>Save</Button>
 							<Button
-								className='mx-5 reset-character'
+								className='mx-5 my-3 reset-character'
 								href='/'
 								onClick={this.props.resetPlayer}
 							>
