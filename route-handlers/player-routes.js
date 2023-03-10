@@ -247,9 +247,13 @@ router.put('/reset-player', async (request, response, next) => {
 		highestGold = oldPlayer.highestGold
 	}
 
+	this.class = classTypes[randomFromTo(0, classTypes.length - 1)]
+
 	const Player = await PlayerModel.findOneAndUpdate(
 		{ email: request.user.email },
 		{
+			username: oldPlayer.username,
+			class: this.class,
 			highestGold: highestGold,
 			stats: { health: 100, gold: 0, AP: 15 },
 			position: 0,

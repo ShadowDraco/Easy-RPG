@@ -231,6 +231,10 @@ class Game extends React.Component {
 		}, 1000)
 	}
 
+	updateAuthorizedPlayer = responseData => {
+		this.setState({ authorizedPlayer: responseData })
+	}
+
 	healPlayer = () => {
 		let healAmount = Math.round(Math.random() * 20) + 10
 		let newPlayerInfo = this.state.authorizedPlayer
@@ -325,62 +329,63 @@ class Game extends React.Component {
 							alignItems: 'center',
 						}}
 					>
-						<Container id='encounter_screen' key='encounter_screen'>
-							{this.state.inFight ? (
-								<>
-									{this.state.enemies.map((enemy, i) => (
-										<EnemyCard
-											key={i}
-											id={`enemy_${i}`}
-											enemyInfo={enemy}
-											incrementEnemyDeathCount={this.incrementEnemyDeathCount}
-											handleDealDamage={this.handleDealDamage}
-											checkAllEnemiesDead={this.checkAllEnemiesDead}
-											doDamageToPlayer={this.doDamageToPlayer}
-										/>
-									))}
-
-									{this.state.gettingLoot ? (
-										<Button
-											onClick={() => {
-												this.getLoot(this.state.room.treasure)
-											}}
-										>
-											GET LOOT
-										</Button>
-									) : (
-										''
-									)}
-								</>
-							) : (
-								<Container
-									key='choose_room_container'
-									id='choose_room_container'
-									style={{
-										display: 'flex',
-										flexDirection: 'column',
-										justifyContent: 'center',
-										alignItems: 'center',
-									}}
-								>
-									<h4>Choose Wisely...</h4>
-									<div id='choose_room_options'>
-										{this.state.presentableRooms?.map((element, i) => (
-											<Button
+						{this.state.authorizedPlayer?.stats.health > 1 && (
+							<Container id='encounter_screen' key='encounter_screen'>
+								{this.state.inFight ? (
+									<>
+										{this.state.enemies.map((enemy, i) => (
+											<EnemyCard
 												key={i}
-												room={element}
+												id={`enemy_${i}`}
+												enemyInfo={enemy}
+												incrementEnemyDeathCount={this.incrementEnemyDeathCount}
+												handleDealDamage={this.handleDealDamage}
+												checkAllEnemiesDead={this.checkAllEnemiesDead}
+												doDamageToPlayer={this.doDamageToPlayer}
+											/>
+										))}
+
+										{this.state.gettingLoot ? (
+											<Button
 												onClick={() => {
-													this.handleEnterNewRoom(element)
+													this.getLoot(this.state.room.treasure)
 												}}
 											>
-												Path
+												GET LOOT
 											</Button>
-										))}
-									</div>
-								</Container>
-							)}
-						</Container>
-
+										) : (
+											''
+										)}
+									</>
+								) : (
+									<Container
+										key='choose_room_container'
+										id='choose_room_container'
+										style={{
+											display: 'flex',
+											flexDirection: 'column',
+											justifyContent: 'center',
+											alignItems: 'center',
+										}}
+									>
+										<h4>Choose Wisely...</h4>
+										<div id='choose_room_options'>
+											{this.state.presentableRooms?.map((element, i) => (
+												<Button
+													key={i}
+													room={element}
+													onClick={() => {
+														this.handleEnterNewRoom(element)
+													}}
+												>
+													Path
+												</Button>
+											))}
+										</div>
+									</Container>
+								)}
+							</Container>
+						)}
 						{this.state.authorizedPlayer ? (
 							<Container id='player_screen' key='player_screen'>
 								{this.state.authorizedPlayer.stats.health !== 0 ? (
