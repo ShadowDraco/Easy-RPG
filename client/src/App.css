@@ -9,6 +9,7 @@
 	text-align: center;
 	width: 100%;
 	box-sizing: border-box;
+	color: white;
 }
 
 .container {
@@ -47,8 +48,11 @@ div.player.card {
 	flex-direction: column;
 	justify-content: space-evenly !important;
 	background-color: rgba(88, 70, 29, 0.493);
-	height: 95vh;
-	width: 100vw;
+	height: 90vh;
+	max-width: 100%;
+	min-width: 100%;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 #encounter_screen {
@@ -80,26 +84,33 @@ div.player.card {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	/* align-items: center; */
+	align-items: flex-end;
 	overflow-x: hidden;
 	/* float: right; */
 	width: 90%;
 	height: 100%;
+	color: white;
 	padding: 0 !important;
 	margin: 0 !important;
+	/* margin-top: 2rem !important; */
 }
 
 #text_log_messages {
-	float: right;
 	height: 80%;
 	overflow-y: scroll;
+	width: 100%;
 	/* padding: 0 !important;
 	margin: 0 !important; */
 	padding-top: 0.2em;
+	padding-left: 0;
+	padding-right: 0;
+	margin: 0 !important;
 }
 
 #chat_submit {
-	margin-top: 1rem !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	margin-top: 0.5rem !important;
 }
 
 #player_menu {
@@ -121,6 +132,7 @@ div.player.card {
 	align-self: center !important;
 	justify-self: center !important;
 	width: fit-content !important;
+	height: 100% !important;
 	padding: 0 !important;
 	margin: 0 1rem !important;
 }
@@ -134,8 +146,9 @@ div.player.card {
 #player_action_menu {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: center;
+	max-height: 100%;
 	margin: 0 !important;
 	padding: 0 !important;
 }
@@ -223,6 +236,10 @@ div.player.card {
 	overflow-y: scroll;
 }
 
+.gold {
+	color: goldenrod;
+}
+
 .partyIn {
 	margin: 0 !important;
 	padding: 0 !important;
@@ -236,10 +253,33 @@ div.player.card {
 }
 
 .coloredTextLog {
-	color: greenyellow;
+	color: orange;
 }
 
 #text-container {
 	display: flex;
 	flex-direction: column;
+}
+
+.card.player {
+	background-color: rgb(67, 47, 47);
+	border-color: rgb(255, 255, 255);
+}
+
+.btn {
+	background-color: #222529 !important;
+	border-color: orange !important;
+}
+
+.welcome {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 66.4vh;
+}
+
+.App {
+	height: 100vh;
+	/* overflow-y: hidden; */
+	padding: 0;
 }

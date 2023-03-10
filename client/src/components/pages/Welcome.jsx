@@ -14,7 +14,7 @@ class Welcome extends React.Component {
 
 	render() {
 		return (
-			<Container className='my-5'>
+			<Container className='welcome my-5'>
 				<h1 className='my-5'>Welcome</h1>
 				{!this.props.auth0.isAuthenticated ? (
 					<LoginButton />

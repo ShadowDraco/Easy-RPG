@@ -12,7 +12,7 @@ import axios from 'axios'
 import socket from './socket'
 import Button from 'react-bootstrap/esm/Button'
 
-import logo from '/public/MSL.jpg'
+import GameOver from '../gameElements/GameOver'
 
 class Game extends React.Component {
 	constructor(props) {
@@ -27,6 +27,7 @@ class Game extends React.Component {
 			choosingNextRoom: true,
 			roomsToChoose: '',
 			textAddedToLog: '',
+			highestGold: 0,
 			messages: [
 				{ from: 'Server', message: 'connected!' },
 				{ from: 'Server', message: 'connected!' },
@@ -55,10 +56,6 @@ class Game extends React.Component {
 		]
 	}
 
-	updateAuthorizedPlayer = responsedata => {
-		this.setState({ authorizedPlayer: responsedata })
-	}
-
 	// get the user
 	async componentDidMount() {
 		if (this.props.auth0.isAuthenticated) {
@@ -78,6 +75,32 @@ class Game extends React.Component {
 				authorizedPlayer: playerAndRoom.data.player,
 				room: playerAndRoom.data.room,
 				presentableRooms: playerAndRoom.data.presentableRooms,
+				highestGold: playerAndRoom.data.player.highestGold,
+			})
+		}
+	}
+
+	resetPlayer = async () => {
+		if (this.props.auth0.isAuthenticated) {
+			const res = await this.props.auth0.getIdTokenClaims()
+
+			console.log(this.state.authorizedPlayer)
+			const jwt = res.__raw
+			const config = {
+				headers: { Authorization: `Bearer ${jwt}` },
+				method: 'put',
+				data: { oldPlayer: this.state.authorizedPlayer },
+				baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+				url: '/player/reset-player',
+			}
+
+			const playerAndRoom = await axios(config)
+
+			this.setState({
+				authorizedPlayer: playerAndRoom.data.player,
+				room: playerAndRoom.data.room,
+				presentableRooms: playerAndRoom.data.presentableRooms,
+				highestGold: playerAndRoom.data.player.highestGold,
 			})
 		}
 	}
@@ -96,19 +119,24 @@ class Game extends React.Component {
 
 		axios(config).then(response => {
 			if (response.data.clearedFloor) {
-				this.updateTextLog('Cleared a FLOOR!', true)
+				this.updateTextLog(
+					'You begin to enter a new floor of the dungeon...',
+					true
+				)
 				this.setState({
 					authorizedPlayer: response.data.updatedPlayer,
 					presentableRooms: response.data.newPresentableRooms,
 					room: response.data.room,
 					choosingNextRoom: true,
 					inFight: false,
+					highestGold: response.data.updatedPlayer.highestGold,
 				})
 			} else {
-				this.updateTextLog('Cleared a room!', false)
+				this.updateTextLog('This room looks clear!', false)
 				this.setState({
 					authorizedPlayer: response.data.updatedPlayer,
 					presentableRooms: response.data.newPresentableRooms,
+					highestGold: response.data.updatedPlayer.highestGold,
 				})
 			}
 		})
@@ -168,6 +196,7 @@ class Game extends React.Component {
 				inFight: false,
 				gettingLoot: false,
 				authorizedPlayer: response.data,
+				highestGold: response.data.highestGold,
 			})
 		})
 	}
@@ -251,6 +280,7 @@ class Game extends React.Component {
 
 	createOrStartAParty = partyName => {
 		this.setState({ inAParty: true, partyName: partyName })
+		socket.connect()
 		socket.emit('join-room', partyName)
 		socket.on('receive-message', (from, message) => {
 			console.log('receiving message')
@@ -364,6 +394,8 @@ class Game extends React.Component {
 												handleShowInventory={this.handleShowInventory}
 												updateMapInfo={this.updateMapInfo}
 												healPlayer={this.healPlayer}
+												highestGold={this.state.highestGold}
+												currentGold={this.state.authorizedPlayer.stats.gold}
 											/>
 
 											{/* // get other player names from the SOCKET */}
@@ -391,7 +423,10 @@ class Game extends React.Component {
 										/>
 									</>
 								) : (
-									<h1>GAME OVER</h1>
+									<GameOver
+										authorizedPlayer={this.state.authorizedPlayer}
+										resetPlayer={this.resetPlayer}
+									/>
 								)}
 							</Container>
 						) : (

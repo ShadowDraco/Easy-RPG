@@ -5,6 +5,22 @@ app.use(express.json())
 app.use(cors)
 const router = express.Router()
 
+const randomFromTo = require('../game/lib/helperFunctions/RandomFromTo')
+const classTypes = [
+	'Barbarian',
+	'Assassin',
+	'Warrior',
+	'Ranger',
+	'Bard',
+	'Black Mage',
+	'Samurai',
+	'Ninja',
+	'Bandit',
+	'Pirate',
+	'Sniper',
+	'Witch Doctor',
+]
+
 const mongoose = require('mongoose')
 
 const Map = require('../game/Map')
@@ -60,7 +76,7 @@ router.get('/get', async (request, response, next) => {
 			}) /// returns 3 rooms to the client as options to go forward - onClick = axios.get('/move-player', {selectedRoom.index})  <- moves player.positon to selected Room
 		} else {
 			console.log('creating player')
-			let newPlayer = await createNewPlayer(user.email, user.name)
+			let newPlayer = await createNewPlayer(user.email, user.name, 0)
 			let noMapPlayer = { ...newPlayer._doc }
 			noMapPlayer.map = ''
 
@@ -222,11 +238,41 @@ createNewMap = () => {
 
 ///// NEW PLAYER
 
+router.put('/reset-player', async (request, response, next) => {
+	const oldPlayer = request.body.oldPlayer
+	let highestGold = 0
+	if (oldPlayer.stats.gold > oldPlayer.highestGold) {
+		highestGold = oldPlayer.stats.gold
+	} else {
+		highestGold = oldPlayer.highestGold
+	}
+
+	const Player = await PlayerModel.findOneAndUpdate(
+		{ email: request.user.email },
+		{
+			highestGold: highestGold,
+			stats: { health: 100, gold: 0, AP: 15 },
+			position: 0,
+			map: createNewMap(),
+		},
+		{ new: true }
+	)
+
+	response.status(200).send({
+		authorizedPlayer: Player,
+		room: Player.map.rooms[0],
+		presentableRooms: getPresentableRooms(Player.map.rooms),
+	})
+})
+
 // new player
-createNewPlayer = async (email, username) => {
+createNewPlayer = async (email, username, highestGold) => {
+	this.class = classTypes[randomFromTo(0, classTypes.length - 1)]
 	const Player = await PlayerModel.create({
 		email: email,
 		username: username,
+		class: this.class,
+		highestGold: highestGold,
 		stats: { health: 100, gold: 10, AP: 15 },
 		position: 0,
 		map: createNewMap(),
@@ -238,7 +284,7 @@ router.post('/new', async (request, response) => {
 	let email = request.body.email
 	let username = request.body.username
 
-	createNewPlayer(email, username)
+	createNewPlayer(email, username, 0)
 
 	response.send('New Player Created').status(200)
 })

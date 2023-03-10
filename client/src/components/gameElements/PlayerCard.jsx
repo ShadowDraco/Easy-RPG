@@ -100,12 +100,26 @@ class PlayerCard extends React.Component {
 					className='player'
 					onClick={this.props.updateMapInfo}
 				>
-					<Card.Header>
-						{this.props.authorizedPlayer.username}{' '}
-						<Button onClick={this.handleEditCharacter}>Edit</Button>
+					<Card.Header
+						style={{ display: 'flex', justifyContent: 'space-between' }}
+					>
+						<div style={{ paddingRight: '5px' }}>
+							{this.props.authorizedPlayer.username}{' '}
+						</div>
+						<Button size='sm' onClick={this.handleEditCharacter}>
+							Edit
+						</Button>
 					</Card.Header>
+
 					<Card.Body>
 						<p>Class: {this.props.authorizedPlayer.class}</p>
+						<p>
+							Highest Gold:{' '}
+							<span className='gold'>
+								{this.props.authorizedPlayer.stats.gold} /
+								{this.props.highestGold}
+							</span>
+						</p>
 
 						{/* calculate health percentage out of 100 to display accurate health bar */}
 						<ProgressBar
@@ -148,19 +162,6 @@ class PlayerCard extends React.Component {
 									</Accordion.Body>
 								</Accordion.Item>
 							))}
-							{/* <Accordion.Item eventKey='0'>
-								<Accordion.Header>Potion of Placeholding</Accordion.Header>
-								<Accordion.Body>
-									This potion does absolutely nothing but act as a placeholder
-									for other items
-								</Accordion.Body>
-							</Accordion.Item>
-							<Accordion.Item eventKey='1'>
-								<Accordion.Header>Health Potion</Accordion.Header>
-								<Accordion.Body>
-									<Button onClick={this.props.healPlayer}></Button>This is where my health potion would go... IF I HAD ONE!
-								</Accordion.Body>
-							</Accordion.Item> */}
 						</Accordion>
 					</Modal.Body>
 				</Modal>
@@ -179,12 +180,12 @@ class PlayerCard extends React.Component {
 								placeholder='Character Name'
 							></Form.Control>
 							<Form.Select type='option' id='character_class'>
-								<option value='archer'>Archer</option>
-								<option value='barbarian'>Barbarian</option>
-								<option value='druid'>Druid</option>
-								<option value='rouge'>Rouge</option>
-								<option value='warrior'>Warrior</option>
-								<option value='wizard'>Wizard</option>
+								<option value='archer'>Astrological Archer</option>
+								<option value='barbarian'>Galactic Barbarian</option>
+								<option value='druid'>Interstellar Druid</option>
+								<option value='rouge'>Cosmic Rouge</option>
+								<option value='warrior'>Solar Warrior</option>
+								<option value='wizard'>Space Wizard</option>
 							</Form.Select>
 							<Button type='submit'>Save</Button>
 						</Form>
