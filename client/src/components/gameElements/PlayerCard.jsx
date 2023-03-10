@@ -88,7 +88,7 @@ class PlayerCard extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			maxHealth: this.props.authorizedPlayer.stats.health,
+			maxHealth: 100,
 		})
 	}
 

@@ -185,6 +185,7 @@ class Game extends React.Component {
 			method: 'put',
 			data: {
 				amountOfGold: treasure.gold,
+				amountOfPotions: this.state.authorizedPlayer.stats.potions,
 				newPlayerHealth: this.state.authorizedPlayer.stats.health,
 			},
 			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
@@ -235,18 +236,46 @@ class Game extends React.Component {
 		this.setState({ authorizedPlayer: responseData })
 	}
 
-	healPlayer = () => {
+	syncPlayerWithDataBase = async newPlayerInfo => {
+		const res = await this.props.auth0.getIdTokenClaims()
+
+		const jwt = res.__raw
+		const config = {
+			headers: { Authorization: `Bearer ${jwt}` },
+			method: 'put',
+			data: {
+				newPlayerInfo: newPlayerInfo,
+			},
+			baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+			url: '/player/sync-player',
+		}
+
+		axios(config).then(response => {
+			this.setState({
+				authorizedPlayer: response.data,
+				highestGold: response.data.highestGold,
+			})
+		})
+	}
+
+	healPlayer = async () => {
 		let healAmount = Math.round(Math.random() * 20) + 10
-		let newPlayerInfo = this.state.authorizedPlayer
+		let newPlayerInfo = { ...this.state.authorizedPlayer }
 
 		newPlayerInfo.stats.health = newPlayerInfo.stats.health + healAmount
+		newPlayerInfo.stats.potions = newPlayerInfo.stats.potions -= 1
 
 		if (newPlayerInfo.stats.health > 100) {
 			newPlayerInfo.stats.health = 100
 		}
 
+		console.log(this.state.authorizedPlayer, newPlayerInfo)
+
+		let syncedPlayer = await this.syncPlayerWithDataBase(newPlayerInfo)
+
+		console.log(syncedPlayer)
 		this.setState({
-			authorizedPlayer: newPlayerInfo,
+			authorizedPlayer: syncedPlayer,
 		})
 	}
 
