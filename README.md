@@ -16,8 +16,8 @@ _Version_: 2.0.0
 
 ## Change Log
 
-03-03-2023 5:00pm - Initial commit
-03-10-2023 5:00pm - Last commit
+- 03-03-2023 5:00pm - Initial commit
+- 03-10-2023 5:00pm - Last commit
 
 ## Credit and Collaborations
 
