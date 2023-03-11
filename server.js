@@ -17,54 +17,57 @@ app.use(cors())
 
 let port = process.env.PORT
 if (port == null || port == '') {
-	port = 8000
+  port = 8000
 }
 
 // socket io stuff //////////////////////////////
 
 const server = require('http').Server(app)
 const io = require('socket.io')(server, {
-	cors: {
-		origin: [
-			'http://127.0.0.1:5173',
-			'http://localhost:5173',
-			'https://easy-rpg.herokuapp.com',
-			'https://easy-rpg.netlify.app/',
-			'https://20a2-2603-8001-4700-20d4-854f-571c-a7ce-79a6.ngrok.io',
-		],
-	},
+  cors: {
+    origin: [
+      'http://127.0.0.1:5173',
+      'http://localhost:5173',
+      'https://easy-rpg.herokuapp.com',
+      'https://easy-rpg.netlify.app/',
+      'https://20a2-2603-8001-4700-20d4-854f-571c-a7ce-79a6.ngrok.io',
+    ],
+  },
 })
+
+io.set('transports', ['websocket'])
+io.set('trust proxy', true)
 
 // when a socket connects to the server
 io.on('connection', socket => {
-	socket.on('join-room', partyName => {
-		try {
-			socket.join(partyName)
-		} catch (error) {}
+  socket.on('join-room', partyName => {
+    try {
+      socket.join(partyName)
+    } catch (error) {}
 
-		socket.on('receive-message', (from, message) => {})
-	})
+    socket.on('receive-message', (from, message) => {})
+  })
 
-	socket.on('send-message', (partyName, playerName, message) => {
-		io.to(partyName).emit('receive-message', playerName, message)
-	})
+  socket.on('send-message', (partyName, playerName, message) => {
+    io.to(partyName).emit('receive-message', playerName, message)
+  })
 
-	socket.on('disconnect', reason => {
-		console.log(reason)
-	})
+  socket.on('disconnect', reason => {
+    console.log(reason)
+  })
 })
 
 // all routes after will have the requesting socket
 app.use((request, response, next) => {
-	request.io = io
-	return next()
+  request.io = io
+  return next()
 })
 
 // socket io stuff //////////////////////////////
 
 mongoose
-	.connect(process.env.DATABASE_URL)
-	.then(console.log('Database connected'))
+  .connect(process.env.DATABASE_URL)
+  .then(console.log('Database connected'))
 
 // This will run the "verify" code on every route automatically
 // If the user is valid, we'll have them in request.user in every route!
@@ -72,27 +75,27 @@ mongoose
 // all routes after will have the verified user
 
 app.get('/', (request, response) => {
-	response.status(200).send("You've enter the dungeon")
-	console.log('Dungeon running')
+  response.status(200).send("You've enter the dungeon")
+  console.log('Dungeon running')
 })
 
 app.use(verifyUser)
 
 if (process.env.NODE_ENV === 'production') {
-	app.get('*', (req, resp, next) => {
-		resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
-		next()
-	})
+  app.get('*', (req, resp, next) => {
+    resp.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+    next()
+  })
 }
 
 app.use('/player', PlayerRoute)
 
 app.use('*', (request, response) => {
-	response.status(404).send('You entered the wrong corridor!')
+  response.status(404).send('You entered the wrong corridor!')
 })
 
 app.use((error, request, response, next) => {
-	response.status(500).send(`We miss placed the dungeon... ${error}`)
+  response.status(500).send(`We miss placed the dungeon... ${error}`)
 })
 
 server.listen(port, console.log(`Begin dungeon crawling on port: ${port}`))
