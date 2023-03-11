@@ -35,9 +35,6 @@ const io = require('socket.io')(server, {
   },
 })
 
-io.set('transports', ['websocket'])
-io.set('trust proxy', true)
-
 // when a socket connects to the server
 io.on('connection', socket => {
   socket.on('join-room', partyName => {
