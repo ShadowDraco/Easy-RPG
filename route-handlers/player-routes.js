@@ -50,10 +50,8 @@ router.post('/change-info', async (request, response, next) => {
 
 		response.status(202).send(player)
 	} catch (err) {
-		response.status(400).send(err | `Unable to update database`)
+		next(err, `Unable to update database`)
 	}
-
-	// config = { url: '/change-name', body: {newName: newUsername}}
 })
 
 router.get('/get', async (request, response, next) => {
@@ -76,20 +74,14 @@ router.get('/get', async (request, response, next) => {
 			let noMapPlayer = { ...newPlayer._doc }
 			noMapPlayer.map = ''
 
-			response.json({
+			response.status(201).send({
 				player: noMapPlayer,
 				room: newPlayer.map.rooms[player.position],
 				presentableRooms: newPlayer.map.presentableRooms,
 			})
 		}
-
-		/*{
-            email,
-            username,
-            stats: { health, etc....}
-        } */
 	} catch (error) {
-		next('error getting user')
+		next('could not find user', error)
 	}
 })
 
@@ -148,6 +140,7 @@ router.put('/move', async (request, response, next) => {
 
 // enemy and player attack
 router.get('/attack-enemy', async (request, response, next) => {
+	console.log('attacking')
 	try {
 		let player = PlayerModel.findOne({ email: request.user.email })
 		player.map[player.position].enemies = request.body.newEnemies
@@ -169,6 +162,7 @@ router.get('/attack-enemy', async (request, response, next) => {
 
 // Add Gold
 router.put('/add-gold', async (request, response, next) => {
+	console.log('adding gold')
 	try {
 		// findOneAndUpdate({email}, {stats: { gold: newGold }}, {new:true})
 		// newPlayerGold = player.gold + request.body.gold
@@ -177,7 +171,6 @@ router.put('/add-gold', async (request, response, next) => {
 		const newPlayerPotions = player.stats.potions + 2
 		const newPlayerGold = player.stats.gold + request.body.amountOfGold
 		const newPlayerHealth = request.body.newPlayerHealth
-		console.log(newPlayerHealth)
 
 		let updatedPlayer = await PlayerModel.findOneAndUpdate(
 			{ email: request.user.email },
@@ -198,9 +191,29 @@ router.put('/add-gold', async (request, response, next) => {
 	}
 })
 
+// sync player
+router.put('/sync-player', async (request, response, next) => {
+	console.log('syncing player')
+	let newPlayerInfo = request.body.newPlayerInfo
+	try {
+		let updatedPlayer = await PlayerModel.findOneAndUpdate(
+			{ email: request.user.email },
+			{
+				stats: newPlayerInfo.stats,
+			},
+			{ new: true }
+		)
+
+		response.status(202).send(updatedPlayer)
+	} catch (error) {
+		next('error syncing player', error)
+	}
+})
+
 ///// PLAYER MAP
 
 router.get('/new-map', async (request, response, next) => {
+	console.log('creating a new map')
 	try {
 		let updatedPlayer = await PlayerModel.findOneAndUpdate(
 			{ email: request.user.email },
@@ -210,7 +223,7 @@ router.get('/new-map', async (request, response, next) => {
 
 		response.status(200).send(updatedPlayer.map.rooms[updatedPlayer.position])
 	} catch (error) {
-		next('error adding map to player')
+		next('error adding map to player', error)
 	}
 })
 
@@ -276,5 +289,3 @@ router.post('/new', async (request, response) => {
 })
 
 module.exports = router
-
-router.post('/update-map', async (request, response) => {})
