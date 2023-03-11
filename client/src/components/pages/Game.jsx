@@ -116,8 +116,6 @@ class Game extends React.Component {
 			url: '/player/move',
 		}
 
-		console.log(indexOfOldRoom, indexOfChosenRoom)
-
 		axios(config)
 			.then(response => {
 				if (response.data.clearedFloor) {
@@ -142,7 +140,7 @@ class Game extends React.Component {
 				}
 			})
 			.catch(error => {
-				console.log('you got soft locked.... /: sorry!!')
+				console.log('you got soft locked.... /: sorry!!', error)
 				this.resetPlayer()
 			})
 	}
@@ -319,7 +317,6 @@ class Game extends React.Component {
 		socket.connect()
 		socket.emit('join-room', partyName)
 		socket.on('receive-message', (from, message) => {
-			console.log('receiving message')
 			this.receiveChatMessage(from, message)
 		})
 	}
@@ -435,17 +432,6 @@ class Game extends React.Component {
 												resetPlayer={this.resetPlayer}
 												currentGold={this.state.authorizedPlayer.stats.gold}
 											/>
-
-											{/* // get other player names from the SOCKET */}
-											{/* if party session render more players */}
-											{
-												this.state.inAParty ? (
-													<>
-														{/* <PartyPlayerCard /> */}
-														{/* <PartyPlayerCard /> */}
-													</>
-												) : null //if no authorized player, don't render any player cards
-											}
 										</div>
 
 										<PlayerMenu

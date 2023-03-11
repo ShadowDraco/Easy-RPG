@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form'
 class StartAParty extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log()
+
 		this.state = {}
 	}
 

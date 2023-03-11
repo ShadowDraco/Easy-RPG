@@ -37,9 +37,6 @@ class EnemyCard extends React.Component {
 				this.props.doDamageToPlayer()
 			}
 		}
-
-		// let player = document.getElementById('player_0')
-		// console.log(ReactDOM.findDOMNode(player)).test;
 	}
 
 	render() {
@@ -59,9 +56,7 @@ class EnemyCard extends React.Component {
 							max={this.state.maxHP}
 							now={this.state.currentHP}
 							variant='danger'
-							onChange={() => {
-								console.log('test')
-							}}
+							onChange={() => {}}
 						/>
 					</Card.Body>
 				</Card>

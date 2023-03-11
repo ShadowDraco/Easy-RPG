@@ -121,7 +121,7 @@ class PlayerCard extends React.Component {
 							</span>
 						</p>
 
-						{/* calculate health percentage out of 100 to display accurate health bar */}
+						
 						<ProgressBar
 							now={this.props.authorizedPlayer.stats.health}
 							max={this.state.maxHealth}
@@ -131,7 +131,7 @@ class PlayerCard extends React.Component {
 					</Card.Body>
 				</Card>
 
-				{/* inventory modal  */}
+
 				<Modal
 					show={this.props.showInventory}
 					onHide={this.props.handleShowInventory}

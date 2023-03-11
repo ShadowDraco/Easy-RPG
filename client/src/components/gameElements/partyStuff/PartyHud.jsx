@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/esm/Button'
 class PartyHud extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log()
 		this.state = { error: '' }
 	}
 
