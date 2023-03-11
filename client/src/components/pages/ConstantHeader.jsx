@@ -30,7 +30,7 @@ class ConstantHeader extends React.Component {
 					<Navbar.Collapse id='basic-navbar-nav p-3'>
 						<Nav className='Nav p-3'>
 							<Nav.Link href='/'>Home</Nav.Link>
-							<Nav.Link href='/about'>About Us</Nav.Link>
+
 							<NavDropdown title='Account' id='basic-nav-dropdown'>
 								<NavDropdown.Item>
 									<Button onClick={this.props.updateImage}>Change Theme</Button>

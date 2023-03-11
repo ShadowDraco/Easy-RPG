@@ -15,7 +15,6 @@ function verifyUser(request, response, next) {
 	try {
 		const token = request.headers.authorization.split(' ')[1]
 		jwt.verify(token, getKey, {}, valid)
-		console.log('authorized')
 	} catch (error) {
 		next('Not Authorized')
 	}

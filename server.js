@@ -30,29 +30,22 @@ const io = require('socket.io')(server, {
 			'http://localhost:5173',
 			'https://easy-rpg.herokuapp.com',
 			'https://easy-rpg.netlify.app/',
+			'https://20a2-2603-8001-4700-20d4-854f-571c-a7ce-79a6.ngrok.io',
 		],
 	},
 })
 
 // when a socket connects to the server
 io.on('connection', socket => {
-	console.log('client connected: ', socket.id)
-
 	socket.on('join-room', partyName => {
 		try {
 			socket.join(partyName)
-			console.log('success!')
-		} catch (error) {
-			console.log('error joining room', partyName)
-		}
+		} catch (error) {}
 
-		socket.on('receive-message', (from, message) => {
-			console.log('receiving message', from, message)
-		})
+		socket.on('receive-message', (from, message) => {})
 	})
 
 	socket.on('send-message', (partyName, playerName, message) => {
-		console.log('sending message to party', partyName)
 		io.to(partyName).emit('receive-message', playerName, message)
 	})
 
@@ -80,7 +73,7 @@ mongoose
 
 app.get('/', (request, response) => {
 	response.status(200).send("You've enter the dungeon")
-	console.log('Dungeon running on 3001')
+	console.log('Dungeon running')
 })
 
 app.use(verifyUser)

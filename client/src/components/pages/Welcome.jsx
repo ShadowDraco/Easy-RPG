@@ -7,11 +7,6 @@ import { withAuth0 } from '@auth0/auth0-react'
 import Button from 'react-bootstrap/Button'
 
 class Welcome extends React.Component {
-	constructor(props) {
-		super(props)
-		console.log()
-	}
-
 	render() {
 		return (
 			<Container className='welcome my-5'>
