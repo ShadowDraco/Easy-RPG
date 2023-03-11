@@ -179,3 +179,14 @@ How and when will you escalate the conflict if your resolution attempts are unsu
 - Acceptance Tests
   - Minimize the amount of screens, buttons, etc
   - No “Action Points”, hidden effects, bonus multipliers, etc.
+
+
+
+
+
+
+
+
+
+
+-- great work team!
