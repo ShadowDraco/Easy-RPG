@@ -1,4 +1,4 @@
-# 301 - final project
+# A Fantasy/Space themed Text-Based Game!
 
 _Authors_: Kawika Miller, Darran Holmes, Ethan Storm
 _Version_: 1.0.0
