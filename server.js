@@ -22,8 +22,12 @@ if (port == null || port == '') {
 
 // socket io stuff //////////////////////////////
 
-const server = require('http').Server(app)
-const io = require('socket.io')(server, {
+const http = require('http')
+const socketio = require('socket.io')
+const socketioHeroku = require('socket.io-heroku')
+
+const server = http.Server(app)
+const io = socketio(server, {
 	cors: {
 		origin: [
 			'http://127.0.0.1:5173',
@@ -34,6 +38,7 @@ const io = require('socket.io')(server, {
 		],
 	},
 })
+io.adapter(socketioHeroku())
 
 // when a socket connects to the server
 io.on('connection', socket => {
