@@ -100,4 +100,4 @@ app.use((error, request, response, next) => {
 	response.status(500).send(`We miss placed the dungeon... ${error}`)
 })
 
-server.listen(port, console.log(`Begin dungeon crawling on port: ${port}`))
+app.listen(port, console.log(`Begin dungeon crawling on port: ${port}`))
