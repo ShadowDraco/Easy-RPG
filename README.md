@@ -5,8 +5,6 @@ _Version_: 2.0.0
 
 ## Architecture
 
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
-
 - MongoDB / Mongoose
 - Express
 - NodeJs

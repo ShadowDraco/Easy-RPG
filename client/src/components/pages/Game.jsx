@@ -31,13 +31,6 @@ class Game extends React.Component {
 			messages: [
 				{ from: 'Server', message: 'connected!' },
 				{ from: 'Server', message: 'connected!' },
-				{ from: 'Server', message: 'connected!' },
-
-				{ from: 'Server', message: 'connected!' },
-
-				{ from: 'Server', message: 'connected!' },
-
-				{ from: 'Server', message: 'connected!' },
 			],
 		}
 	}
