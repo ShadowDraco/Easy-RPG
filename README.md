@@ -3,6 +3,8 @@
 _Authors_: Kawika Miller, Darran Holmes, Ethan Storm
 _Version_: 2.0.0
 
+[![In this project](https://skillicons.dev/icons?i=react,vite,mongodb,express,bootstrap,js,html,css)](https://skillicons.dev)
+
 ## Architecture
 
 - MongoDB / Mongoose
@@ -177,14 +179,5 @@ How and when will you escalate the conflict if your resolution attempts are unsu
 - Acceptance Tests
   - Minimize the amount of screens, buttons, etc
   - No “Action Points”, hidden effects, bonus multipliers, etc.
-
-
-
-
-
-
-
-
-
 
 -- great work team!
